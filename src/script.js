@@ -1,658 +1,744 @@
 import * as THREE from 'three'
-
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import Stats from 'three/examples/jsm/libs/stats.module'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+//import * as dat from 'dat.gui'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
-import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+/* import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
+import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass'; */
+
+import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
+
+import anime from 'animejs';
 
 import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
-import {UnrealBloomPass} from 'three/examples/jsm/postprocessing/UnrealBloomPass';
 
-import {HorizontalBlurShader} from 'three/examples/jsm/shaders/HorizontalBlurShader';
-import {VerticalBlurShader} from 'three/examples/jsm/shaders/VerticalBlurShader';
+import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
-import * as anime from 'animejs/lib/anime'
-
-//const sizes = {width: 600,  height: 750}
-const sizes = {width: window.innerWidth,  height: window.innerHeight}
 const models=Object.create({
-    elements:[
-        'model/webgl2/_Edik/infographic_arrow_04_my.glb',
-        'model/webgl2/01_elements_chip_4_new.glb',
-        'model/webgl2/01_elements_diamond_2.glb',
-        'model/webgl2/01_elements_elephant_2.glb',
-        'model/webgl2/01_elements_horse_5_merged.glb',
-        'model/webgl2/01_elements_L_4_my_new.glb',
-        'model/webgl2/01_elements_rook_2.glb',
-        'model/webgl2/01_elements_safe_4_only.glb',
-        'model/webgl2/01_elements_safehandle_4_only.glb',
-        'model/webgl2/01_elements_smartphone_3_Edited.glb',
-        'model/webgl2/01_elements_omaha_logo_3.glb',
-    ]
-});
-const settings=Object.create({
-    font:'/model/webgl2/fonts/ArchivoBlack-Regular.ttf',
-    normal:'/media/webgl2/normal.jpg',
     hdr:'model/webgl2/hdr/sepulchral_chapel_rotunda_1k.hdr',
+    logo:'model/logo.glb',
+    girl:'model/2022-05-08/omaha_girl_04_05_17.glb',
+    bull:'model/2022-05-08/bull_statue_2.glb',
+    skin:'media/skin-bump-texture_1.png',
+    webgl2:'/js/webgl2.js',
 });
-const canvas = document.querySelector('canvas.webgl2')
-const scene = new THREE.Scene()
-const lightHolder = new THREE.Group();
-const sceneGroup = new THREE.Group();
 
-const pointLight = new THREE.DirectionalLight(0xffffff, 1)
-pointLight.position.set(0,1,1)
-const pointLight2=pointLight.clone();
-pointLight2.position.set(0,-1,-1)
-const pointLight3=pointLight.clone();
-pointLight3.position.set(0,0,-1)
-const pointLight4=pointLight.clone();
-pointLight4.position.set(0,1,-1)
-
-lightHolder.add(pointLight,pointLight2,pointLight3,pointLight4);
-scene.add(lightHolder)
-
-const camera = new THREE.PerspectiveCamera(20, sizes.width / sizes.height, .1, 50)
-camera.position.set(0,0,5)
-scene.add(camera)
-THREE.Cache.enabled = true;
-//new OrbitControls(camera, canvas)
-const options = {
-    bloomThreshold: .85,
-    bloomStrength: .36,
-    bloomRadius: .5,
-    animeDuration:1000,//1s
-  };
-const renderer = new THREE.WebGLRenderer({
-    canvas, /* alpha: true, */ antialias: true,
-});
-renderer.setSize(sizes.width, sizes.height)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-const COMPOSER = new EffectComposer(renderer);
-COMPOSER.setSize(window.innerWidth, window.innerHeight);
-const renderPass = new RenderPass(scene, camera);
-COMPOSER.addPass(renderPass);
-
-const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(sizes.width, sizes.height),
-    options.bloomStrength,
-    options.bloomRadius,
-    options.bloomThreshold
-);
-COMPOSER.addPass(bloomPass);
-renderer.setClearColor(0x000000, 1);
-
-const tl=new THREE.TextureLoader
-//JFT
-/* const bgTexture = tl.load("map.jpg");
-const bgGeometry = new THREE.PlaneGeometry(6, 3);
-const bgMaterial = new THREE.MeshBasicMaterial({ map: bgTexture });
-const bgMesh = new THREE.Mesh(bgGeometry, bgMaterial);
-bgMesh.position.set(0, 0, -1);
-scene.add(bgMesh); */
-// \ JFT
-
-const texture = tl.load(settings.normal);
-texture.wrapS = THREE.RepeatWrapping;
-texture.wrapT = THREE.RepeatWrapping;
+const elements=[
+    'model/webgl2/_Edik/infographic_arrow_04_my.glb',
+    'model/webgl2/01_elements_chip_4_new.glb',
+    'model/webgl2/01_elements_diamond_2.glb',
+    'model/webgl2/01_elements_elephant_2.glb',
+    'model/webgl2/01_elements_horse_5_merged.glb',
+    'model/webgl2/01_elements_L_4_my_new.glb',
+    'model/webgl2/01_elements_rook_2.glb',
+    'model/webgl2/01_elements_safe_4_only.glb',
+    'model/webgl2/01_elements_safehandle_4_only.glb',
+    'model/webgl2/01_elements_smartphone_3_Edited.glb',
+    'model/webgl2/01_elements_omaha_logo_3.glb',
+    'model/webgl2/fonts/ArchivoBlack-Regular.ttf',
+    'media/webgl2/normal.jpg',
+    'model/webgl2/hdr/sepulchral_chapel_rotunda_1k.hdr',
+];
+elements.forEach(e=>{
+    fetch(e)
+})
 
 const hdrEquirect = new RGBELoader().load(
-    settings.hdr,
+    models.hdr,
     () => {hdrEquirect.mapping = THREE.EquirectangularReflectionMapping}
 );
-let fontLoadedObj=null,chipObj=null
-const ttfLoader = new TTFLoader()
-const fontLoader = new FontLoader()
-function createText(fnt,chip,text,pos=[0,0,0],rot=[0,0,0],size=.045,logoTxt,amendment=0){
-    const obj3d=new THREE.Object3D();
-    const cloneChip=chip.clone()
-    cloneChip.rotation.x=1.57
-    if(!logoTxt){
-        const textGeo = new TextGeometry(new String(text),{
-            font:fontLoader.parse(fnt),
-            size,
-            height: .0014,
-            curveSegments: 12
+
+for (const [key, value] of Object.entries(models)) {
+    fetch(value)
+}
+
+//import { RGBA_ASTC_5x4_Format } from 'three';
+(()=>{
+    //setTimeout(() => {
+        // https://sbcode.net/threejs/animate-on-scroll/
+        const scene = new THREE.Scene()
+        /* const gridHelper = new THREE.GridHelper(10, 10, 0xaec6cf, 0xaec6cf)
+        scene.add(gridHelper) */
+        const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
+        camera.position.set(0, 0, 3)
+        const canvas = document.querySelector('canvas.webgl')
+        const renderer = new THREE.WebGLRenderer({
+            canvas, alpha: true, antialias: true,
         });
-        const textMesh=new THREE.Mesh(
-            textGeo,
-            new THREE.MeshPhysicalMaterial({
-                color:0x000000,
-                roughness:.1,
-                metalness:1,
-                envMap: hdrEquirect,
+        //renderer.setClearColor( 0xffffff, 1);
+
+        let TIME=0//GLITCH FROM https://codepen.io/sfi0zy/pen/MZdeKB
+        const COMPOSER = new EffectComposer(renderer);
+        COMPOSER.setSize(window.innerWidth, window.innerHeight);
+        let Bull=null
+
+        const renderPass = new RenderPass(scene, camera);
+        COMPOSER.addPass(renderPass);
+        const shader = {
+            uniforms: {
+                uRender: { value: COMPOSER.renderTarget2 },
+                uTime: { value: TIME }
+            },
+            vertexShader:`varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }`,
+            fragmentShader: `
+            uniform sampler2D uRender;
+            uniform float uTime;
+            varying vec2 vUv;
+            float rand(vec2 seed);
+
+            void main() {
+                float randomValue = rand(vec2(floor(vUv.y*2000.), uTime/250.));
+                //float randomValue2 = rand(vec2(floor(vUv.y*200.), uTime/50000.));
+                vec4 color;
+                if (randomValue < 0.02) {
+                    color = texture2D(uRender, vec2(vUv.x + randomValue - 0.001, vUv.y));
+                } else {
+                    color = texture2D(uRender, vUv);
+                }
+                //float lightness = (color.r + color.g + color.b) / 3.0;
+                //color.rgb = vec3(color.r * randomValue2, color.g * randomValue2 , color.b * randomValue2);
+                gl_FragColor = color;
+            }
+            float rand(vec2 seed) {
+                return fract(sin(dot(seed, vec2(12.9898,78.233))) * 43758.5453123);
+            }`,
+        };
+
+        const shaderPass = new ShaderPass(shader);
+        shaderPass.renderToScreen = true;
+        COMPOSER.addPass(shaderPass);
+
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild(canvas)
+
+        const controls = new OrbitControls(camera, canvas)
+
+        const sizes = {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+        const lightHolder = new THREE.Group();
+        // top right
+        const aLight=new THREE.DirectionalLight(0xffffff,.7);//0xfbc759
+        aLight.position.set(1.5,1.7,.5);
+        lightHolder.add(aLight);
+        // top left
+        const aLight2=new THREE.DirectionalLight(0xffffff,.7);
+        aLight2.position.set(-1.5,1.7,.5);
+        lightHolder.add(aLight2);
+        // backSide
+        const aLight3=new THREE.DirectionalLight(0xffffff,.7);
+        aLight3.position.set(-1,2,-1);
+        lightHolder.add(aLight3);
+        //frontSide (golden)
+        const aLight4=new THREE.DirectionalLight(0xDE9C63,.5);//ffa500
+        aLight4.position.set(0,.5,2);
+        lightHolder.add(aLight4);
+
+        //top right
+        const oncedLight=new THREE.DirectionalLight(0x00e6e6,0);//0xfbc759
+        oncedLight.position.set(1.5,1,.5);
+        lightHolder.add(oncedLight);
+
+        scene.add(lightHolder)
+
+        // imgs
+        const loaderImg = new THREE.TextureLoader()
+        let objcts=Object.create({});
+
+        function setImage(src,size=null,sizes,pos,name=null,opacity=1){
+            loaderImg.load(
+                src,
+                texture=>{
+                    const material = new THREE.MeshBasicMaterial({
+                        map: texture,
+                        side: THREE.DoubleSide,
+                        alphaTest:.5,
+                        opacity:opacity,
+                        //roughness:.5,
+                    });
+                    const meshTexture = new THREE.Mesh(
+                        new THREE.PlaneBufferGeometry(sizes[0],sizes[1]),
+                        material
+                    );
+                    meshTexture.position.set(pos[0],pos[1],pos[2])
+                    //meshTexture.scale.set(size[0],size[1],size[2])
+                    const tobj3d=new THREE.Object3D
+                    tobj3d.add(meshTexture)
+                    scene.add(tobj3d)
+                    objcts[name]=tobj3d
+                },
+                undefined,
+                e=>console.error(e)
+            );
+            let int1=null
+            int1=setInterval(()=>{
+                if(objcts[name]){
+                    clearInterval(int1)
+                    int1=null
+                    return objcts[name]
+                }
+            },200)
+        }
+        setImage(
+            'media/curses_green_yellow_line.png', // src
+            null,//[.7,.7,.7], // size! of object scale
+            [68.54,.12], // sizes of plane
+            [0,2,-1], // position
+            'obj1Img'
+        )
+        setImage(
+            'media/voiting_03.webp', // src
+            [.7,.7,.7], // size! of object scale
+            [.819,1.641], // sizes of plane
+            [-1,0,-2], // position
+            'obj1ImgPhone',
+            0,
+        )
+        // \ imgs
+
+        /* const near = 2;
+        const far = 2;
+        const color = 0x000000;
+        scene.fog = new THREE.Fog(color, near, far);
+        scene.background = new THREE.Color(color); */
+
+        // girl and bull loaders
+        let pl=null;
+        const animationScripts = [{ start:0, end:0, func:0 }]
+        const loader = new GLTFLoader();
+
+
+        // ANIMATE
+        function lerp(x, y, a) {return (1 - a) * x + a * y}
+        // Used to fit the lerps to start and end at specific scrolling percentages
+        function scalePercent(start, end) {
+            return (scrollPercent - start) / (end - start)
+        }
+        pl=function playScrollAnimations() {
+            animationScripts.forEach(a=>{
+                if (scrollPercent >= a.start && scrollPercent < a.end) {
+                    a.func()
+                }
             })
-        );
-        textMesh.position.set(-.075+amendment,-.02,.009);
-        obj3d.add(cloneChip,textMesh);
-    }else{
-        logoTxt.material=new THREE.MeshPhysicalMaterial({
-            color:0x000000,
-            roughness:.1,
-            metalness:1,
-            envMap: hdrEquirect,
-        });
-        const logoTxtClone=logoTxt.clone()
-        logoTxtClone.position.set(-.01,.023,.01);//MY:-.01,.023 | -.014,0,.01
-        logoTxtClone.scale.set(logoTxtClone.scale.x*.74,logoTxtClone.scale.y*.74,logoTxtClone.scale.z*.74);//MY
-        logoTxtClone.rotation.set(3.14/2,0,0);//MY:3.14/2 | -1.59
-        obj3d.add(cloneChip,logoTxtClone);
-    }
-    obj3d.position.set(pos[0],pos[1],pos[2]);
-    obj3d.rotation.set(rot[0],rot[1],rot[2]);
-    obj3d.scale.set(.7,.7,.7);
-    anime({
-        targets:obj3d.rotation,
-        y:[rot[1],rot[1]-.1,rot[1],rot[1],rot[1]-.1,rot[1],rot[1],rot[1]-.1,rot[1],rot[1],rot[1]-.1,rot[1]],
-        duration:options.animeDuration*THREE.Math.randFloat(100,200),easing:'easeInOutSine',delay:THREE.Math.randFloat(10,300),loop:true
-    });
-    sceneGroup.add(obj3d);
-}
-//plastic rounded objects
-function animeCylinder(cyl){
-    anime({
-        targets:cyl.rotation,
-        y:[0,.5,0,0,.5,0,0,.5,0,0,.5,0,0,.5,0,0,.5,0,0,.5,0,0,.5,0],
-        duration:options.animeDuration*THREE.Math.randFloat(100,200),easing:'easeInOutSine',delay:THREE.Math.randFloat(100,3000),loop:true
-    });
-}
-function createCylinder(sizes=[.2,.2],color=0x333333,sheenColor=0x0a85d9,pos=[0,0,0],rot=[0,0,0],height=[.003,.01]){
-    const geometry = new THREE.CylinderGeometry(
-        sizes[0],
-        sizes[1],
-        THREE.Math.randFloat(height[0], height[1]),
-        128
-    );
-    const material = new THREE.MeshPhysicalMaterial( {
-        roughness: .5,
-        clearcoatRoughness:.26,
-        transmission: .9,
-        thickness: .1,
-        metalness: .001,
-        color,
-        envMap: hdrEquirect,
-        normalMap: texture,
-        clearcoatNormalMap: texture,
-        normalScale:new THREE.Vector2( .1, .1 ),
-        sheen:1,
-        sheenColor,
-        sheenRoughness:.5,
-    } );
-    const cylinder = new THREE.Mesh( geometry, material );
-    cylinder.rotation.set(rot[0],rot[1],rot[2]);
-    cylinder.position.set(pos[0],pos[1],pos[2]);
-    sceneGroup.add( cylinder );
-    return cylinder
-}
-
-function setNew(obj,scale,pos,rot){
-    obj.position.set(pos[0],pos[1],pos[2]);
-    obj.rotation.set(rot[0],rot[1],rot[2]);
-    obj.scale.set(scale,scale,scale);
-    sceneGroup.add(obj)
-}
-
-
-const blue=createCylinder([.07,.07],0x333333,0x0a85d9,[0,.27,-.1],[.9,.1,-.7],[.001,.002])//big (4) / btm
-animeCylinder(blue)
-const blue2=blue.clone()
-const blue3=blue.clone()
-const blue4=blue.clone()
-setNew(blue2,3.7,[0,.4,-.1],[-.5,0,.3])//smaller / btm middle//big / middle bigger
-animeCylinder(blue2)
-setNew(blue3,.9,[0,.3,-.4],[.6,0,-.6])//smaller / btm middle//big / is behind the object bigger
-animeCylinder(blue3)
-setNew(blue4,1.9,[-.15,.6,-.3],[2.6,0,.6])//smaller / btm middle//big / is behind the object bigger top
-animeCylinder(blue4)
-
-const orange=createCylinder([.05,.05],0xFF5600,0x66304D,[-.2,.25,0],[1.5,0,0],[.007,.01])//smaller (5) / btm left
-anime({
-    targets:orange.rotation,
-    z:[0,.5,0],
-    duration:options.animeDuration*THREE.Math.randFloat(10,20),easing:'easeInOutSine',delay:THREE.Math.randFloat(100,3000),loop:true
-})
-const orange2=orange.clone()
-const orange3=orange.clone()
-const orange4=orange.clone()
-const orange5=orange.clone()
-setNew(orange2,.9,[-.1,.25,.1],[.2,0,-.3])//smaller / btm middle
-animeCylinder(orange2)
-setNew(orange3,1,[.15,.2,-.05],[1.2,0,.1])//smaller / btm right
-animeCylinder(orange3)
-setNew(orange4,1,[-.15,.5,.02],[1.3,0,.2])//smaller / btm right
-animeCylinder(orange4)
-setNew(orange5,.55,[-.17,.6,-.1],[.3,0,-.25])//smaller / top back
-animeCylinder(orange5)
-
-
-const loader = new GLTFLoader();
-//let pos=-1
-const safeObj=Object.create({})
-// Load logo
-models.elements.forEach(e=>{
-    loader.load(
-        e,
-        model=>{
-            let this_model=model.scene.children[0]
-            this_model.scale.set(this_model.scale.x*.3,this_model.scale.y*.3,this_model.scale.z*.3);
-            if(this_model.name==='arrow_my'){
-                const material_arrow = new THREE.MeshPhysicalMaterial({
-                    roughness: .4,
-                    transmission: .8,
-                    thickness: 0.5,
-                    color:0xffffff,
-                    envMap: hdrEquirect,
-                    normalMap: texture,
-                    clearcoatNormalMap: texture,
-                    normalScale:new THREE.Vector2( .1, .1 ),
-                    sheen:1,
-                    sheenColor:0x6c0de5,
-                    sheenRoughness:.4,
-                    ior:.1,
-                });
-                this_model.material=material_arrow
-                this_model.position.set(.24,.7,4)
-                this_model.rotation.set(0,1.8,1.8)//-1.3,1.8
-                this_model.scale.set(this_model.scale.x*.9,this_model.scale.y*.9,this_model.scale.z*.9);
-                anime({
-                    targets:this_model.position,
-                    z:[4,-.2],
-                    duration:options.animeDuration*2,easing:'easeInOutSine'
-                });
-                anime({
-                    targets:this_model.rotation,
-                    z:[1.8,1.7,1.8,1.7,1.8,1.7,1.8],
-                    duration:options.animeDuration*25,easing:'easeInOutSine',delay:2000,loop:true
-                });
-                sceneGroup.add(this_model)
-            }
-            if(this_model.name==='Safe_gold'){//add safe
-                const safe=this_model
-                const material_safe = new THREE.MeshPhysicalMaterial({
-                    roughness: .1,
-                    metalness: 1,
-                    color:0xe7901c,
-                    envMap: hdrEquirect,
-                });
-                safe.material=material_safe
-                safeObj.safe=safe
-                safe.position.set(-.2,.2,0)
-            }
-            if(this_model.name==='Safe_handle'){//add safeHandle
-                const safe_handle=this_model
-                const material_safeHandle = new THREE.MeshPhysicalMaterial({
-                    roughness: 0,
-                    metalness: 1,
-                    color:0xffffff,
-                    envMap: hdrEquirect,
-                });
-                safe_handle.material=material_safeHandle
-                safe_handle.position.set(-.25,.2,.0156)
-                safe_handle.rotation.y=3.15
-                const safe3d=new THREE.Object3D();
-                if(safeObj.safe){
-                    safe3d.add(safe_handle,safeObj.safe)
-                    safe3d.position.set(.2,-10,0)
-                    safe3d.rotation.set(-.1,0,-.1)
-                    sceneGroup.add(safe3d);
-                    anime({
-                        targets:safe3d.position,
-                        y:[-10,-.32],
-                        duration:options.animeDuration*2,easing:'easeInOutSine',delay:options.animeDuration*2,
-                    });
-                    anime({
-                        targets:safe3d.rotation,
-                        y:[0,-.1,0,-.1,-.1,0,-.1,-.1,0,-.1,0],
-                        duration:options.animeDuration*25,easing:'easeInOutSine',delay:options.animeDuration*2.5,loop:true
-                    });
-                    sceneGroup.add(safe3d);
+        }
+        let scrollPercent = 0
+        const canvas1=document.querySelector('.webgl');
+        const canvas2=document.querySelector('.webgl2');
+        document.body.onscroll = () => {
+            //calculate the current scroll progress as a percentage
+            scrollPercent =
+                ((document.documentElement.scrollTop || document.body.scrollTop) /
+                    ((document.documentElement.scrollHeight ||
+                        document.body.scrollHeight) -
+                        document.documentElement.clientHeight)) * 100;
+            (document.getElementById('scrollProgress')).innerText =
+                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            if(scrollPercent>89){
+                if(canvas1){
+                    canvas1.classList.add('canvas1Cl')
+                    canvas2.classList.remove('canvas1Cl')
+                }
+            }else{
+                if(canvas1){
+                    canvas1.classList.remove('canvas1Cl')
+                    canvas2.classList.add('canvas1Cl')
                 }
             }
-            if(this_model.name==='chip'){//chip fishki.net
-                const chip=this_model
-                chipObj=chip
-                const material_chips = new THREE.MeshPhysicalMaterial({
-                    roughness: .1,
-                    metalness: 1,
-                    color:0xe7901c,
-                    envMap: hdrEquirect,
-                });
-                chip.material=material_chips
-                ttfLoader.load(
-                    settings.font,
-                    fnt=>{
-                        fontLoadedObj=fnt
-                        createText(fnt,chip,'BTC',[-.4,-.2,.2],[-.1,-.4,0],undefined,undefined,.005)
-                        createText(fnt,chip,'AMZ',[-.2,-.19,.21],[0,-.8,.5])
-                        createText(fnt,chip,'APPL',[-.22,-.43,.19],[-.3,-.6,-.1],.037)
-                        createText(fnt,chip,'ETH',[-.31,-.36,.23],[-.3,0,.2],undefined,undefined,.005)
-                        createText(fnt,chip,'TSLA',[-.42,-.43,.19],[-.4,-.3,-.2],.037)
-                    }
-                );
-            }
-            if(this_model.name==='diamond1'){
-                const diamond=this_model
-                const material_diamond = new THREE.MeshPhysicalMaterial({
-                    roughness: 0,
-                    transmission: 1,
-                    thickness: 3.4,
-                    metalness: .1,
-                    color:0xffffff,
-                    sheen:1,
-                    sheenColor:0x1f7c6e,
-                    sheenRoughness:.2,
-                    ior:1.9,
-                    envMap: hdrEquirect,
-                });
-                diamond.material=material_diamond
-                diamond.scale.set(.05,.05,.05)
-                diamond.position.set(0,-.3,-.05)
-                diamond.rotation.set(1.7,.2,0);
-                anime({
-                    targets:diamond.rotation,
-                    z:[0,3.14*2],
-                    duration:options.animeDuration*50,easing:'easeInOutSine',loop:true
-                });
-                const dia2=diamond.clone()
-                dia2.scale.set(.037,.037,.037)
-                dia2.position.set(.1,-.3,-.05)
-                dia2.rotation.set(1.7,-.2,0);
-                anime({
-                    targets:dia2.rotation,
-                    z:[0,-3.14*2],
-                    duration:options.animeDuration*70,easing:'easeInOutSine',loop:true
-                });
-                sceneGroup.add(diamond,dia2);
-            }
-            const material_chess = new THREE.MeshPhysicalMaterial({
-                roughness: 0,
-                transmission: 1,
-                thickness: .7,
-                metalness: .5,
-                color:0xf0f0f0,
-                envMap: hdrEquirect,
-                sheen:1,
-                sheenColor:0x0069ff,
-                sheenRoughness:.2,
-                ior:2.7,
-            });
-            if(this_model.name==='Bishop_2'){//eleaphant
-                this_model.scale.set(this_model.scale.x*.6,this_model.scale.y*.6,this_model.scale.z*.6)
-                const eleaphant=this_model
-                eleaphant.material=material_chess
-                eleaphant.position.set(.05,.3,0)
-                eleaphant.rotation.set(.4,0,.3)
-                sceneGroup.add(eleaphant);
-                anime({
-                    targets:eleaphant.rotation,
-                    y:[-3.14*.5,-3.14,-3.14*.5,-3.14,-3.14*.5,-3.14,-3.14*.5,-3.14,-3.14*.5,-3.14],
-                    duration:options.animeDuration*700,easing:'easeInOutSine',loop:true
-                });
-            }
-            if(this_model.name==='Knight'){//horse
-                this_model.scale.set(this_model.scale.x*.6,this_model.scale.y*.6,this_model.scale.z*.6)
-                const horse=this_model
-                horse.material=material_chess
-                horse.position.set(.16,.31,-.05)
-                horse.rotation.set(.2,-3.14*1.9,-.1)
-                sceneGroup.add(horse);
-                anime({
-                    targets:horse.rotation,
-                    y:[-3.14*2,-3.14*2.1,-3.14*1.9,-3.14*2,-3.14*2.1,-3.14*1.9,-3.14*2.1],
-                    duration:options.animeDuration*100,easing:'easeInOutSine',loop:true
-                });
-            }
-            if(this_model.name==='LPRook'){//rook
-                this_model.scale.set(this_model.scale.x*.6,this_model.scale.y*.6,this_model.scale.z*.6)
-                const rook=this_model
-                rook.material=material_chess
-                rook.position.set(.27,.29,-.1)
-                rook.rotation.set(.2,0,-.2);
-                anime({
-                    targets:rook.rotation,
-                    z:[-.2,.1,-.1,.1,-.1,.1,-.2],
-                    duration:options.animeDuration*50,easing:'easeInOutSine',loop:true
-                });
-                sceneGroup.add(rook);
-            }
-            if(this_model.name==='L'){//L
-                const L=this_model
-                L.material=new THREE.MeshPhysicalMaterial({
-                    roughness: .1,
-                    thickness: .7,
-                    //metalness: .1,
-                    color:0x923907,
-                    envMap: hdrEquirect,
-                    sheen:1,
-                    sheenColor:0x432404,
-                    sheenRoughness:.2,
-                })
-                L.position.set(-.37,.6,-.2)
-                L.rotation.set(.2,-.5,-.5);
-                anime({
-                    targets:L.position,
-                    y:[.6,.65,.6,.65,.6,.65,.6],
-                    duration:options.animeDuration*25,easing:'easeInOutSine',delay:options.animeDuration*3,loop:true,
-                });
-                sceneGroup.add(L);
-            }
-            if(this_model.name==='smartphone'){
-                this_model.scale.set(this_model.scale.x*.5,this_model.scale.y*.5,this_model.scale.z*.5)
-                const smartphone=this_model
-                const material_smartphone = new THREE.MeshPhysicalMaterial({
-                    roughness: .1,
-                    thickness: .1,
-                    transmission: .7,
-                    metalness: .1,
-                    color:0x23f9c6,//57abe8
-                    envMap: hdrEquirect,
-                    sheen:1,
-                    sheenColor:0x23d5f9,//0x23d5f9
-                    sheenRoughness:.2,
-                    normalMap: texture,
-                    clearcoatNormalMap: texture,
-                    normalScale:new THREE.Vector2( .1, .1 ),
-                })
-                smartphone.material=material_smartphone
-                smartphone.position.set(-.3,.6,-.05)
-                smartphone.rotation.set(-.2,-.2,-.4);
-                anime({
-                    targets:smartphone.rotation,
-                    y:[-.2,-.1,-.2,-.2,-.1,-.2,-.2,-.1,-.2],
-                    duration:options.animeDuration*25,easing:'easeInOutSine',delay:options.animeDuration*4,loop:true
-                });
-                const smartphone2=smartphone.clone()
-                smartphone2.position.set(0,-.4,-.05)
-                smartphone2.rotation.set(-.2,2.8,-.8);
-                anime({
-                    targets:smartphone2.position,
-                    y:[-10,-.4],
-                    duration:options.animeDuration*2,easing:'easeInOutSine',delay:options.animeDuration*3,
-                });
-                anime({
-                    targets:smartphone2.rotation,
-                    y:[2.8,2.7,2.8,2.8,2.7,2.8,2.8,2.7,2.8,],
-                    duration:options.animeDuration*25,easing:'easeInOutSine',delay:2000*4,loop:true
-                });
-                sceneGroup.add(smartphone,smartphone2);
-            }
-            if(this_model.name==='omaha_logo'){//logo and chips
-                const omaha_logo=this_model
-                omaha_logo.material=new THREE.MeshPhysicalMaterial({
-                    color:0x000000,
-                    roughness:.1,
-                    metalness:1,
-                    envMap: hdrEquirect,
-                });
-                let intervalEnded=false;
-                let interval=setInterval(()=>{
-                    if(!intervalEnded){
-                        if(fontLoadedObj&&chipObj){
-                            intervalEnded=true;
-                            clearInterval(interval);
-                            interval=null
-                            createText(fontLoadedObj,chipObj,'',[.1,.1,.3],[-3.14/6,3.14/8,0],0,omaha_logo)
-                            createText(fontLoadedObj,chipObj,'',[.08,.09,-.2],[1,-3.2,-.5],0,omaha_logo)
-                            createText(fontLoadedObj,chipObj,'',[.12,.11,-.3],[.6,-3,.1],0,omaha_logo)
-                        }
-                        scene.add(sceneGroup)
-                        sceneGroup.position.set(-.1,0,-10)
-                        sceneGroup.rotation.set(1.1,-2,0)
-                        anime({
-                            targets:sceneGroup.position,
-                            z:[-10,1.7],
-                            duration:options.animeDuration*2,easing:'easeInOutSine'
-                        })
-                    }
-                },50);
-            }
         }
-    );
-});
-window.customFunc=e=>{
-    e=parseInt(e);
-    if(!sceneGroup)return false;
-    //options.animeDuration=200
-    switch (e) {
-        case 1:
-            console.log('frst');
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:-.1,  y:0,  z:1.7,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:1.1,  y:-2,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-        case 2:
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:.1,  y:-.25,  z:2.7,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:.6,  y:-3.14*1.42,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-        case 3:
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:-.15,  y:-.2,  z:3.3,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:-.3,  y:-.02,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-        case 4:
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:.21,  y:.21,  z:2.8,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:-.4,  y:.35,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-        case 5:
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:-.01,  y:.4,  z:3.2,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:0,  y:-2,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-        case 6:
-            anime.timeline().add({
-                targets:sceneGroup.position,
-                x:.03,  y:.1,  z:4,
-                duation:100,easing:'linear'
-            }).add({
-                targets:sceneGroup.rotation,
-                x:0,  y:0,  z:0,
-                duration:options.animeDuration,easing:'easeInOutSine'
-            });
-            break;
-    
-        default:
-            break;
-    }
-}
+        // \ ANIMATE
 
-//camera blur
-//https://gist.github.com/fatlinesofcode/3a02af88ac44a9adea0ca9021536095d
-const shader = new THREE.ShaderMaterial({
-    uniforms: {
-        tDiffuse: {value: null},
-        strength: { type: 'f', value: .02 },
-        center: { type: 'v2', value: new THREE.Vector2( window.innerWidth/2,window.innerHeight/1.6 ) },
-        resolution: { type: 'v2', value: new THREE.Vector2( window.innerWidth, window.innerHeight ) },
-    },
-    vertexShader: document.getElementById('vertexShaderZoom').textContent,
-    fragmentShader: document.getElementById('fragmentShaderZoom').textContent
-});
+        // light lens (top)
+        const light = new THREE.PointLight( 0xffffff, .01, 20 );
+        const textureLoader = new THREE.TextureLoader();
+        const textureFlare0 = textureLoader.load( "media/glary-horizontal-yellow_5.jpg" );
+        const textureFlare3 = textureLoader.load( "media/glare2.jpg" );
+        const lensflare = new Lensflare();
 
-const zBlurPass = new ShaderPass(shader);
+        lensflare.addElement( new LensflareElement( textureFlare0, 700, 0 ) );
 
-//COMPOSER.addPass(pass1);
-COMPOSER.addPass(zBlurPass);
+        lensflare.addElement( new LensflareElement( textureFlare3, 60, 0.14 ) );
+        lensflare.addElement( new LensflareElement( textureFlare3, 70, 0.7 ) );
+        lensflare.addElement( new LensflareElement( textureFlare3, 120, 0.9 ) );
+        lensflare.addElement( new LensflareElement( textureFlare3, 70, 1 ) );
+        lensflare.position.set(.9,.5,0);
+        scene.add(light,lensflare)
 
-zBlurPass.renderToScreen = true;
-//http://bit.ly/WfFKe7
-/* const hblur = new ShaderPass( HorizontalBlurShader );
-COMPOSER.addPass( hblur );
+        /* lensflare.material.transparent=true
+        lensflare.material.alphaTest=.5
+        lensflare.material.color=new THREE.Color(0x000000) */
 
-const vblur = new ShaderPass( VerticalBlurShader );
-// set this shader pass to render to screen so we can see the effects
-vblur.renderToScreen = true;
-COMPOSER.addPass( vblur ); */
-// \ camera blur
+        anime({targets:lensflare.position,x:[.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,],duration:100000,loop:true,easing:'linear',})
 
-// \ code NEW
+        const plane=new THREE.PlaneBufferGeometry(.5,.1)
+        const planeMesh=new THREE.Mesh(plane,new THREE.MeshBasicMaterial({color:0xff0000,transparent:true,opacity:0}))
+        scene.add(planeMesh)
+        planeMesh.position.set(.45,.3,1.5)
 
-window.addEventListener('resize', () =>
-{
-    // Update sizes
-    sizes.width = window.innerWidth
-    sizes.height = window.innerHeight
-    // Update camera
-    camera.aspect = sizes.width / sizes.height
-    camera.updateProjectionMatrix()
-    // Update renderer
-    renderer.setSize(sizes.width, sizes.height)
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
-})
+        anime({targets:planeMesh.position,z:[1.8,1.5,1.8,1.5,1.8,1.5,1.8,1.9,1.8,1.5,1.8,1.5],duration:25000,loop:true,easing:'easeInOutExpo',})
+        animationScripts.push({start: 2, end: 105, func: () => planeMesh.position.z=1.4})
+        // \ light lens (top)
 
-const tick = ()=>{
-    // Render
-    //renderer.render(scene, camera)
-    COMPOSER.render(scene, camera)
-    // Call tick again on the next frame
-    window.requestAnimationFrame(tick);
-    lightHolder.quaternion.copy(camera.quaternion);
-}
+        // light lens (bottom)
+        const lightBtm = new THREE.PointLight( 0xffffff, .01, 20 );
+        const textureFlare0Btm = textureLoader.load( "media/glare-two_2.jpg" );
+        const textureFlare3Btm = textureLoader.load( "media/glare-two-second_3.jpg" );
+        const lensflareBtm = new Lensflare();
 
-tick();
+        lensflareBtm.addElement( new LensflareElement( textureFlare0Btm, 700, 0 ) );
+        lensflareBtm.addElement( new LensflareElement( textureFlare3Btm, 60, 0.16 ) );
+        lensflareBtm.position.set(-1.2,-.7,0);
+        scene.add(lightBtm,lensflareBtm)
 
-(()=>{
-    const d=document;
-    const st=d.createElement('style');
-    st.innerText=`html,body{margin: 0;padding: 0;height: 100vh;}
-.webgl{position: fixed;top: 0;left: 0;outline: none;}`;
-d.body.appendChild(st)
+        anime({targets:lensflareBtm.position,x:[-1.2,-1.05,-1.2,-1.05,-1.2,-1.05,-1.2,-1.05,-1.2,-1.05,-1.2,-1.05,],duration:50000,loop:true,easing:'linear',})
+        const planeBtm=new THREE.PlaneBufferGeometry(.5,.1)
+        const planeMeshBtm=new THREE.Mesh(planeBtm,new THREE.MeshBasicMaterial({color:0xff0000,transparent:true,opacity:0}))
+        scene.add(planeMeshBtm)
+        planeMeshBtm.position.set(-.7,-.2,1.5)
+        anime({targets:planeMeshBtm.position,y:[-.2,-.3,-.2,-.3,-.2,-.3,-.2,-.3,-.2,-.3,],duration:25000,loop:true,easing:'easeInOutExpo',})
+        animationScripts.push({start: 2, end: 105, func: () => planeMeshBtm.position.y=-.37})
+        // \ light lens (bottom)
 
+        // texture for logo...//const bumpTexture = new THREE.TextureLoader().load('media/metal-bump-map.jpg')
 
+        // Load logo
+        loader.load(
+            models.logo,
+            logo=>{
+                const Logo=logo.scene.children[0]
+                    Logo.position.set(-0.058,-.01,2.8)
+                    Logo.rotation.set(1.6,0,0)
+                    Logo.scale.set(.4,.4,.4)
+
+                    Logo.material.color={r:1,g:1,b:1}
+                    Logo.material.transparent=true
+                    Logo.material.roughness=.25
+                    Logo.material.metalness=.5
+                    /* Logo.material.bumpMap = bumpTexture
+                    Logo.material.bumpScale = .0001 */
+                    anime.timeline()// animate firts time oncly
+                    .add({targets:Logo.material,opacity:[0,1],duration:600,delay:5200,easing:'linear',})
+                    .add({targets:Logo.position,y:[-.02,-.01],duration:600,easing:'linear',})
+                    .add({targets:Logo.rotation,x:[2,1.6],duration:600,easing:'linear'});
+                    // \ 
+                    (()=>{
+                        setTimeout(()=>{
+                            const to1=5
+                            animationScripts.push({
+                                start: 0,
+                                end: to1,
+                                func: () => {
+                                    Logo.position.set(-0.058, lerp(-.01,  .07,  scalePercent(0, to1)),  2.8)
+                                    Logo.rotation.set(lerp(1.6, .8, scalePercent(0, to1)),0,0)
+                                },
+                            });
+                            animationScripts.push({
+                                start: 5.0001,end: 100,
+                                func: () => {
+                                    Logo.position.set(-0.058,.07,2.8)
+                                    Logo.rotation.set(.8,0,0)
+                                },
+                            })
+                        },5300)
+                    })()
+                    scene.add(Logo)
+            }
+        )
+        // \\ Load logo
+
+        // Pseudo Lights
+        const planeGroupe=new THREE.Group()
+        function addPlane(sizes,rorationSet,positionSet){
+            const materialTest=new THREE.ShaderMaterial({
+                uniforms: {
+                color1: { value: new THREE.Color(0xcccccc)},
+                color2: { value: new THREE.Color(0x000000)},
+                ratio: {value: 1.}
+                },
+                vertexShader: `
+                varying vec3 vNormal;
+                varying vec2 vUv;
+                varying vec3 vPosition;
+                void main () {
+                    vPosition = position;
+                    vUv = uv;
+                    vNormal = normal;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position.xyz, 1.);
+                }`,
+                fragmentShader: `varying vec2 vUv;
+                    uniform vec3 color1;
+                    uniform vec3 color2;
+                    uniform float ratio;
+
+                    float cubicPulse( float c, float w, float x ){
+                        x = abs(x - c);
+                        if( x>w ) return 0.0;
+                        x /= w;
+                        return 1.0 - x*x*(3.0-2.0*x);
+                    }
+
+                    void main(){
+                        vec2 uv = (vUv - 0.5) * vec2(ratio, .0);
+                        float alpha = (cubicPulse(0.4,0.3,vUv.x)-cubicPulse(0.,.9,vUv.y))*.2;
+                        gl_FragColor = vec4( mix( color1, color2, length(uv)), alpha );
+                    }`,
+                    transparent:true,opacity: 1,depthWrite:false,
+                })
+            const plane=new THREE.PlaneBufferGeometry(sizes[0],sizes[1])
+            const planeMesh=new THREE.Mesh(plane,materialTest)
+            planeMesh.rotation.set(rorationSet[0],rorationSet[1],rorationSet[2])
+            planeMesh.position.set(positionSet[0],positionSet[1],positionSet[2])
+            planeGroupe.add(planeMesh)
+            return planeMesh
+        }
+        for(let i=0;i<5;i++){
+            const rand1=THREE.Math.randFloat(2.,2.26)
+            anime({
+                targets:
+                    addPlane(//sizes,rorationSet,positionSet
+                    [THREE.Math.randFloat(.27,.33),1],
+                    [-.5,0,THREE.Math.randFloat(-.9,-.92)],
+                    [rand1,-.1,3.2]
+                ).position,
+                x:[rand1,THREE.Math.randFloat(2.,2.26),rand1],
+                duration:10000,
+                delay:THREE.Math.randFloat(100,1000),
+                loop:true,
+                easing:'linear',
+            })
+        }
+        scene.add(planeGroupe)
+        planeGroupe.position.set(-.4,0,2.15)
+        planeGroupe.scale.set(.2,2,.2)
+
+        anime.timeline().add({targets:planeGroupe.position,z:[2,2.15],duration:2000,easing:'linear'})
+        .add({
+            targets:
+            planeGroupe.position,
+            x:[-.4,THREE.Math.randFloat(-.39,-.41),-.4],
+            duration:5000,
+            delay:2000,
+            loop:true,
+            easing:'linear',
+        })
+        // \ Pseudo Lights
+
+        const mainColor=0x5A5651;
+        //const emissiveColor=0x181818;
+        loader.load(
+            models.girl,// resource URL
+             gltf=>{// called when the resource is loaded
+                const mesh=gltf.scene.children[0].children[0].children[0]
+                mesh.add(gltf.scene.children[0].children[0].children[1])
+                //console.log(gltf,mesh);
+                mesh.position.set(-.018,0,-20)
+                mesh.rotation.set(0,0,0)
+                mesh.material.color=new THREE.Color(mainColor)
+                mesh.material.transparent=false
+                mesh.material.depthWrite=true
+                mesh.material.depthTest=true
+                mesh.material.roughness=.2
+                mesh.material.metalness=.5
+                mesh.material.envMap = hdrEquirect
+                ///mesh.material.emissive=new THREE.Color(emissiveColor)
+                //mesh.material.emissive=new THREE.Color("#000")
+                /* mesh.material.bumpMap = bumpTexture
+                mesh.material.bumpScale = .0003 */
+                const preloader=document.querySelector('.preloader');
+                setTimeout(()=>{preloader.style.opacity=0},3000)
+                const tmp={}
+                scene.add(mesh)
+                const duration=1000
+                anime.timeline()
+                    .add({targets:mesh.position,y:[0,-.9],z:[-40,2.5],delay:2600,duration:duration*2,easing:'linear',complete:()=>{
+                        let temp=0,
+                            temp2=0
+                        const tmp2scr=16.777// 2 screen
+                        animationScripts.push({
+                            start: 0,
+                            end: tmp2scr,
+                            func: () => {
+                                preloader.style.opacity=lerp(0,1, scalePercent(0, tmp2scr))
+                                mesh.position.set(
+                                    lerp(-.018, .2, scalePercent(0, tmp2scr)),
+                                    lerp(-.9, -.7, scalePercent(0, tmp2scr)),
+                                    lerp(2.5, 1.6, scalePercent(0, tmp2scr))
+                                )
+                                mesh.rotation.set(0,lerp(0, -.21, scalePercent(0, tmp2scr)),0)
+                                if(objcts.obj1Img){// courses Object3d
+                                    if(temp<2){
+                                        temp++
+                                        anime({targets:objcts.obj1Img.children[0].position,x:[7,-7],duration:10000,loop:true,easing:'linear',})
+                                    }
+                                    objcts.obj1Img.position.set(
+                                        0,
+                                        lerp(2, -1.3, scalePercent(0,tmp2scr)),
+                                        0
+                                    )
+                                    objcts.obj1Img.rotation.set(0,lerp(0, -.2, scalePercent(0,tmp2scr)),0)
+                                }
+                                oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
+                                if(!tmp.oncedL){
+                                    tmp.oncedL=1
+                                    anime({targets:oncedLight.position,y:[1.7,-1,1],duration:10000,loop:true,easing:'linear',})
+                                }
+                                planeGroupe.position.z=(lerp(2.15, 2.08, scalePercent(0, tmp2scr)))
+
+                            },
+                        })
+                        const tmp3scr=16.777*2// 3 screen
+                        animationScripts.push({
+                            start: tmp2scr,
+                            end: tmp3scr,
+                            func: () => {
+                                mesh.position.set(
+                                    lerp(.2, -.5, scalePercent(tmp2scr, tmp3scr)),//x
+                                    -.7,                                          //y
+                                    1.6                                           //z
+                                )
+                                mesh.rotation.set(0,lerp(-.21, 1.8, scalePercent(tmp2scr, tmp3scr)),0)
+                                if(objcts.obj1Img){// courses Object3d
+                                    objcts.obj1Img.position.set(0,-1.3,0)
+                                    objcts.obj1Img.rotation.set(0, lerp(-.2, .4, scalePercent(tmp2scr,tmp3scr)), 0)
+                                }
+                                oncedLight.intensity=lerp(.7, 0, scalePercent(0, tmp3scr))
+                                planeGroupe.position.set(
+                                    lerp(-.4, -.6, scalePercent(tmp2scr, tmp3scr)),
+                                    0,
+                                    lerp(2.08, 1.7, scalePercent(tmp2scr, tmp3scr))
+                                )
+                                planeGroupe.rotation.z=lerp(0, .5, scalePercent(tmp2scr, tmp3scr))
+                                if(Bull){
+                                    Bull.position.set(9,0,-6)
+                                    Bull.rotation.set(-1.3,0,.5)
+                                }
+                            },
+                        })
+                        let BullLoaded=false// 4 screen
+                        const tmp4scr=16.777*3
+                        animationScripts.push({
+                            start: tmp3scr,
+                            end: tmp4scr,
+                            func: () => {
+                                mesh.position.set(
+                                    lerp(-.5, .27, scalePercent(tmp3scr, tmp4scr)),
+                                    lerp(-.7, -.9, scalePercent(tmp3scr, tmp4scr)),
+                                    lerp(1.6, 1.9, scalePercent(tmp3scr, tmp4scr))
+                                )
+                                mesh.rotation.set(0,  lerp(1.8, 3.6, scalePercent(tmp3scr, tmp4scr)),  0)
+                                if(!BullLoaded){
+                                    BullLoaded=true
+                                    loader.load(
+                                        models.bull,
+                                        bull=>{
+                                        /* 
+                                            // https://discourse.threejs.org/t/giving-a-glb-a-texture-in-code/15071/5
+                                            // из-за того, что слишком мало полигонов, невозможно применить выдавливание!
+                                            bull.scene.traverse( function( object ) 
+                                            {            
+                                            if ((object instanceof THREE.Mesh))
+                                            { 
+                                                const bumpTexture = new THREE.TextureLoader().load('media/skin-bump-texture_1.png')
+                                                object.material.bumpMap = bumpTexture
+                                                object.material.bumpScale = .0001
+                                            }
+                                        });
+                                        */
+                                    //console.log(bull);
+                                            Bull=bull.scene.children[0].children[0]
+                                            Bull.material.bumpMap = new THREE.TextureLoader().load(models.skin)
+                                            Bull.material.bumpScale = .001
+                                            Bull.material.envMap = hdrEquirect
+                                            //console.log(bull.map(e=>e instanceof THREE.Mesh?"log":null));
+                                            Bull.position.set(0,-1,-6)
+                                            Bull.rotation.set(-1.7,0,0)
+                                            /* Bull.material.color={r:.9,g:.5,b:.12}
+                                            Bull.material.roughness=0
+                                            Bull.material.metalness=0 */
+                                            Bull.material.color=new THREE.Color(mainColor)
+                                            Bull.material.transparent=false
+                                            /* Bull.material.depthWrite=true
+                                            Bull.material.depthTest=true */
+                                            Bull.material.roughness=.3
+                                            Bull.material.metalness=.5
+                                            //Bull.material.emissive=new THREE.Color(emissiveColor)
+                                            scene.add(Bull)
+                                        }
+                                    )
+                                }else{
+                                    if(Bull){
+                                        Bull.position.set(lerp(9, -2, scalePercent(tmp3scr, tmp4scr)),0,-6)
+                                        Bull.rotation.set(-1.3,0,.5)
+                                    }
+                                }
+                                if(objcts.obj1Img){// courses Object3d
+                                    objcts.obj1Img.position.set(0,lerp(-1.3, 1, scalePercent(tmp3scr,tmp4scr)),0)
+                                    objcts.obj1Img.rotation.set(0,lerp(.4,2.8,scalePercent(tmp3scr,tmp4scr)),0)
+                                }
+                                if(objcts.obj1ImgPhone){// Phone screen | -1,0,-2
+                                    objcts.obj1ImgPhone.position.set(-1,0,-2,)
+                                }
+                                
+                                planeGroupe.position.set(
+                                    lerp(-.6, -.45, scalePercent(tmp3scr,tmp4scr)),
+                                    0,
+                                    lerp(1.7, 2.08, scalePercent(tmp3scr,tmp4scr))
+                                )
+                                planeGroupe.rotation.z=.5
+                            },
+                        })
+                        const tmp5scr=16.777*4// 5 screen
+                        animationScripts.push({
+                            start: tmp4scr,
+                            end: tmp5scr,
+                            func: () => {
+                                mesh.position.set(
+                                    lerp(.27, -.5, scalePercent(tmp4scr, tmp5scr)),
+                                    lerp(-.9, -.7, scalePercent(tmp4scr, tmp5scr)),
+                                    lerp(1.9, 1.6, scalePercent(tmp4scr, tmp5scr))
+                                )
+                                mesh.rotation.set(0,  lerp(3.6, 1.4, scalePercent(tmp4scr, tmp5scr)),  0)
+                                if(Bull){//Bull show in viewport
+                                    Bull.position.set(lerp(-2, 9, scalePercent(tmp4scr, tmp5scr)),  0,  -6)
+                                }
+                                if(objcts.obj1Img){// courses Object3d
+                                    objcts.obj1Img.position.set(0,  lerp(1, -1.3, scalePercent(tmp4scr,tmp5scr)),  lerp(0, -1.5, scalePercent(tmp4scr,tmp5scr)))
+                                    objcts.obj1Img.rotation.set(0,lerp(2.8,-.2,scalePercent(tmp4scr,tmp5scr)),0)
+                                }
+                                if(objcts.obj1ImgPhone){// Phone Object3d
+                                    if(temp2<2){
+                                        temp2++
+                                        anime({
+                                            targets:objcts.obj1ImgPhone.children[0].rotation,y:[.2,0,.2,0,.2,0,.2,0,.2,0,.2,0,.2,0,.2,0,.2],duration:32000,loop:true,easing:'linear'
+                                        })
+                                    }
+                                    objcts.obj1ImgPhone.position.set(// Phone screen | -1,0,-2
+                                        lerp(-1, 0, scalePercent(tmp4scr, tmp5scr)),
+                                        0,
+                                        lerp(-2, 1, scalePercent(tmp4scr, tmp5scr)),
+
+                                    )
+                                    objcts.obj1ImgPhone.rotation.set(// Phone screen
+                                        0,
+                                        lerp(0, -1, scalePercent(tmp4scr, tmp5scr)),
+                                        0
+                                    )
+                                    objcts.obj1ImgPhone.children[0].material.opacity=// Phone screen
+                                        lerp(0, 1, scalePercent(tmp4scr, tmp5scr))
+                                }
+                                planeGroupe.position.set(
+                                    lerp(-.45, -.6, scalePercent(tmp4scr,tmp5scr)),
+                                    0,
+                                    lerp(2.08, 1.7, scalePercent(tmp4scr,tmp5scr))
+                                )
+                                planeGroupe.rotation.z=lerp(.5, -.2, scalePercent(tmp4scr,tmp5scr))
+                            }
+                        })
+                        const tmp6scr=16.777*5// 6 screen Join the
+                        animationScripts.push({
+                            start: tmp5scr,
+                            end: tmp6scr,
+                            func: () => {
+                                mesh.position.set(
+                                    lerp(-.5, .3, scalePercent(tmp5scr, tmp6scr)),
+                                    lerp(-.7, -.85, scalePercent(tmp5scr, tmp6scr)),
+                                    lerp(1.6, 1.9, scalePercent(tmp5scr, tmp6scr))
+                                )
+                                mesh.rotation.set(0,lerp(1.4, 4.6, scalePercent(tmp5scr, tmp6scr)),0)
+                                if(objcts.obj1Img){// courses Object3d
+                                    objcts.obj1Img.position.set(
+                                        0,
+                                        lerp(-1.3, -1.7, scalePercent(tmp5scr, tmp6scr)),
+                                        lerp(-1.5, -.7, scalePercent(tmp5scr, tmp6scr)),
+                                    )
+                                    objcts.obj1Img.rotation.set(0,lerp(-.2, -1.4, scalePercent(tmp5scr, tmp6scr)),0)
+                                }
+                                if(objcts.obj1ImgPhone){// Phone Object3d
+                                    objcts.obj1ImgPhone.position.set(// Phone screen | -1,0,-2
+                                        lerp(0, 8, scalePercent(tmp5scr, tmp6scr)),
+                                        0,
+                                        lerp(1, -3, scalePercent(tmp5scr, tmp6scr)),
+                                    )
+                                }
+                                /* planeGroupe.position.set(
+                                    lerp(-.6, -.45, scalePercent(tmp5scr, tmp6scr)),
+                                    0,
+                                    lerp(1.7, 2.08, scalePercent(tmp5scr, tmp6scr))
+                                ) */
+                                planeGroupe.rotation.z=lerp(-.2, 3.5, scalePercent(tmp5scr, tmp6scr))
+                                
+                            }
+                        })
+                        /* const tmp7scr=16.777*6// 7 screen
+                        animationScripts.push({
+                            start: tmp6scr,
+                            end: tmp7scr,
+                            func: () => {
+                                if(objcts.obj1Img){// courses Object3d
+                                    objcts.obj1Img.position.set(0,lerp(1, -2, scalePercent(tmp6scr,tmp7scr)),lerp(-.7, 2, scalePercent(tmp6scr,tmp7scr)))
+                                    objcts.obj1Img.rotation.set(0,lerp(-.7,-2.3,scalePercent(tmp6scr-3,tmp7scr+3)),0)
+                                }
+                            }
+                        }) */
+                    }})
+            }
+        )
+        // \ girl and bull loaders
+        window.addEventListener('resize', () =>{
+            sizes.width = window.innerWidth
+            sizes.height = window.innerHeight
+            camera.aspect = sizes.width / sizes.height
+            camera.updateProjectionMatrix()
+            renderer.setSize(sizes.width, sizes.height)
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+        });
+        const stats = Stats()
+        document.body.appendChild(stats.dom)
+        function animate() {
+            requestAnimationFrame(animate)
+            if(typeof pl==='function')pl()
+            render()
+            stats.update()
+        }
+        function render() {
+            TIME += .001;
+            if(TIME>10)TIME=0
+            ////renderer.render(scene, camera)
+            //if(TIME%4>.5){
+            //    TIME=0
+            //    COMPOSER.passes.forEach((pass) => {
+            //        if (pass) {
+            //            if(pass.uniforms)pass.uniforms.uTime.value = 0;
+            //        }
+            //    });
+            //}
+            //if(TIME%2>.05&&TIME%3<.7){//2 4
+            //    TIME=THREE.Math.randFloat(0,.4)
+                COMPOSER.passes.forEach((pass) => {
+                    if (pass) {
+                        if(pass.uniforms)pass.uniforms.uTime.value = TIME;
+                    }
+                });
+            //} 
+            COMPOSER.render(scene, camera);
+        }
+        animate()
+    //}, 200);//5200
 })();
+
+(()=>{//load 2 webgl
+    setTimeout(()=>{
+        const d=document;
+        const sc=d.createElement('script');
+        sc.src=models.webgl2;
+        d.body.appendChild(sc)
+    },100)
+})()

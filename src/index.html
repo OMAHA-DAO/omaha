@@ -1,68 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ThreeJS Starter</title>
-    <style>
-        .controls{display: flex;gap:1rem;position: absolute;z-index: 3;top:0;right:0;}
-    </style>
-</head>
-<body style="background-color:#000;">
-    <script type="x-shader/x-vertex" id="vertexShaderZoom">
-        varying vec2 vUv;
-            void main() {
-            vUv = uv;
-            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
-        }
-    </script>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Three.js TypeScript Tutorials by Sean Bradley : https://sbcode.net/threejs</title>
+    </head>
+<!-- style="background-color: #fff;" -->
+    <body >
+
+        <canvas class="webgl"></canvas>
+
+        <span id="scrollProgress" class="cf"></span>
+        <div class="pf p0 z5 fx jc ac preloader">
+            <video data-src="/video/particles_preloader_AV1.mp4" preload="metadata" autoplay muted playsinline loop class="pa z1 p0 video-preloader-bg"></video>
+            <img data-src="/media/logo.svg" width="576" class="pa z2 o0 preload-img-2" alt="preloader logo">
+            <img data-src="/media/preloader.gif" alt="preloader" class="pa z2 preload-img-1">
+        </div>
+        <nav class="ANI-main-3">
+            <ul>
+                <li><!-- <img data-src="/media/logo_big.png" width="230" alt> -->&nbsp;</li>
+                <li class="fx gap1">
+                    <!-- <span class="navCircle jc ac">Waves</span> -->
+                    <span class="navCircle jc ac cp">
+                        <svg width="75" height="85" viewBox="0 0 48 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="svg-discord-one" fill-rule="evenodd" clip-rule="evenodd" d="M1.02997 1.0271H46.7551V46.5929L46.8344 52.9737L35.006 42.1026L35.8795 46.5929H1.02997V1.0271Z" stroke="white" stroke-width="2.05994" stroke-miterlimit="22.9256" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="svg-discord-two" d="M33.8852 14.6984C32.0285 13.8423 30.0443 13.2193 27.9692 12.8652C27.7148 13.3194 27.4171 13.9302 27.2117 14.4166C25.0054 14.0897 22.8201 14.0897 20.6549 14.4166C20.4502 13.9302 20.1453 13.3194 19.8887 12.8652C17.8108 13.2193 15.8236 13.8444 13.9677 14.7027C10.224 20.2824 9.20919 25.7226 9.71661 31.0856C12.1996 32.9144 14.6063 34.0252 16.9718 34.7519C17.5563 33.9594 18.0774 33.1161 18.5258 32.2285C17.6709 31.9081 16.8529 31.5126 16.0788 31.0541C16.2842 30.9039 16.4846 30.7472 16.6784 30.5856C21.3973 32.7621 26.5233 32.7621 31.1852 30.5856C31.3813 30.7472 31.5824 30.9039 31.7856 31.0541C31.0094 31.5147 30.1884 31.9102 29.3336 32.2307C29.7826 33.1161 30.3016 33.9616 30.8875 34.7541C33.256 34.0274 35.6648 32.9166 38.1478 31.0856C38.7431 24.8686 37.1308 19.4777 33.8852 14.6984ZM19.1687 27.7875C17.7524 27.7875 16.5905 26.4836 16.5905 24.8958C16.5905 23.3079 17.7272 22.0019 19.1687 22.0019C20.6102 22.0019 21.7713 23.3058 21.7468 24.8958C21.749 26.4836 20.6102 27.7875 19.1687 27.7875ZM28.695 27.7875C27.2787 27.7875 26.1175 26.4836 26.1175 24.8958C26.1175 23.3079 27.2542 22.0019 28.695 22.0019C30.1365 22.0019 31.2984 23.3058 31.2732 24.8958C31.2732 26.4836 30.1365 27.7875 28.695 27.7875Z" stroke="#DAB457" stroke-width="1.91434" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+        <!-- <div class="pr z-1 ovh">
+            <div class="courses"></div>
+        </div> -->
+        <div class="pr z3 slider-main">
+            <div class="slider">
+                <section class="fx jc ac p0-20">
+                    <div class="fx ac fdc first-screen">
+                        <div class="tc first-s-main-logo">
+                            <img width="1000" data-src="/media/logo.svg" alt class="ANI-main-1" style="opacity:0">
+                        </div>
+
+                        <h1 class="ANI-main-2 tc">World's first community-driven fund</h1>
+                        <!-- <h1  class="ANI-main-2 tc">1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, laudantium hic? Ab ipsa et blanditiis modi quos veritatis nam beatae, quasi voluptate alias ea facere cum ipsum aspernatur unde voluptatum!</h1> -->
+                    </div>
+                </section>
+                <section class="fx ac section">
+                    <div class="fx jc fdc section-div">
+                        <h2>Introducing Omaha Dao</h2>
+                        <span>Omaha is the world’s first community - driven fund.
+                            Thousands of investors bundle their power
+                            to create real impact on the market and
+                            gains for the community.
+                            Autonomous, decentralized and transparent
+                        </span>
+                    </div>
+                </section>
+                <section class="fx ac section section-right">
+                    <div class="fx jc fdc section-div">
+                        <h2>The power of the Warm</h2>
+                        <span>
+                            Catching up with whales is only possible
+                            together.
+
+                            <br>Therefore Omaha DAO is 100% community-
+                            governed and features a user friendly, app-
+                            based voting system.
+
+                            <br>Incentivized participation and a cap on
+                            voting power keep interaction high and
+                            whales out
+                        </span>
+                    </div>
+                </section>
+                <section class="fx ac section">
+                    <div class="fx jc fdc section-div">
+                        <h2>A bridge between classic finance and crypto</h2>
+                        <span>
+                            Brücken bauen
+                            <ul>
+                                <li>Anlagevehikel für Privatinvestor</li>
+                                <li>Niedrigschwellig</li>
+                                <li>not off market, not off balance sheet,
+                                off wall street</li>
+                                <li>citadel hedgefonds / olympus dao</li>
+                                <li>community self-interested, ranking,
+                                builduing our own star community
+                                manage</li>
+                                <li>die Leute ansprechen, die dort
+                                einsteigen wollen</li>
+                                <li>echter hedgefonds</li>
+                                <li>bild soll sofort klar machen, dass es
+                                sich um invest in real world assets
+                                handelt</li>
+                            </ul>
+                        </span>
+                    </div>
+                </section>
+                <section class="fx ac section section-right">
+                    <div class="fx jc fdc section-div">
+                        <h2>Join the whitelist</h2>
+                        <span>
+                            <ul>
+                                <li>Whitelist: Interaktion tracken und
+                                incentivieren für, Easter</li>
+                                <li>Eggs platzieren</li>
+                                <li>Community Manager: Qualifikation beweisen durch Tests</li>
+                                <li>Wall Street Bets/Gamestop: erst im 2. oder 3. Layer</li>
+                            </ul>
+                            <button class="btn tu cf action">Parcipation via Discord</button>
+                        </span>
+                    </div>
+                </section>
+                <section class="fx ac section section-bg-grad">
+                    <div class="fx jc fdc section-div mw80p">
+                        <h2>Milestones</h2>
+                        <div class="cube">
+                            <div class="tr section_div s_1">
+                                <h3>01</h3>
+                                <span>Launch of Omaha DAO</span>
+                            </div>
+                            <div class="tr section_div s_2">
+                                <h3>02</h3>
+                                <span>Communty takeover</span>
+                            </div>
+                            <div class="pr cude_img">
+                                <img data-src="/media/static_cube.avif" class="pa" width="209" height="231" alt="cube">
+                                <img data-src="/media/static_cube.avif" width="695" height="765" alt="cube">
+                                <img data-src="/media/static_cube.avif" class="pa" width="209" height="231" alt="cube">
+                            </div>
+                            <div class="section_div s_3">
+                                <h3>03</h3>
+                                <span>Expanding to real world assets</span>
+                            </div>
+                            <div class="section_div s_4">
+                                <h3>04</h3>
+                                <span>Largest community driven fund</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="pr ovh fx ac section section-bg">
+                    <canvas class="p0 webgl2"></canvas>
+                    <div class="fx jc fdc section-div">
+                        <h2>Fundamentals</h2>
+                        <span>
+                            <div class="accordion-container">
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">User Friendly Voting System</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero labore odio praesentium accusantium, ipsa quia placeat nobis, odit error illo ullam autem sed possimus quod.</p>
+                                  </div>
+                                </div>
+                              
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">Community Governance</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Community Governance is the core value of the community-outlined Omaha Codex. Every single investor participates in the fund management with their vote, not with their wealth. Capped voting power means collective responsibility for the investment of every individual.</p>
+                                  </div>
+                                </div>
+                              
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">Fund Strategists</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
+                                  </div>
+                                </div>
+                              
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">Stock Investment</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus.</p>
+                                  </div>
+                                </div>
+                              
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">Intrinsic Token Value</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad.</p>
+                                  </div>
+                                </div>
+                              
+                                <div class="accordeon">
+                                  <h3 class="accordeon-header">
+                                    <button type="button" class="accordeon-trigger">Redeemable Fund Treasury</button>
+                                  </h3>
+                                  <div class="accordeon-panel">
+                                    <p class="accordeon-text">Lorem ipsum dolor sit amet. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
+                                  </div>
+                                </div>
+                            </div>
+                        </span>
+                    </div>
+                </section>
+                <footer class="fx fsa section-bg">
+                    <span>
+                        <img width="45" data-src="/media/icns/discord-icon-svgrepo-com.svg" alt="discord">
+                        <q>discord</q>
+                    </span>
+                    <span>
+                        <img width="45" data-src="/media/icns/medium-icon-svgrepo-com.svg" alt="medium">
+                        <q>medium</q>
+                    </span>
+                    <span>
+                        <img width="45" data-src="/media/icns/page-svgrepo-com.svg" alt="whitepaper">
+                        <q>whitepaper</q>
+                    </span>
+                    <span>
+                        <img width="45" data-src="/media/icns/twitter-svgrepo-com.svg" alt="twitter">
+                        <q>twitter</q>
+                    </span>
+                </footer>
+            </div>
+        </div>
     
-    <script type="x-shader/x-fragment" id="fragmentShaderZoom">
-    uniform sampler2D tDiffuse;
-    uniform vec2 center;
-    uniform float strength;
-    uniform vec2 resolution;
+    <!-- <video data-src="/video/main_bg_loop.mp4" muted playsinline autoplay loop class="dn p0 z-2 pf video-bg-all"></video>
+    
+    <video data-src="/video/2-screen/bg_01_big_h264.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-1"></video>
+    <video data-src="/video/2-screen/test-screen-2-2.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-2"></video>
+    <video data-src="/video/2-screen/test-screen-2-3.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-3"></video> -->
+    
+    <div class="pf p0 z-1 two-scr-candle"></div>
+
+<!-- TMP ADD ANIME -->
+<script src="/node_modules/animejs/lib/anime.min.js"></script>
+
+
+<script>
+/**
+ * Accordion v3.3.0
+ * Lightweight and accessible accordion module created in pure Javascript
+ * https://github.com/michu2k/Accordion
+ *
+ * Copyright (c) Michał Strumpf
+ * Published under MIT License
+ */
+
+"use strict";!function(e){var t=0,n=function e(n,i){var s=this,o=this,r=!1;if(Array.isArray(n))return!!n.length&&n.map((function(t){return new e(t,i)}));var a={init:function(){this.options=Object.assign({duration:600,ariaEnabled:!0,collapse:!0,showMultiple:!1,onlyChildNodes:!0,openOnInit:[],elementClass:"accordeon",triggerClass:"accordeon-trigger",panelClass:"accordeon-panel",activeClass:"is-active",beforeOpen:function(){},onOpen:function(){},beforeClose:function(){},onClose:function(){}},i);var e="string"==typeof n;this.container=e?document.querySelector(n):n,this.createDefinitions(),o.attachEvents()},createDefinitions:function(){var e=this,n=this.options,i=n.elementClass,s=n.openOnInit,o=n.onlyChildNodes?this.container.childNodes:this.container.querySelectorAll(".".concat(i));this.elements=Array.from(o).filter((function(e){return e.classList&&e.classList.contains(i)})),this.firstElement=this.elements[0],this.lastElement=this.elements[this.elements.length-1],this.elements.filter((function(e){return!e.classList.contains("js-enabled")})).forEach((function(n){n.classList.add("js-enabled"),e.generateIDs(n),e.setARIA(n),e.setTransition(n);var i=e.elements.indexOf(n);t++,s.includes(i)?e.showElement(n,!1):e.closeElement(n,!1)}))},setTransition:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=this.options,i=n.duration,s=n.panelClass,o=e.querySelector(".".concat(s)),r=c("transitionDuration");o.style[r]=t?null:"".concat(i,"ms")},generateIDs:function(e){var n=this.options,i=n.triggerClass,s=n.panelClass,o=e.querySelector(".".concat(i)),r=e.querySelector(".".concat(s));e.setAttribute("id","accordeon-".concat(t)),o.setAttribute("id","accordeon-trigger-".concat(t)),r.setAttribute("id","accordeon-panel-".concat(t))},removeIDs:function(e){var t=this.options,n=t.triggerClass,i=t.panelClass,s=e.querySelector(".".concat(n)),o=e.querySelector(".".concat(i));e.removeAttribute("id"),s.removeAttribute("id"),o.removeAttribute("id")},setARIA:function(e){var n=this.options,i=n.ariaEnabled,s=n.triggerClass,o=n.panelClass;if(i){var r=e.querySelector(".".concat(s)),a=e.querySelector(".".concat(o));r.setAttribute("role","button"),r.setAttribute("aria-controls","accordeon-panel-".concat(t)),r.setAttribute("aria-disabled",!1),r.setAttribute("aria-expanded",!1),a.setAttribute("role","region"),a.setAttribute("aria-labelledby","accordeon-trigger-".concat(t))}},updateARIA:function(e,t){var n=t.ariaExpanded,i=t.ariaDisabled,s=this.options,o=s.ariaEnabled,r=s.triggerClass;if(o){var a=e.querySelector(".".concat(r));a.setAttribute("aria-expanded",n),a.setAttribute("aria-disabled",i)}},removeARIA:function(e){var t=this.options,n=t.ariaEnabled,i=t.triggerClass,s=t.panelClass;if(n){var o=e.querySelector(".".concat(i)),r=e.querySelector(".".concat(s));o.removeAttribute("role"),o.removeAttribute("aria-controls"),o.removeAttribute("aria-disabled"),o.removeAttribute("aria-expanded"),r.removeAttribute("role"),r.removeAttribute("aria-labelledby")}},focus:function(e,t){e.preventDefault();var n=this.options.triggerClass;t.querySelector(".".concat(n)).focus()},focusFirstElement:function(e){this.focus(e,this.firstElement),this.currFocusedIdx=0},focusLastElement:function(e){this.focus(e,this.lastElement),this.currFocusedIdx=this.elements.length-1},focusNextElement:function(e){var t=this.currFocusedIdx+1;if(t>this.elements.length-1)return this.focusFirstElement(e);this.focus(e,this.elements[t]),this.currFocusedIdx=t},focusPrevElement:function(e){var t=this.currFocusedIdx-1;if(t<0)return this.focusLastElement(e);this.focus(e,this.elements[t]),this.currFocusedIdx=t},showElement:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this.options,i=n.panelClass,s=n.activeClass,o=n.collapse,r=n.beforeOpen,a=e.querySelector(".".concat(i)),c=a.scrollHeight;e.classList.add(s),t&&r(e),requestAnimationFrame((function(){requestAnimationFrame((function(){a.style.height=t?"".concat(c,"px"):"auto"}))})),this.updateARIA(e,{ariaExpanded:!0,ariaDisabled:!o})},closeElement:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this.options,i=n.panelClass,s=n.activeClass,o=n.beforeClose,r=e.querySelector(".".concat(i)),a=r.scrollHeight;e.classList.remove(s),t?(o(e),requestAnimationFrame((function(){r.style.height="".concat(a,"px"),requestAnimationFrame((function(){r.style.height=0}))})),this.updateARIA(e,{ariaExpanded:!1,ariaDisabled:!1})):r.style.height=0},toggleElement:function(e){var t=this.options,n=t.activeClass,i=t.collapse,s=e.classList.contains(n);if(!s||i)return s?this.closeElement(e):this.showElement(e)},closeElements:function(){var e=this,t=this.options,n=t.activeClass;t.showMultiple||this.elements.forEach((function(t,i){t.classList.contains(n)&&i!==e.currFocusedIdx&&e.closeElement(t)}))},handleClick:function(e){var t=this,n=e.currentTarget;this.elements.forEach((function(i,s){i.contains(n)&&"A"!==e.target.nodeName&&(t.currFocusedIdx=s,t.closeElements(),t.focus(e,i),t.toggleElement(i))}))},handleKeydown:function(e){var t=38,n=40,i=36,s=35;switch(e.keyCode){case t:return this.focusPrevElement(e);case n:return this.focusNextElement(e);case i:return this.focusFirstElement(e);case s:return this.focusLastElement(e);default:return null}},handleTransitionEnd:function(e){if("height"===e.propertyName){var t=this.options,n=t.onOpen,i=t.onClose,s=e.currentTarget,o=parseInt(s.style.height),r=this.elements.find((function(e){return e.contains(s)}));o>0?(s.style.height="auto",n(r)):i(r)}}};this.attachEvents=function(){if(!r){var e=a.options,t=e.triggerClass,n=e.panelClass;a.handleClick=a.handleClick.bind(a),a.handleKeydown=a.handleKeydown.bind(a),a.handleTransitionEnd=a.handleTransitionEnd.bind(a),a.elements.forEach((function(e){var i=e.querySelector(".".concat(t)),s=e.querySelector(".".concat(n));i.addEventListener("click",a.handleClick),i.addEventListener("keydown",a.handleKeydown),s.addEventListener("webkitTransitionEnd",a.handleTransitionEnd),s.addEventListener("transitionend",a.handleTransitionEnd)})),r=!0}},this.detachEvents=function(){if(r){var e=a.options,t=e.triggerClass,n=e.panelClass;a.elements.forEach((function(e){var i=e.querySelector(".".concat(t)),s=e.querySelector(".".concat(n));i.removeEventListener("click",a.handleClick),i.removeEventListener("keydown",a.handleKeydown),s.removeEventListener("webkitTransitionEnd",a.handleTransitionEnd),s.removeEventListener("transitionend",a.handleTransitionEnd)})),r=!1}},this.toggle=function(e){var t=a.elements[e];t&&a.toggleElement(t)},this.open=function(e){var t=a.elements[e];t&&a.showElement(t)},this.openAll=function(){a.elements.forEach((function(e){return a.showElement(e,!1)}))},this.close=function(e){var t=a.elements[e];t&&a.closeElement(t)},this.closeAll=function(){a.elements.forEach((function(e){return a.closeElement(e,!1)}))},this.destroy=function(){s.detachEvents(),s.openAll(),a.elements.forEach((function(e){a.removeIDs(e),a.removeARIA(e),a.setTransition(e,!0)})),r=!0},this.update=function(){a.createDefinitions(),s.detachEvents(),s.attachEvents()};var c=function(e){return"string"==typeof document.documentElement.style[e]?e:(e=l(e),e="webkit".concat(e))},l=function(e){return e.charAt(0).toUpperCase()+e.slice(1)};a.init()};"undefined"!=typeof module&&void 0!==module.exports?module.exports=n:e.Accordion=n}(window);
+</script>
+<script type="x-shader/x-vertex" id="vertexShaderZoom">
     varying vec2 vUv;
-    
-    float random(vec3 scale,float seed){return fract(sin(dot(gl_FragCoord.xyz+seed,scale))*43758.5453+seed);}
-    
-    void main(){
-        vec4 color=vec4(0.0);
-        float total=0.0;
-        vec2 toCenter=center-vUv*resolution;
-        float offset=random(vec3(12.9898,78.233,151.7182),0.0);
-        for(float t=0.0;t<=40.0;t++){
-            float percent=(t+offset)/40.0;
-            float weight=4.0*(percent-percent*percent);
-            vec4 sample_=texture2D(tDiffuse,vUv+toCenter*percent*strength/resolution);
-            sample_.rgb*=sample_.a;
-            color+=sample_*weight;
-            total+=weight;
-        }
-        gl_FragColor=color/total;
-        gl_FragColor.rgb/=gl_FragColor.a+0.00001;
+        void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
     }
-    </script>
-    <div class="controls">
-        <button data-counter="1">1</button>
-        <button data-counter="2">2</button>
-        <button data-counter="3">3</button>
-        <button data-counter="4">4</button>
-        <button data-counter="5">5</button>
-        <button data-counter="6">6</button>
-    </div>
-    <canvas class="webgl2"></canvas>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        (()=>{
-            const d=document;
-            const btn=d.querySelectorAll('.controls button');
-            btn.forEach(e=>{
-                e.addEventListener('click',()=>{
-                    if(window.customFunc!==undefined)window.customFunc(e.dataset.counter)
-                })
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShaderZoom">
+uniform sampler2D tDiffuse;
+uniform vec2 center;
+uniform float strength;
+uniform vec2 resolution;
+varying vec2 vUv;
+
+float random(vec3 scale,float seed){return fract(sin(dot(gl_FragCoord.xyz+seed,scale))*43758.5453+seed);}
+
+void main(){
+    vec4 color=vec4(0.0);
+    float total=0.0;
+    vec2 toCenter=center-vUv*resolution;
+    float offset=random(vec3(12.9898,78.233,151.7182),0.0);
+    for(float t=0.0;t<=40.0;t++){
+        float percent=(t+offset)/40.0;
+        float weight=4.0*(percent-percent*percent);
+        vec4 sample_=texture2D(tDiffuse,vUv+toCenter*percent*strength/resolution);
+        sample_.rgb*=sample_.a;
+        color+=sample_*weight;
+        total+=weight;
+    }
+    gl_FragColor=color/total;
+    gl_FragColor.rgb/=gl_FragColor.a+0.00001;
+}
+</script>
+<script>
+//"use strict";
+window.accordeonActive=0;
+new Accordion('.accordion-container',{
+    onOpen: currentElement=>{
+        //window.accordeonActive=new Number(currentElement.getAttribute('id').replace('accordeon-',''));
+        if(window.customFunc){
+            let i=currentElement.getAttribute('id').replace('accordeon-','');
+            i++
+            window.customFunc(i)
+        }
+    }
+});
+
+
+fetch("/css/s.css").then(r=>r.text()).then(s=>{
+    const st=document.createElement('style');
+    st.innerText=s;
+    document.body.appendChild(st)
+});
+
+    /* window.toThree=null;
+    window.toThreeUp=null;
+    window.toStartThree=0; */
+    (()=>{
+        
+        const d=document;
+        const a=e=>d.querySelectorAll(e)
+        const s=e=>{if(d.querySelector(e))return d.querySelector(e)}
+        const loadRes=a("[data-src]");
+        d.body.classList.add('ovh')
+        setTimeout(()=>{
+            const preloader=s('.preloader')
+            const preloaderImg1=s('.preload-img-1')
+            const preloaderImg2=s('.preload-img-2')
+            //const videoBgAll=s('.video-bg-all')
+            anime({
+                targets:preloaderImg1,
+                opacity:[1,0],
+                easing:'linear',
+                duration:3000,//3000
+                /* complete:()=>{
+                    anime({
+                        targets:preloader,
+                        opacity:[1,0],
+                        duration:100,
+                        easing:'linear',
+                    })
+                } */
             })
-        })()
+            anime({
+                targets:preloaderImg2,
+                opacity:[0,1],
+                duration:800,
+                easing:'linear',
+                delay:1200,
+                complete:()=>{
+                    preloaderImg2.classList.add('preloaderImg2Cl')
+                    anime.timeline()
+                    .add({
+                        targets:preloaderImg2,
+                        opacity:0,
+                        duration:1000,
+                        delay:800,
+                        //translateY:['20px','20px'],
+                        easing:'linear',
+                        scale:.9,
+                        complete:()=>{
+                            d.body.classList.remove('ovh')
+                            preloader.setAttribute('style','z-index:-1;opacity:0')
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }
+                    }).add({
+                        /* targets:preloader,
+                        opacity:[1,0],
+                        delay:800,
+                        easing:'linear', */
+                        complete:()=>{
+                            //videoBgAll.classList.remove('dn');
+                            //preloader.remove();
+                            //window.toStartThree=1;
+                            anime.timeline()
+                            .add({
+                                targets:s('.ANI-main-2'),
+                                opacity:1,
+                                translateY:['4rem',0],
+                                easing:'linear',
+                                duration:700
+                            })
+                            .add({
+                                targets:s('.ANI-main-3'),
+                                translateY:['-100%',0],
+                                easing:'linear',
+                                duration:700,
+                            })
+                        }
+                    })
+                }
+            })
+            
+        },100)
+
+        if(loadRes&&loadRes.length&&loadRes.length>0){loadRes.forEach(e => e.src=e.dataset.src)}
+
+        /* const obs=new Object();//объект для слайдера
+        obs.sldMain=s(".slider-main");//div со слайдами
+        obs.sld=s(".slider");//div со слайдами
+        obs.sldAll=a("section");//все слайды
+        obs.active=null;//создадим переменную для того, чтобы определять активный слайд
+        obs.f=()=>{            
+                const observer=new IntersectionObserver(e=>{         
+                    e.forEach(_=>{
+                        _.target.dataset.active=(_.isIntersecting)?1:0;
+                        obs.sldAll.forEach((_,l)=>{
+                            if(_.dataset.active==1){
+                                obs.active
+                                        =window.toThree
+                                        =l
+                            }
+                        })
+                    })
+                },{threshold:.7})
+                obs.sldAll.forEach(_=>{
+                    observer.observe(_)
+                })
+        }
+        obs.f();
+        window.addEventListener('wheel',e=>{
+            obs.f()                
+            obs.h=obs.sldAll[obs.active].offsetHeight//узнаем ширину каждого слайда
+            obs.plmin=obs.active-1
+            if(e.deltaY>0){//progress|down
+                window.toThreeUp=0
+                if(obs.active+1===obs.sldAll.length)return false;//если мы сейчас на последнем слайде
+                obs.plmin=obs.active+1
+            }else{//regress|up
+                window.toThreeUp=1
+                if(obs.active-1<0)return false;//если мы сейчас на первом слайде
+            }
+            obs.sld.setAttribute("style",`transform:translateY(-${obs.h*(obs.plmin)}px)`);//перемещаем слайды  
+            
+        }) */
+    })()
     </script>
-</body>
+    </body>
 </html>
