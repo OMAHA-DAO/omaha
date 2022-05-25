@@ -297,7 +297,7 @@ new Accordion('.accordion-container',{
 });
 
 
-fetch("/css/s.css").then(r=>r.text()).then(s=>{
+fetch("/css/style.css").then(r=>r.text()).then(s=>{
     const st=document.createElement('style');
     st.innerText=s;
     document.body.appendChild(st)

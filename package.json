@@ -2,12 +2,11 @@
   "repository": "#",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "webpack --config ./bundler/webpack.prod.js",
-    "dev": "webpack serve --config ./bundler/webpack.dev.js"
+    "build": "webpack --config ./bundler/webpack.prod.js --mode production",
+    "dev": "webpack serve --config ./bundler/webpack.dev.js --mode development"
   },
   "dependencies": {
     "@babel/core": "^7.13.1",
-    "@babel/preset-env": "^7.13.5",
     "accordion-js": "^3.3.0",
     "animejs": "^3.2.1",
     "babel-loader": "^8.2.2",
@@ -30,5 +29,17 @@
   },
   "name": "threejs-webpack-starter",
   "version": "1.0.0",
-  "main": "index.js"
+  "main": "index.js",
+  "devDependencies": {
+    "@babel/preset-env": "^7.18.2",
+    "autoprefixer": "^10.4.7",
+    "babel-plugin-root-import": "^6.6.0",
+    "css-mqpacker": "^7.0.0",
+    "cssnano": "^5.1.9",
+    "html-webpack-skip-assets-plugin": "^1.0.3",
+    "on-build-webpack2": "^0.2.0",
+    "postcss-loader": "^7.0.0",
+    "source-map-loader": "^3.0.1",
+    "uglifyjs-webpack-plugin": "^2.2.0"
+  }
 }
