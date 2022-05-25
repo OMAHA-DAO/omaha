@@ -90,6 +90,12 @@ function del_file_folder(path_prod,extension){
 
 }
 
+// let files = {
+//
+// 	'src/styles.min': "./static/css/s.sass",
+//
+// };
+
 module.exports = {
     entry: files,
     output: {

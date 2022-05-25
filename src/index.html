@@ -2,114 +2,137 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no">
         <title>Three.js TypeScript Tutorials by Sean Bradley : https://sbcode.net/threejs</title>
     </head>
-<!-- style="background-color: #fff;" -->
-    <body >
+
+    <body>
+
+        <div class="preloader">
+            <video data-src="/video/particles_preloader_AV1.mp4" preload="metadata" autoplay muted playsinline loop class="preloader__video"></video>
+            <img data-src="/media/logo.svg" width="576" class="preload-img-2" alt="preloader logo">
+            <img data-src="/media/preloader.gif" alt="preloader" class="preload-img-1">
+        </div>
 
         <canvas class="webgl"></canvas>
 
-        <span id="scrollProgress" class="cf"></span>
-        <div class="pf p0 z5 fx jc ac preloader">
-            <video data-src="/video/particles_preloader_AV1.mp4" preload="metadata" autoplay muted playsinline loop class="pa z1 p0 video-preloader-bg"></video>
-            <img data-src="/media/logo.svg" width="576" class="pa z2 o0 preload-img-2" alt="preloader logo">
-            <img data-src="/media/preloader.gif" alt="preloader" class="pa z2 preload-img-1">
-        </div>
-        <nav class="ANI-main-3">
+        <nav class="ANI-main-3 d-none">
             <ul>
                 <li><!-- <img data-src="/media/logo_big.png" width="230" alt> -->&nbsp;</li>
                 <li class="fx gap1">
                     <!-- <span class="navCircle jc ac">Waves</span> -->
                     <span class="navCircle jc ac cp">
-                        <svg width="75" height="85" viewBox="0 0 48 54" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path class="svg-discord-one" fill-rule="evenodd" clip-rule="evenodd" d="M1.02997 1.0271H46.7551V46.5929L46.8344 52.9737L35.006 42.1026L35.8795 46.5929H1.02997V1.0271Z" stroke="white" stroke-width="2.05994" stroke-miterlimit="22.9256" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path class="svg-discord-two" d="M33.8852 14.6984C32.0285 13.8423 30.0443 13.2193 27.9692 12.8652C27.7148 13.3194 27.4171 13.9302 27.2117 14.4166C25.0054 14.0897 22.8201 14.0897 20.6549 14.4166C20.4502 13.9302 20.1453 13.3194 19.8887 12.8652C17.8108 13.2193 15.8236 13.8444 13.9677 14.7027C10.224 20.2824 9.20919 25.7226 9.71661 31.0856C12.1996 32.9144 14.6063 34.0252 16.9718 34.7519C17.5563 33.9594 18.0774 33.1161 18.5258 32.2285C17.6709 31.9081 16.8529 31.5126 16.0788 31.0541C16.2842 30.9039 16.4846 30.7472 16.6784 30.5856C21.3973 32.7621 26.5233 32.7621 31.1852 30.5856C31.3813 30.7472 31.5824 30.9039 31.7856 31.0541C31.0094 31.5147 30.1884 31.9102 29.3336 32.2307C29.7826 33.1161 30.3016 33.9616 30.8875 34.7541C33.256 34.0274 35.6648 32.9166 38.1478 31.0856C38.7431 24.8686 37.1308 19.4777 33.8852 14.6984ZM19.1687 27.7875C17.7524 27.7875 16.5905 26.4836 16.5905 24.8958C16.5905 23.3079 17.7272 22.0019 19.1687 22.0019C20.6102 22.0019 21.7713 23.3058 21.7468 24.8958C21.749 26.4836 20.6102 27.7875 19.1687 27.7875ZM28.695 27.7875C27.2787 27.7875 26.1175 26.4836 26.1175 24.8958C26.1175 23.3079 27.2542 22.0019 28.695 22.0019C30.1365 22.0019 31.2984 23.3058 31.2732 24.8958C31.2732 26.4836 30.1365 27.7875 28.695 27.7875Z" stroke="#DAB457" stroke-width="1.91434" stroke-miterlimit="22.9256" stroke-linecap="round"/>
-                        </svg>
-                    </span>
+                    <svg width="75" height="85" viewBox="0 0 48 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path class="svg-discord-one" fill-rule="evenodd" clip-rule="evenodd" d="M1.02997 1.0271H46.7551V46.5929L46.8344 52.9737L35.006 42.1026L35.8795 46.5929H1.02997V1.0271Z" stroke="white" stroke-width="2.05994" stroke-miterlimit="22.9256" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path class="svg-discord-two" d="M33.8852 14.6984C32.0285 13.8423 30.0443 13.2193 27.9692 12.8652C27.7148 13.3194 27.4171 13.9302 27.2117 14.4166C25.0054 14.0897 22.8201 14.0897 20.6549 14.4166C20.4502 13.9302 20.1453 13.3194 19.8887 12.8652C17.8108 13.2193 15.8236 13.8444 13.9677 14.7027C10.224 20.2824 9.20919 25.7226 9.71661 31.0856C12.1996 32.9144 14.6063 34.0252 16.9718 34.7519C17.5563 33.9594 18.0774 33.1161 18.5258 32.2285C17.6709 31.9081 16.8529 31.5126 16.0788 31.0541C16.2842 30.9039 16.4846 30.7472 16.6784 30.5856C21.3973 32.7621 26.5233 32.7621 31.1852 30.5856C31.3813 30.7472 31.5824 30.9039 31.7856 31.0541C31.0094 31.5147 30.1884 31.9102 29.3336 32.2307C29.7826 33.1161 30.3016 33.9616 30.8875 34.7541C33.256 34.0274 35.6648 32.9166 38.1478 31.0856C38.7431 24.8686 37.1308 19.4777 33.8852 14.6984ZM19.1687 27.7875C17.7524 27.7875 16.5905 26.4836 16.5905 24.8958C16.5905 23.3079 17.7272 22.0019 19.1687 22.0019C20.6102 22.0019 21.7713 23.3058 21.7468 24.8958C21.749 26.4836 20.6102 27.7875 19.1687 27.7875ZM28.695 27.7875C27.2787 27.7875 26.1175 26.4836 26.1175 24.8958C26.1175 23.3079 27.2542 22.0019 28.695 22.0019C30.1365 22.0019 31.2984 23.3058 31.2732 24.8958C31.2732 26.4836 30.1365 27.7875 28.695 27.7875Z" stroke="#DAB457" stroke-width="1.91434" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+                    </svg>
+                </span>
                 </li>
             </ul>
         </nav>
-        <!-- <div class="pr z-1 ovh">
-            <div class="courses"></div>
-        </div> -->
-        <div class="pr z3 slider-main">
+
+        <div class="slider-main">
             <div class="slider">
-                <section class="fx jc ac p0-20">
-                    <div class="fx ac fdc first-screen">
-                        <div class="tc first-s-main-logo">
-                            <img width="1000" data-src="/media/logo.svg" alt class="ANI-main-1" style="opacity:0">
+
+                <section class="first-section">
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div class="first-screen">
+
+<!--                                <div class="first-s-main-logo">-->
+<!--&lt;!&ndash;                                        <img data-src="/media/logo.svg" alt class="ANI-main-1" style="opacity:0">&ndash;&gt;-->
+<!--                                </div>-->
+
+                                <h1 class="ANI-main-2 tc">World's first community-driven fund</h1>
+
+                            </div>
+
                         </div>
 
-                        <h1 class="ANI-main-2 tc">World's first community-driven fund</h1>
-                        <!-- <h1  class="ANI-main-2 tc">1 Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis, laudantium hic? Ab ipsa et blanditiis modi quos veritatis nam beatae, quasi voluptate alias ea facere cum ipsum aspernatur unde voluptatum!</h1> -->
                     </div>
+
                 </section>
-                <section class="fx ac section">
-                    <div class="fx jc fdc section-div">
-                        <h2>Introducing Omaha Dao</h2>
-                        <span>Omaha is the world’s first community - driven fund.
-                            Thousands of investors bundle their power
-                            to create real impact on the market and
-                            gains for the community.
-                            Autonomous, decentralized and transparent
-                        </span>
+
+                <section>
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div class="col-12">
+
+                                <h2 class="section__title">Introducing Omaha Dao</h2>
+                                <span>Omaha is the world’s first community - driven fund.
+                                    Thousands of investors bundle their power
+                                    to create real impact on the market and
+                                    gains for the community.
+                                    Autonomous, decentralized and transparent
+                                </span>
+
+                            </div>
+
+                        </div>
+
                     </div>
+
                 </section>
                 <section class="fx ac section section-right">
                     <div class="fx jc fdc section-div">
                         <h2>The power of the Warm</h2>
                         <span>
-                            Catching up with whales is only possible
-                            together.
+                        Catching up with whales is only possible
+                        together.
 
-                            <br>Therefore Omaha DAO is 100% community-
-                            governed and features a user friendly, app-
-                            based voting system.
+                        <br>Therefore Omaha DAO is 100% community-
+                        governed and features a user friendly, app-
+                        based voting system.
 
-                            <br>Incentivized participation and a cap on
-                            voting power keep interaction high and
-                            whales out
-                        </span>
+                        <br>Incentivized participation and a cap on
+                        voting power keep interaction high and
+                        whales out
+                    </span>
                     </div>
                 </section>
                 <section class="fx ac section">
                     <div class="fx jc fdc section-div">
                         <h2>A bridge between classic finance and crypto</h2>
                         <span>
-                            Brücken bauen
-                            <ul>
-                                <li>Anlagevehikel für Privatinvestor</li>
-                                <li>Niedrigschwellig</li>
-                                <li>not off market, not off balance sheet,
-                                off wall street</li>
-                                <li>citadel hedgefonds / olympus dao</li>
-                                <li>community self-interested, ranking,
-                                builduing our own star community
-                                manage</li>
-                                <li>die Leute ansprechen, die dort
-                                einsteigen wollen</li>
-                                <li>echter hedgefonds</li>
-                                <li>bild soll sofort klar machen, dass es
-                                sich um invest in real world assets
-                                handelt</li>
-                            </ul>
-                        </span>
+                        Brücken bauen
+                        <ul>
+                            <li>Anlagevehikel für Privatinvestor</li>
+                            <li>Niedrigschwellig</li>
+                            <li>not off market, not off balance sheet,
+                            off wall street</li>
+                            <li>citadel hedgefonds / olympus dao</li>
+                            <li>community self-interested, ranking,
+                            builduing our own star community
+                            manage</li>
+                            <li>die Leute ansprechen, die dort
+                            einsteigen wollen</li>
+                            <li>echter hedgefonds</li>
+                            <li>bild soll sofort klar machen, dass es
+                            sich um invest in real world assets
+                            handelt</li>
+                        </ul>
+                    </span>
                     </div>
                 </section>
                 <section class="fx ac section section-right">
                     <div class="fx jc fdc section-div">
                         <h2>Join the whitelist</h2>
                         <span>
-                            <ul>
-                                <li>Whitelist: Interaktion tracken und
-                                incentivieren für, Easter</li>
-                                <li>Eggs platzieren</li>
-                                <li>Community Manager: Qualifikation beweisen durch Tests</li>
-                                <li>Wall Street Bets/Gamestop: erst im 2. oder 3. Layer</li>
-                            </ul>
-                            <button class="btn tu cf action">Parcipation via Discord</button>
-                        </span>
+                        <ul>
+                            <li>Whitelist: Interaktion tracken und
+                            incentivieren für, Easter</li>
+                            <li>Eggs platzieren</li>
+                            <li>Community Manager: Qualifikation beweisen durch Tests</li>
+                            <li>Wall Street Bets/Gamestop: erst im 2. oder 3. Layer</li>
+                        </ul>
+                        <button class="btn tu cf action">Parcipation via Discord</button>
+                    </span>
                     </div>
                 </section>
                 <section class="fx ac section section-bg-grad">
@@ -145,92 +168,161 @@
                     <div class="fx jc fdc section-div">
                         <h2>Fundamentals</h2>
                         <span>
-                            <div class="accordion-container">
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">User Friendly Voting System</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero labore odio praesentium accusantium, ipsa quia placeat nobis, odit error illo ullam autem sed possimus quod.</p>
-                                  </div>
-                                </div>
-                              
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">Community Governance</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Community Governance is the core value of the community-outlined Omaha Codex. Every single investor participates in the fund management with their vote, not with their wealth. Capped voting power means collective responsibility for the investment of every individual.</p>
-                                  </div>
-                                </div>
-                              
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">Fund Strategists</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
-                                  </div>
-                                </div>
-                              
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">Stock Investment</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus.</p>
-                                  </div>
-                                </div>
-                              
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">Intrinsic Token Value</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad.</p>
-                                  </div>
-                                </div>
-                              
-                                <div class="accordeon">
-                                  <h3 class="accordeon-header">
-                                    <button type="button" class="accordeon-trigger">Redeemable Fund Treasury</button>
-                                  </h3>
-                                  <div class="accordeon-panel">
-                                    <p class="accordeon-text">Lorem ipsum dolor sit amet. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
-                                  </div>
-                                </div>
+                        <div class="accordion-container">
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">User Friendly Voting System</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vero labore odio praesentium accusantium, ipsa quia placeat nobis, odit error illo ullam autem sed possimus quod.</p>
+                              </div>
                             </div>
-                        </span>
+
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">Community Governance</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Community Governance is the core value of the community-outlined Omaha Codex. Every single investor participates in the fund management with their vote, not with their wealth. Capped voting power means collective responsibility for the investment of every individual.</p>
+                              </div>
+                            </div>
+
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">Fund Strategists</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
+                              </div>
+                            </div>
+
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">Stock Investment</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus.</p>
+                              </div>
+                            </div>
+
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">Intrinsic Token Value</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad.</p>
+                              </div>
+                            </div>
+
+                            <div class="accordeon">
+                              <h3 class="accordeon-header">
+                                <button type="button" class="accordeon-trigger">Redeemable Fund Treasury</button>
+                              </h3>
+                              <div class="accordeon-panel">
+                                <p class="accordeon-text">Lorem ipsum dolor sit amet. Nisi laudantium odio ducimus autem omnis aspernatur a rerum, nesciunt quibusdam natus quam, recusandae temporibus aut fugit? Necessitatibus provident iusto reprehenderit possimus eaque totam consectetur ad..</p>
+                              </div>
+                            </div>
+                        </div>
+                    </span>
                     </div>
                 </section>
+
+                <section class="post-section">
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div class="col-12">
+
+                                <h2 class="post-section__title">
+                                    Posts on Medium
+                                </h2>
+
+                                <div class="posts-list">
+
+                                    <div class="post col-12 col-md-6 col-lg-4">
+
+                                        <div class="post-image">
+                                            <img data-src="/media/posts/post_1.png">
+                                        </div>
+
+                                        <div class="post-title">
+                                            The Marketplace of Ideas Requires Regulation Like Any Other Market
+                                        </div>
+
+                                        <div class="post-description">
+                                            And anyone who denies this hasn’t thought it through
+                                        </div>
+
+                                    </div>
+
+                                    <div class="post col-12 col-md-6 col-lg-4">
+
+                                        <div class="post-image">
+                                            <img data-src="/media/posts/post_2.png">
+                                        </div>
+
+                                        <div class="post-title">
+                                            How to Take a Break from Yourself
+                                        </div>
+
+                                        <div class="post-description">
+                                            Escaping from your routines can help you escape from repetitive, unhelpful thoughts
+                                        </div>
+
+                                    </div>
+
+                                    <div class="post col-12 col-md-6 col-lg-4">
+
+                                        <div class="post-image">
+                                            <img data-src="/media/posts/post_3.png">
+                                        </div>
+
+                                        <div class="post-title">
+                                            We Won’t Fix the Baby Formula Shortage Until We Fix Capitalism
+                                        </div>
+
+                                        <div class="post-description">
+                                            The baby-formula shortage is just the latest in a string of economic troubles that are showing us...
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
                 <footer class="fx fsa section-bg">
+                <span>
+                    <img width="45" data-src="/media/icns/discord-icon-svgrepo-com.svg" alt="discord">
+                    <q>discord</q>
+                </span>
                     <span>
-                        <img width="45" data-src="/media/icns/discord-icon-svgrepo-com.svg" alt="discord">
-                        <q>discord</q>
-                    </span>
+                    <img width="45" data-src="/media/icns/medium-icon-svgrepo-com.svg" alt="medium">
+                    <q>medium</q>
+                </span>
                     <span>
-                        <img width="45" data-src="/media/icns/medium-icon-svgrepo-com.svg" alt="medium">
-                        <q>medium</q>
-                    </span>
+                    <img width="45" data-src="/media/icns/page-svgrepo-com.svg" alt="whitepaper">
+                    <q>whitepaper</q>
+                </span>
                     <span>
-                        <img width="45" data-src="/media/icns/page-svgrepo-com.svg" alt="whitepaper">
-                        <q>whitepaper</q>
-                    </span>
-                    <span>
-                        <img width="45" data-src="/media/icns/twitter-svgrepo-com.svg" alt="twitter">
-                        <q>twitter</q>
-                    </span>
+                    <img width="45" data-src="/media/icns/twitter-svgrepo-com.svg" alt="twitter">
+                    <q>twitter</q>
+                </span>
                 </footer>
             </div>
         </div>
-    
-    <!-- <video data-src="/video/main_bg_loop.mp4" muted playsinline autoplay loop class="dn p0 z-2 pf video-bg-all"></video>
-    
-    <video data-src="/video/2-screen/bg_01_big_h264.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-1"></video>
-    <video data-src="/video/2-screen/test-screen-2-2.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-2"></video>
-    <video data-src="/video/2-screen/test-screen-2-3.webm" preload="metadata" muted playsinline loop class="dn video-scr-2-3"></video> -->
-    
-    <div class="pf p0 z-1 two-scr-candle"></div>
+
+<!--            <div class="pf p0 z-1 two-scr-candle"></div>-->
+
+
 
 <!-- TMP ADD ANIME -->
 <script src="/node_modules/animejs/lib/anime.min.js"></script>
@@ -296,16 +388,22 @@ new Accordion('.accordion-container',{
     }
 });
 
-
-fetch("/css/style.css").then(r=>r.text()).then(s=>{
+fetch("/css/reset.css").then(r=>r.text()).then(s=>{
+	const st=document.createElement('style');
+	st.innerText=s;
+	document.body.appendChild(st)
+});
+fetch("/css/grid.css").then(r=>r.text()).then(s=>{
+	const st=document.createElement('style');
+	st.innerText=s;
+	document.body.appendChild(st)
+});
+fetch("/css/s.css").then(r=>r.text()).then(s=>{
     const st=document.createElement('style');
     st.innerText=s;
     document.body.appendChild(st)
 });
 
-    /* window.toThree=null;
-    window.toThreeUp=null;
-    window.toStartThree=0; */
     (()=>{
         
         const d=document;
@@ -317,20 +415,11 @@ fetch("/css/style.css").then(r=>r.text()).then(s=>{
             const preloader=s('.preloader')
             const preloaderImg1=s('.preload-img-1')
             const preloaderImg2=s('.preload-img-2')
-            //const videoBgAll=s('.video-bg-all')
             anime({
                 targets:preloaderImg1,
                 opacity:[1,0],
                 easing:'linear',
-                duration:3000,//3000
-                /* complete:()=>{
-                    anime({
-                        targets:preloader,
-                        opacity:[1,0],
-                        duration:100,
-                        easing:'linear',
-                    })
-                } */
+                duration:3000,
             })
             anime({
                 targets:preloaderImg2,
@@ -391,8 +480,8 @@ fetch("/css/style.css").then(r=>r.text()).then(s=>{
         obs.sld=s(".slider");//div со слайдами
         obs.sldAll=a("section");//все слайды
         obs.active=null;//создадим переменную для того, чтобы определять активный слайд
-        obs.f=()=>{            
-                const observer=new IntersectionObserver(e=>{         
+        obs.f=()=>{
+                const observer=new IntersectionObserver(e=>{
                     e.forEach(_=>{
                         _.target.dataset.active=(_.isIntersecting)?1:0;
                         obs.sldAll.forEach((_,l)=>{
@@ -410,7 +499,7 @@ fetch("/css/style.css").then(r=>r.text()).then(s=>{
         }
         obs.f();
         window.addEventListener('wheel',e=>{
-            obs.f()                
+            obs.f()
             obs.h=obs.sldAll[obs.active].offsetHeight//узнаем ширину каждого слайда
             obs.plmin=obs.active-1
             if(e.deltaY>0){//progress|down
@@ -421,8 +510,8 @@ fetch("/css/style.css").then(r=>r.text()).then(s=>{
                 window.toThreeUp=1
                 if(obs.active-1<0)return false;//если мы сейчас на первом слайде
             }
-            obs.sld.setAttribute("style",`transform:translateY(-${obs.h*(obs.plmin)}px)`);//перемещаем слайды  
-            
+            obs.sld.setAttribute("style",`transform:translateY(-${obs.h*(obs.plmin)}px)`);//перемещаем слайды
+
         }) */
     })()
     </script>
