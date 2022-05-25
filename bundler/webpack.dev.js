@@ -16,8 +16,11 @@ module.exports = merge(
         {
             host: '0.0.0.0',
             port: portFinderSync.getPort(8080),
-            contentBase: './dist',
-            watchContentBase: true,
+            //contentBase: './dist',
+            watchContentBase: false,
+            hot: false,
+            inline: false,
+            liveReload: false,
             open: false,
             https: false,
             useLocalIp: true,

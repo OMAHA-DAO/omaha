@@ -84,7 +84,7 @@ nav ul li{display:block;list-style:none}
 .mw80p{max-width: 80%;}
 .cube{display: grid;grid-template-columns: repeat(5,1fr);grid-template-rows: repeat(2,1fr);}
 .cude_img img:first-child{top:1rem;right:1rem}
-.cude_img img:last-child{bottom:4rem;left:2rem}
+.cude_img img:last-child{bottom:3rem;left:1rem}
 .section_div{padding-top: 3rem;}
 .section_div span{border-bottom:1px dotted #fff}
 .accordeon-text,.section_div span{color:#DAB457;}
