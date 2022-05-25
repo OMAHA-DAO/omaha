@@ -742,3 +742,5 @@ for (const [key, value] of Object.entries(models)) {
         d.body.appendChild(sc)
     },100)
 })()
+
+import "./includes/milestones_animation";

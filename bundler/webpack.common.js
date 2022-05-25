@@ -97,6 +97,7 @@ function del_file_folder(path_prod,extension){
 // };
 
 module.exports = {
+    watch: isDev,
     entry: files,
     output: {
         path: root + '/dist/',
