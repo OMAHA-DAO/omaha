@@ -947,6 +947,11 @@
     "@nodelib/fs.scandir" "2.1.4"
     "fastq" "^1.6.0"
 
+"@splidejs/splide@^4.0.2":
+  "integrity" "sha512-ZKmgJh/E86K4gRXC3Nj0ZbK7wWc4Y0DWhV/nzn9stfTcWl4kRTdm1ZqjObTFvOwgGNxo/YfeOd5XyyqgChwVrw=="
+  "resolved" "https://registry.npmjs.org/@splidejs/splide/-/splide-4.0.2.tgz"
+  "version" "4.0.2"
+
 "@trysound/sax@0.2.0":
   "integrity" "sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA=="
   "resolved" "https://registry.npmjs.org/@trysound/sax/-/sax-0.2.0.tgz"
