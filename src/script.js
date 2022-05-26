@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 //import * as dat from 'dat.gui'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -8,7 +8,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass'; */
 
-import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
+//import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
+//import { FontLoader } from '../static/js/FontLoader';
+//import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
+
+//import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
+
+// TEXT TTF LOADER
+//     https://medium.com/@joshmarinacci/threejs-secretly-supports-true-type-fonts-b896df19af2e
 
 import anime from 'animejs';
 
@@ -16,18 +23,24 @@ import {EffectComposer} from 'three/examples/jsm/postprocessing/EffectComposer';
 import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
-import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+//import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
 const models=Object.create({
     hdr:'model/webgl2/hdr/sepulchral_chapel_rotunda_1k.hdr',
-    logo:'model/logo.glb',
+    //logo:'model/logo.glb',
     girl:'model/2022-05-08/omaha_girl_04_05_17.glb',
     bull:'model/2022-05-08/bull_statue_2.glb',
-    skin:'media/skin-bump-texture_1.png',
+    voiting:'media/voiting_03.webp',
+    courses:'media/courses_top.png',
+    coursesBtm:'media/courses_btm.png',
+    //skin:'media/skin-bump-texture_1.png',
     webgl2:'/js/webgl2.js',
+    //font:'fonts/ds_dots.ttf',
+    //JFT
+    //font:'model/webgl2/fonts/ArchivoBlack-Regular.ttf',
 });
 
-const elements=[
+/* const elements=[
     'model/webgl2/_Edik/infographic_arrow_04_my.glb',
     'model/webgl2/01_elements_chip_4_new.glb',
     'model/webgl2/01_elements_diamond_2.glb',
@@ -43,15 +56,15 @@ const elements=[
     'media/webgl2/normal.jpg',
     'model/webgl2/hdr/sepulchral_chapel_rotunda_1k.hdr',
 ];
-elements.forEach(e=>{
+//const len=elements.length
+elements.forEach((e)=>{
     fetch(e)
-})
+}); */
 
-const hdrEquirect = new RGBELoader().load(
+/* const hdrEquirect = new RGBELoader().load(
     models.hdr,
     () => {hdrEquirect.mapping = THREE.EquirectangularReflectionMapping}
-);
-
+); */
 for (const [key, value] of Object.entries(models)) {
     fetch(value)
 }
@@ -64,7 +77,8 @@ for (const [key, value] of Object.entries(models)) {
         /* const gridHelper = new THREE.GridHelper(10, 10, 0xaec6cf, 0xaec6cf)
         scene.add(gridHelper) */
         const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
-        camera.position.set(0, 0, 3)
+        if(window.innerWidth>1024)camera.position.set(0, 0, 3)
+        if(window.innerWidth<1025)camera.position.set(0, 0, 7)
         const canvas = document.querySelector('canvas.webgl')
         const renderer = new THREE.WebGLRenderer({
             canvas, alpha: true, antialias: true,
@@ -86,7 +100,7 @@ for (const [key, value] of Object.entries(models)) {
             vertexShader:`varying vec2 vUv;
             void main() {
                 vUv = uv;
-                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
             }`,
             fragmentShader: `
             uniform sampler2D uRender;
@@ -95,17 +109,40 @@ for (const [key, value] of Object.entries(models)) {
             float rand(vec2 seed);
 
             void main() {
-                float randomValue = rand(vec2(floor(vUv.y*2000.), uTime/250.));
-                //float randomValue2 = rand(vec2(floor(vUv.y*200.), uTime/50000.));
+                    //float randomValue = rand(vec2(floor(vUv.y*2000.), uTime/250.));
+                    //float randomValue2 = rand(vec2(floor(vUv.y*200.), uTime/50000.));
+                float randomValue = rand(vec2(floor(vUv.y * 7.0), uTime));
                 vec4 color;
                 if (randomValue < 0.02) {
-                    color = texture2D(uRender, vec2(vUv.x + randomValue - 0.001, vUv.y));
+                    color = texture2D(uRender, vec2(vUv.x + randomValue - 0.01, vUv.y));
+                        //float lightness = (color.r + color.g + color.b) / 3.0;
+                        //color.rgb = vec3(color.r * lightness, color.g * lightness , color.b * lightness);
                 } else {
                     color = texture2D(uRender, vUv);
                 }
-                //float lightness = (color.r + color.g + color.b) / 3.0;
-                //color.rgb = vec3(color.r * randomValue2, color.g * randomValue2 , color.b * randomValue2);
                 gl_FragColor = color;
+
+                //vec2 uv = vUv;
+                //float rnd=rand(uv) * uTime;
+//
+                //float y = .0;
+                //float x = .0;
+                //y-= cos(uv.y) * rnd;
+                //x-= sin(uv.y) * rnd;
+//
+                //float r=texture2D(uRender, uv + vec2(y, x*rnd)).r;
+                //float g=texture2D(uRender, uv + vec2(x, y*rnd)).g;
+                //float b=texture2D(uRender, uv + vec2(y, x*rnd)).b;
+                //float w = 1.0;
+//
+                //uv.y *= -uTime*1.2;
+                //r += uv.y;
+                //g += uv.y;
+                //b += uv.y;
+                //w+=uTime;
+//
+                //gl_FragColor = vec4(r,g,b,.0);
+
             }
             float rand(vec2 seed) {
                 return fract(sin(dot(seed, vec2(12.9898,78.233))) * 43758.5453123);
@@ -119,7 +156,7 @@ for (const [key, value] of Object.entries(models)) {
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
 
-        const controls = new OrbitControls(camera, canvas)
+        //const controls = new OrbitControls(camera, canvas)
 
         const sizes = {
             width: window.innerWidth,
@@ -171,10 +208,41 @@ for (const [key, value] of Object.entries(models)) {
                     );
                     meshTexture.position.set(pos[0],pos[1],pos[2])
                     //meshTexture.scale.set(size[0],size[1],size[2])
-                    const tobj3d=new THREE.Object3D
-                    tobj3d.add(meshTexture)
-                    scene.add(tobj3d)
-                    objcts[name]=tobj3d
+                    const tobj3d=new THREE.Object3D                    
+                    if(name==='coursesBtm'){
+                        if(objcts.obj1Img){
+                            objcts.obj1Img.add(meshTexture)
+                        }
+                    //// courses
+                    //    const ttfLoader = new TTFLoader()
+                    //    const fontLoader = new FontLoader()
+                    //    ttfLoader.load(
+                    //        models.font,
+                    //        fnt=>{
+                    //            const textGeo = new THREE.TextGeometry(new String('text test text test text test text test text test text test text test text testtext test text test text test text test text test text test text test text testtext test text test text test text test text test text test text test text testtext test text test text test text test text test text test text test text test'),{
+                    //                font:fontLoader.parse(fnt),
+                    //                size:.07,
+                    //                height: .001,
+                    //                curveSegments: 12
+                    //            });
+                    //            const textMesh=new THREE.Mesh(
+                    //                textGeo,
+                    //                new THREE.MeshBasicMaterial({
+                    //                    color:0xffffff,
+                    //                    roughness:.1,
+                    //                    metalness:1,
+                    //                })
+                    //            );
+                    //            //objcts.obj1Img=textMesh
+                    //            meshTexture.add(textMesh);
+                    //        }
+                    //    );
+                    //    // \ courses
+                    }else{
+                        objcts[name]=tobj3d;
+                        tobj3d.add(meshTexture)
+                        scene.add(tobj3d)
+                    }
                 },
                 undefined,
                 e=>console.error(e)
@@ -189,14 +257,21 @@ for (const [key, value] of Object.entries(models)) {
             },200)
         }
         setImage(
-            'media/curses_green_yellow_line.png', // src
+            models.courses, // src
             null,//[.7,.7,.7], // size! of object scale
             [68.54,.12], // sizes of plane
-            [0,2,-1], // position
+            [14,2,-1], // position
             'obj1Img'
         )
         setImage(
-            'media/voiting_03.webp', // src
+            models.coursesBtm, // src
+            null,//[.7,.7,.7], // size! of object scale
+            [68.54,.12], // sizes of plane
+            [14,1.8,-1], // position
+            'coursesBtm'
+        )
+        setImage(
+            models.voiting, // src
             [.7,.7,.7], // size! of object scale
             [.819,1.641], // sizes of plane
             [-1,0,-2], // position
@@ -204,7 +279,6 @@ for (const [key, value] of Object.entries(models)) {
             0,
         )
         // \ imgs
-
         /* const near = 2;
         const far = 2;
         const color = 0x000000;
@@ -215,24 +289,38 @@ for (const [key, value] of Object.entries(models)) {
         let pl=null;
         const animationScripts = [{ start:0, end:0, func:0 }]
         const loader = new GLTFLoader();
-
-
         // ANIMATE
         function lerp(x, y, a) {return (1 - a) * x + a * y}
         // Used to fit the lerps to start and end at specific scrolling percentages
         function scalePercent(start, end) {
-            return (scrollPercent - start) / (end - start)
-        }
-        pl=function playScrollAnimations() {
+            /* if((parseInt(oldScrollPercent)-parseInt(scrollPercent))===0&&scrollPercent===0){
+                if(oldScrollPercent!==0)oldScrollPercent-=.04
+            } */
+            //console.log((parseInt(oldScrollPercent)-parseInt(scrollPercent))!==0,scrollPercent===0);
+            if(parseInt(parseInt(oldScrollPercent)-parseInt(scrollPercent))>0){
+                oldScrollPercent-=.04
+            }
+            if(parseInt(oldScrollPercent)<parseInt(scrollPercent)){
+                oldScrollPercent+=.04
+            }
+            if(scrollPercent>84){oldScrollPercent-=.04}
+            return (oldScrollPercent - start) / (end - start)
+        };
+        let scrollPercent =0, oldScrollPercent = 0
+        pl=()=>{
+            if(oldScrollPercent<scrollPercent){}
             animationScripts.forEach(a=>{
-                if (scrollPercent >= a.start && scrollPercent < a.end) {
+                if (oldScrollPercent >= a.start && oldScrollPercent < a.end) {
                     a.func()
                 }
             })
         }
-        let scrollPercent = 0
         const canvas1=document.querySelector('.webgl');
         const canvas2=document.querySelector('.webgl2');
+        /* window.addEventListener('wheel',e=>{
+            console.log(e.deltaY);
+        }) */
+        
         document.body.onscroll = () => {
             //calculate the current scroll progress as a percentage
             scrollPercent =
@@ -253,30 +341,30 @@ for (const [key, value] of Object.entries(models)) {
                     canvas2.classList.add('canvas1Cl')
                 }
             }
+            //console.log(scrollPercent,'onscroll');
         }
         // \ ANIMATE
 
         // light lens (top)
-        const light = new THREE.PointLight( 0xffffff, .01, 20 );
+        /* const light = new THREE.PointLight( 0xffffff, .01, 20 );
         const textureLoader = new THREE.TextureLoader();
         const textureFlare0 = textureLoader.load( "media/glary-horizontal-yellow_5.jpg" );
         const textureFlare3 = textureLoader.load( "media/glare2.jpg" );
         const lensflare = new Lensflare();
 
         lensflare.addElement( new LensflareElement( textureFlare0, 700, 0 ) );
-
         lensflare.addElement( new LensflareElement( textureFlare3, 60, 0.14 ) );
         lensflare.addElement( new LensflareElement( textureFlare3, 70, 0.7 ) );
         lensflare.addElement( new LensflareElement( textureFlare3, 120, 0.9 ) );
         lensflare.addElement( new LensflareElement( textureFlare3, 70, 1 ) );
         lensflare.position.set(.9,.5,0);
-        scene.add(light,lensflare)
+        scene.add(light,lensflare) */
 
-        /* lensflare.material.transparent=true
-        lensflare.material.alphaTest=.5
-        lensflare.material.color=new THREE.Color(0x000000) */
+                /* lensflare.material.transparent=true
+                lensflare.material.alphaTest=.5
+                lensflare.material.color=new THREE.Color(0x000000) */
 
-        anime({targets:lensflare.position,x:[.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,],duration:100000,loop:true,easing:'linear',})
+        /* anime({targets:lensflare.position,x:[.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,.9,.7,.9,.8,.9,],duration:100000,loop:true,easing:'linear',})
 
         const plane=new THREE.PlaneBufferGeometry(.5,.1)
         const planeMesh=new THREE.Mesh(plane,new THREE.MeshBasicMaterial({color:0xff0000,transparent:true,opacity:0}))
@@ -304,26 +392,25 @@ for (const [key, value] of Object.entries(models)) {
         scene.add(planeMeshBtm)
         planeMeshBtm.position.set(-.7,-.2,1.5)
         anime({targets:planeMeshBtm.position,y:[-.2,-.3,-.2,-.3,-.2,-.3,-.2,-.3,-.2,-.3,],duration:25000,loop:true,easing:'easeInOutExpo',})
-        animationScripts.push({start: 2, end: 105, func: () => planeMeshBtm.position.y=-.37})
+        animationScripts.push({start: 2, end: 105, func: () => planeMeshBtm.position.y=-.37}) */
         // \ light lens (bottom)
 
         // texture for logo...//const bumpTexture = new THREE.TextureLoader().load('media/metal-bump-map.jpg')
 
         // Load logo
-        loader.load(
+        /* loader.load(
             models.logo,
             logo=>{
                 const Logo=logo.scene.children[0]
                     Logo.position.set(-0.058,-.01,2.8)
                     Logo.rotation.set(1.6,0,0)
                     Logo.scale.set(.4,.4,.4)
-
                     Logo.material.color={r:1,g:1,b:1}
                     Logo.material.transparent=true
                     Logo.material.roughness=.25
                     Logo.material.metalness=.5
-                    /* Logo.material.bumpMap = bumpTexture
-                    Logo.material.bumpScale = .0001 */
+                    //Logo.material.bumpMap = bumpTexture
+                    //Logo.material.bumpScale = .0001
                     anime.timeline()// animate firts time oncly
                     .add({targets:Logo.material,opacity:[0,1],duration:600,delay:5200,easing:'linear',})
                     .add({targets:Logo.position,y:[-.02,-.01],duration:600,easing:'linear',})
@@ -351,7 +438,7 @@ for (const [key, value] of Object.entries(models)) {
                     })()
                     scene.add(Logo)
             }
-        )
+        ) */
         // \\ Load logo
 
         // Pseudo Lights
@@ -392,7 +479,14 @@ for (const [key, value] of Object.entries(models)) {
                     }`,
                     transparent:true,opacity: 1,depthWrite:false,
                 })
-            const plane=new THREE.PlaneBufferGeometry(sizes[0],sizes[1])
+                let sizesCorrect=Object.create({
+                    x:0,y:0
+                });
+                if(window.innerWidth<1025){
+                    sizesCorrect.x+=2.5
+                    sizesCorrect.y+=5
+                }
+            const plane=new THREE.PlaneBufferGeometry(sizes[0]+sizesCorrect.x,sizes[1]+sizesCorrect.y)
             const planeMesh=new THREE.Mesh(plane,materialTest)
             planeMesh.rotation.set(rorationSet[0],rorationSet[1],rorationSet[2])
             planeMesh.position.set(positionSet[0],positionSet[1],positionSet[2])
@@ -419,7 +513,7 @@ for (const [key, value] of Object.entries(models)) {
         planeGroupe.position.set(-.4,0,2.15)
         planeGroupe.scale.set(.2,2,.2)
 
-        anime.timeline().add({targets:planeGroupe.position,z:[2,2.15],duration:2000,easing:'linear'})
+        /* anime.timeline().add({targets:planeGroupe.position,z:[2,2.15+mobCorrectToPseudoLighs],duration:2000,easing:'linear'})
         .add({
             targets:
             planeGroupe.position,
@@ -428,7 +522,7 @@ for (const [key, value] of Object.entries(models)) {
             delay:2000,
             loop:true,
             easing:'linear',
-        })
+        }) */
         // \ Pseudo Lights
 
         const mainColor=0x5A5651;
@@ -436,6 +530,76 @@ for (const [key, value] of Object.entries(models)) {
         loader.load(
             models.girl,// resource URL
              gltf=>{// called when the resource is loaded
+
+                // Remove preloader and start HTML anim
+            const preloaderImg1=document.querySelector('.preload-img-1')
+            const preloaderImg2=document.querySelector('.preload-img-2')
+            const ANImain1=document.querySelector('.ANI-main-1')
+            anime({
+                targets:preloaderImg1,
+                opacity:[1,0],
+                easing:'linear',
+                duration:2000,//3000
+            })
+            anime({
+                targets:preloaderImg2,
+                opacity:[0,1],
+                duration:800,
+                easing:'linear',
+                delay:1200,
+                complete:()=>{
+                    preloaderImg2.classList.add('preloaderImg2Cl')
+                    anime.timeline()
+                    .add({
+                        targets:preloaderImg2,
+                        opacity:0,
+                        duration:1000,
+                        delay:800,
+                        //translateY:['20px','20px'],
+                        easing:'linear',
+                        complete:()=>{
+                            document.body.classList.remove('ovh');
+                            preloaderImg1.remove()
+                            preloaderImg2.remove()
+                            preloader.setAttribute('style','z-index:-1;opacity:0')
+                                window.scrollTo({ top: 0 });
+                        }
+                    })
+                    .add({
+                        targets:ANImain1,
+                        opacity:[0,1],
+                        translateY:['-10%',0],
+                        easing:'linear',
+                        duration:2000,
+                    })
+                    .add({
+                        /* targets:preloader,
+                        opacity:[1,0],
+                        delay:800,
+                        easing:'linear', */
+                        complete:()=>{
+                            //videoBgAll.classList.remove('dn');
+                            //preloader.remove();
+                            //window.toStartThree=1;
+                            anime.timeline()
+                            .add({
+                                targets:document.querySelector('.ANI-main-2'),
+                                opacity:1,
+                                translateY:['4rem',0],
+                                easing:'linear',
+                                duration:700
+                            })
+                            .add({
+                                targets:document.querySelector('.ANI-main-3'),
+                                translateY:['-100%',0],
+                                easing:'linear',
+                                duration:700,
+                            })
+                        }
+                    })
+                }
+            })
+
                 const mesh=gltf.scene.children[0].children[0].children[0]
                 mesh.add(gltf.scene.children[0].children[0].children[1])
                 //console.log(gltf,mesh);
@@ -447,18 +611,18 @@ for (const [key, value] of Object.entries(models)) {
                 mesh.material.depthTest=true
                 mesh.material.roughness=.2
                 mesh.material.metalness=.5
-                mesh.material.envMap = hdrEquirect
-                ///mesh.material.emissive=new THREE.Color(emissiveColor)
+                //mesh.material.envMap = hdrEquirect
+                //дщmesh.material.emissive=new THREE.Color(emissiveColor)
                 //mesh.material.emissive=new THREE.Color("#000")
-                /* mesh.material.bumpMap = bumpTexture
-                mesh.material.bumpScale = .0003 */
+                //mesh.material.bumpMap = bumpTexture
+                //mesh.material.bumpScale = .0003
                 const preloader=document.querySelector('.preloader');
                 setTimeout(()=>{preloader.style.opacity=0},3000)
                 const tmp={}
                 scene.add(mesh)
                 const duration=1000
                 anime.timeline()
-                    .add({targets:mesh.position,y:[0,-.9],z:[-40,2.5],delay:2600,duration:duration*2,easing:'linear',complete:()=>{
+                    .add({targets:mesh.position,y:[0,-.9],z:[-40,2.5],delay:2100,duration:duration*2,easing:'linear',complete:()=>{
                         let temp=0,
                             temp2=0
                         const tmp2scr=16.777// 2 screen
@@ -476,7 +640,9 @@ for (const [key, value] of Object.entries(models)) {
                                 if(objcts.obj1Img){// courses Object3d
                                     if(temp<2){
                                         temp++
-                                        anime({targets:objcts.obj1Img.children[0].position,x:[7,-7],duration:10000,loop:true,easing:'linear',})
+                                        if(objcts.obj1Img&&objcts.obj1Img.children[0])anime({targets:objcts.obj1Img.children[0].position,x:[14,-14],duration:5e4,loop:true,easing:'linear',})
+                                        if(objcts.obj1Img&&objcts.obj1Img.children[1])anime({targets:objcts.obj1Img.children[1].position,x:[14,-14],duration:5e4/1.2,loop:true,easing:'linear',})
+                                        //anime({targets:objcts.obj1Img.position,x:[7,-7],duration:10000,loop:true,easing:'linear',})
                                     }
                                     objcts.obj1Img.position.set(
                                         0,
@@ -554,9 +720,9 @@ for (const [key, value] of Object.entries(models)) {
                                         */
                                     //console.log(bull);
                                             Bull=bull.scene.children[0].children[0]
-                                            Bull.material.bumpMap = new THREE.TextureLoader().load(models.skin)
-                                            Bull.material.bumpScale = .001
-                                            Bull.material.envMap = hdrEquirect
+                                            //Bull.material.bumpMap = new THREE.TextureLoader().load(models.skin)
+                                            //Bull.material.bumpScale = .001
+                                            //Bull.material.envMap = hdrEquirect
                                             //console.log(bull.map(e=>e instanceof THREE.Mesh?"log":null));
                                             Bull.position.set(0,-1,-6)
                                             Bull.rotation.set(-1.7,0,0)
@@ -711,23 +877,23 @@ for (const [key, value] of Object.entries(models)) {
         function render() {
             TIME += .001;
             if(TIME>10)TIME=0
-            ////renderer.render(scene, camera)
-            //if(TIME%4>.5){
-            //    TIME=0
-            //    COMPOSER.passes.forEach((pass) => {
-            //        if (pass) {
-            //            if(pass.uniforms)pass.uniforms.uTime.value = 0;
-            //        }
-            //    });
-            //}
-            //if(TIME%2>.05&&TIME%3<.7){//2 4
-            //    TIME=THREE.Math.randFloat(0,.4)
+            //renderer.render(scene, camera)
+            if(TIME%4>.5){
+                TIME=0
+                COMPOSER.passes.forEach((pass) => {
+                    if (pass) {
+                        if(pass.uniforms)pass.uniforms.uTime.value = 0;
+                    }
+                });
+            }
+            if(TIME%2>.05&&TIME%4<.7){//2 4
+                TIME=THREE.Math.randFloat(0,.4)
                 COMPOSER.passes.forEach((pass) => {
                     if (pass) {
                         if(pass.uniforms)pass.uniforms.uTime.value = TIME;
                     }
                 });
-            //} 
+            } 
             COMPOSER.render(scene, camera);
         }
         animate()
@@ -735,10 +901,12 @@ for (const [key, value] of Object.entries(models)) {
 })();
 
 (()=>{//load 2 webgl
-    setTimeout(()=>{
-        const d=document;
-        const sc=d.createElement('script');
-        sc.src=models.webgl2;
-        d.body.appendChild(sc)
-    },100)
+    if(window.innerWidth>1024){
+        setTimeout(()=>{
+            const d=document;
+            const sc=d.createElement('script');
+            sc.src=models.webgl2;
+            d.body.appendChild(sc)
+        },100)
+    }
 })()
