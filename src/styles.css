@@ -328,6 +328,15 @@ footer{
 	left: 0;
 	right: 0;
 }
+
+.ANI-main-2{
+	font-style: normal;
+	font-weight: 400;
+	font-size: 16px;
+	line-height: 140%;
+	text-align: center;
+	color: #FFFFFF;
+}
 /* other */
 
 canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
@@ -471,6 +480,10 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	.social__item{
 		flex: 25%;
 		margin-bottom: 0px;
+	}
+	
+	.ANI-main-2{
+		font-size: 32px;
 	}
 	
 }
