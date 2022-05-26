@@ -9,6 +9,7 @@ const glob = require("glob");
 const fs = require('fs');
 const path = require('path');
 const argv = require('yargs').argv;
+const webpack = require('webpack');
 
 const root = path.resolve( path.resolve( __dirname+"/..") );
 const isDev = argv.mode === 'development';
@@ -140,6 +141,11 @@ module.exports = {
         new WebpackOnBuildPlugin(async function(stats) {
             await del_file_folder(root+"/dist/css","js");
         }),
+
+	    new webpack.ProvidePlugin({
+		    $: 'jquery',
+		    jQuery: 'jquery'
+	    }),
     ],
     module:
     {
