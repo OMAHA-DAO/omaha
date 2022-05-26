@@ -9,7 +9,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { GlitchPass } from 'three/examples/jsm/postprocessing/GlitchPass'; */
 
 //import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-//import { FontLoader } from '../static/js/FontLoader';
+//import { FontLoader } from '../src/FontLoader';
 //import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 
 //import { Lensflare, LensflareElement } from 'three/examples/jsm/objects/Lensflare';
