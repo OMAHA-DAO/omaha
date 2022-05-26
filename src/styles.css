@@ -204,7 +204,7 @@ section{
 	font-family: 'Bomber Escort',sans-serif;
 	font-style: normal;
 	font-weight: 500;
-	font-size: 36px;
+	font-size: 55px;
 	line-height: 95%;
 	color: #FFFFFF;
 	opacity: 0.3;
@@ -395,8 +395,8 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		position: absolute;
 		width: 63px;
 		height: 70px;
-		top: 0px;
-		right: 5%;
+		top: 3%;
+		right: 7%;
 		z-index: 1;
 	}
 	
@@ -410,8 +410,8 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		position: absolute;
 		width: 63px;
 		height: 70px;
-		bottom: -5%;
-		left: 5%;
+		bottom: -10%;
+		left: 10%;
 		z-index: 1;
 	}
 	
@@ -442,12 +442,14 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	}
 	
 	.cube__item-3{
+		margin-left: 10px;
 		grid-column-start: 4;
 		grid-column-end: 6;
 		grid-row-start: 1;
 	}
 	
 	.cube__item-4{
+		margin-left: 10px;
 		grid-column-start: 4;
 		grid-column-end: 6;
 		grid-row-start: 2
@@ -690,6 +692,18 @@ button{background-color: transparent;border:0;color:#fff;font-size: 1rem;}
 /*footer{padding:6rem 0 3rem 0;}*/
 /*footer img{margin-bottom: 1rem;filter:drop-shadow(0 0 6px #DAB457)}*/
 /*footer span{display: flex;flex-direction: column;align-items: center; color:#DAB457;text-transform: uppercase;}*/
+
+.cube__mobile__img{
+	width: 120px;
+	height: auto;
+}
+@media all and (min-width: 420px) {
+	.cube__mobile__img{
+		width: 180px;
+	}
+}
+
+@import "includes/milestones_animation.css";
 
 
 
