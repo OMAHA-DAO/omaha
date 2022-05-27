@@ -385,7 +385,7 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	}
 	
 	.section-second .section__body{
-		max-width: 440px;
+		max-width: 460px;
 		display: block;
 	}
 	
