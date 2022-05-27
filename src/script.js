@@ -240,8 +240,8 @@ for (const [key, value] of Object.entries(models)) {
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            // (document.getElementById('scrollProgress')).innerText =
-            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
+            (document.getElementById('scrollProgress')).innerText =
+                'Scroll Progress : ' + scrollPercent.toFixed(2)
             if(scrollPercent>89){
                 if(canvas1){
                     canvas1.classList.add('canvas1Cl')
