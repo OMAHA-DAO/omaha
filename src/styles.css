@@ -11,12 +11,20 @@
 	font-weight:normal;font-style:normal
 }
 
+@font-face{
+	font-family:'Roboto';src:
+		url('../fonts/roboto/Roboto.woff2') format('woff2'),
+		url('../fonts/roboto/Roboto.woff') format('woff'),
+		url('../fonts/roboto/Roboto.ttf') format('ttf');
+	font-weight:normal;font-style:normal
+}
+
 /*!* top styles *!*/
 body {
 	/*width: 100vw;*/
 	/*height: 100vh;*/
 	/*overflow: hidden; */
-	font-family: 'Open Sans', sans-serif;
+	font-family: 'Roboto', sans-serif;
 	background-color: #000000;
 	/*overflow-x: hidden;*/
 }
@@ -88,7 +96,6 @@ html, body, .custom-scrollbar-ff {
 }
 
 .post-title{
-	font-family: 'Open Sans', sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 18px;
@@ -98,7 +105,6 @@ html, body, .custom-scrollbar-ff {
 }
 
 .post-description{
-	font-family: 'Open Sans', sans-serif;
 	font-style: normal;
 	font-weight: 400;
 	font-size: 16px;
@@ -299,6 +305,7 @@ section{
 	line-height: 130%;
 	text-transform: uppercase;
 	padding: 10px!important;
+	font-family: 'Roboto', sans-serif;
 }
 
 .accordeon-text{
