@@ -18,7 +18,7 @@ body {
 	/*overflow: hidden; */
 	font-family: 'Open Sans', sans-serif;
 	background-color: #000000;
-	overflow-x: hidden;
+	/*overflow-x: hidden;*/
 }
 
 /*#scroll-content {*/
@@ -179,6 +179,7 @@ section{
 	min-height: auto;
 	padding-top: 65px;
 	padding-bottom: 45px;
+	overflow: hidden;
 }
 
 .fundamentals-section{
@@ -186,6 +187,7 @@ section{
 	min-height: auto;
 	padding-top: 45px;
 	padding-bottom: 25px;
+	overflow: hidden;
 }
 
 .cube{
@@ -227,7 +229,7 @@ section{
 .cube__mobile{
 	position: absolute;
 	top: 0;
-	right: -15px;
+	right: -30px;
 }
 
 .cube__col{
