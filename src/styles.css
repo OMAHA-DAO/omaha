@@ -96,6 +96,7 @@ html, body, .custom-scrollbar-ff {
 	line-height: 130%;
 	color: #DAB457;
 	margin-top: auto;
+	min-height: 80px;
 }
 /* posts */
 
