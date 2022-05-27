@@ -17,11 +17,17 @@ $(document).ready(function () {
 
 function milestones_animation() {
     var milestones =  $(".cube-section");
-    var milestones_animation_point = milestones.offset().top - (window.height * 0.1);
+    var milestones_animation_point;
+
     var milestones_animated = false;
+    if(window.width >= 1200){
+        milestones_animation_point = milestones.offset().top - (window.height * 0.1);
+    }else{
+        milestones_animation_point = milestones.offset().top - (window.height * 0.5);
+    }
+
 
     $(window).on("scroll.milestones", function (e) {
-        console.log(milestones.offset().top, $(window).scrollTop());
 
         if($(window).scrollTop() > milestones_animation_point){
             milestones_animated = true;

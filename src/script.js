@@ -539,7 +539,7 @@ for (const [key, value] of Object.entries(models)) {
                                     loader.load(
                                         models.bull,
                                         bull=>{
-                                        /* 
+                                        /*
                                             // https://discourse.threejs.org/t/giving-a-glb-a-texture-in-code/15071/5
                                             // из-за того, что слишком мало полигонов, невозможно применить выдавливание!
                                             bull.scene.traverse( function( object ) 
