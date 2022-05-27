@@ -146,6 +146,7 @@ html, body, .custom-scrollbar-ff {
 	font-size: 27px;
 	color: #FFFFFF;
 	margin-bottom: 40px;
+	z-index: 1;
 }
 
 .section__title:after{
