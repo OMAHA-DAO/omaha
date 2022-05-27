@@ -289,6 +289,7 @@ section{
 	line-height: 130%;
 	text-transform: uppercase;
 	padding: 10px!important;
+	font-family: 'Roboto', sans-serif;
 }
 
 .accordeon-text{
