@@ -377,6 +377,11 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		transform: translateY(100%);
 	}
 	
+	footer .row{
+		margin-left: -30px;
+		margin-right: -30px;
+	}
+	
 }
 
 @media(min-width: 768px){
