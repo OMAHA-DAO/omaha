@@ -814,7 +814,7 @@ button{background-color: transparent;border:0;color:#fff;font-size: 1rem;}
 }
 
 .ANI-main-1,.ANI-main-2{opacity: 0;transform:translateY(10%)}
-.ANI-main-3{transform:translateY(-100%)}
+/*.ANI-main-3{transform:translateY(-100%)}*/
 
 @media (max-width:1024px){
 	.ANI-main-1{

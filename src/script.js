@@ -591,7 +591,7 @@ for (const [key, value] of Object.entries(models)) {
                             })
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:['-100%',0],
+                                translateY:['-120%',0],
                                 easing:'linear',
                                 duration:700,
                             })
