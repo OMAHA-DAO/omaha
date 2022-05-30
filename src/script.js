@@ -559,8 +559,8 @@ for (const [key, value] of Object.entries(models)) {
                         easing:'linear',
                         complete:()=>{
                             document.body.classList.remove('ovh');
-                            preloaderImg1.remove()
-                            preloaderImg2.remove()
+                            // preloaderImg1.remove()
+                            // preloaderImg2.remove()
                             preloader.setAttribute('style','z-index:-1;opacity:0')
                                 window.scrollTo({ top: 0 });
                         }
