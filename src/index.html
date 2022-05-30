@@ -502,6 +502,7 @@
 
             window.responsiveVideo = function({
                 elementQuery = "",
+                imageOnSafari = false,
                 videoMap = {},
                 imageMap = {},
             } = {}) {
@@ -536,7 +537,7 @@
 
                     video.className = element.className + " replaced-responsive-video";
                     video.src =  url;
-                    video.poster = 'data:base64';
+                    video.poster = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 
                     video.autoplay = true;
                     video.playsinline = true;
@@ -550,6 +551,24 @@
                     }
 
                     element.replaceWith(video);
+
+                    let body = document.getElementsByTagName("body")[0];
+                    let interactionEvent = function(){
+                        console.log("click touchstart");
+                        body.removeEventListener('click touchstart', interactionEvent, false);
+                        video.play();
+                    };
+                    body.addEventListener('click touchstart', interactionEvent, false);
+
+                    // $('body').on('click.video_play touchstart.video_play', function () {
+                    //
+                    //     video.setAttribute('playsinline', '');
+                    //     video.setAttribute('webkit-playsinline', '');
+                    //     enableInlineVideo(video);
+                    //     video.play();
+                    //
+                    //     $('body').off('click.video_play touchstart.video_play');
+                    // });
                 }
                 // Image
                 else{
@@ -574,6 +593,7 @@
 
             window.responsiveVideo({
                 elementQuery: ".preloader__video",
+                imageOnSafari: true,
                 videoMap: {
                     horizontal: {
                         1 : "/landing_video_bg/bg_particles_480x320.av1.mp4",
