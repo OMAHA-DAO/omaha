@@ -546,7 +546,6 @@ const models=Object.create({
                                 objcts.obj1Img.position.set(0,-1.3,0)
                                 objcts.obj1Img.rotation.set(0, lerp(-.2, .4, scalePercent(tmp2scr,tmp3scr)), 0)
                             }
-                            oncedLight.intensity=lerp(.7, 0, scalePercent(0, tmp3scr))
                             if(planeGroupe)planeGroupe.position.set(
                                 lerp(-.4, -.6, scalePercent(tmp2scr, tmp3scr)),
                                 0,
