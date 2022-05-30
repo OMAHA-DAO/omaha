@@ -119,6 +119,7 @@ html, body, .custom-scrollbar-ff {
 
 .preloader{
 	/*position: absolute;*/
+	background-color: #000000;
 	position: fixed;
 	z-index: 5;
 	top: 0;
