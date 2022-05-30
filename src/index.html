@@ -7,26 +7,26 @@
 
         <script>
             history.scrollRestoration = "manual";
+
+            window.width = window.innerWidth;
+            window.height = window.innerHeight;
+            window.dpr = window.devicePixelRatio;
+            console.log("window.width", window.width);
+            console.log("window.height", window.height);
+            console.log("window.dpr", window.dpr);
         </script>
 
     </head>
 
     <body>
 
-        <div class="preloader"
-             data-360="/landing_video_bg/bg_particles_360x640.av1.mp4"
-             data-480="/landing_video_bg/bg_particles_480x320.av1.mp4"
-             data-768="/landing_video_bg/bg_particles_768x1280.av1.mp4"
-             data-1024="/landing_video_bg/bg_particles_1024x768.av1.mp4"
-             data-1280="/landing_video_bg/bg_particles_1280x1024.av1.mp4"
-             data-1366="/landing_video_bg/bg_particles_1366x768.av1.mp4"
-             data-1920="/landing_video_bg/bg_particles_1920x1080.av1.mp4"
-             data-2560="/landing_video_bg/bg_particles_2560x1440.av1.mp4"
-        >
+        <div class="preloader">
+            <div class="preloader__video"></div>
+
 
 <!--            <video data-src="/video/particles_preloader_AV1.mp4" preload="metadata" autoplay muted playsinline loop class="preloader__video"></video>-->
-            <img data-src="/media/logo.svg" width="576" class="preload-img-2" alt="preloader logo">
-            <img data-src="/media/preloader_960x480_omaha_dao.gif" alt="preloader" class="preload-img-1">
+            <img src="/media/logo.svg" width="576" class="preload-img-2" alt="preloader logo">
+            <img src="/media/preloader_960x480_omaha_dao.gif" alt="preloader" class="preload-img-1">
         </div>
 
         <canvas class="webgl"></canvas>
@@ -440,48 +440,171 @@
 <!-- TMP ADD ANIME -->
 <script src="/node_modules/animejs/lib/anime.min.js"></script>
 
+        <div class="responsive-video">
+
+        </div>
+
+        <style>
+
+        </style>
+        <script>
+
+            window.responsiveVideo = function({
+                elementQuery = "",
+                videoMap = {},
+                imageMap = {},
+            } = {}) {
+                let element = document.querySelector(elementQuery);
+                console.log("element", element);
+                let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+                // Get orientation
+                const orientation = window.width > window.height ? "horizontal" : "vertical";
+
+                // Get real, physical width (considering dpr)
+                const realWidth = window.screen.width * window.dpr;
+
+                //isSafari = true;
+
+                // Vids
+                if(!isSafari){
+                    // Decide which video to load
+                    let url;
+                    let selected = 0;
+                    let keys = Object.keys(videoMap[orientation]);
+                    for(let i = 0; i < keys.length; i++){
+                        let key = parseInt(keys[i]);
+                        if(key <= realWidth && key > selected){
+                            selected = key;
+                        }
+                    }
+                    url = videoMap[orientation][selected];
+
+                    let video = document.createElement('video');
+
+
+                    video.className = element.className + " replaced-responsive-video";
+                    video.src =  url;
+                    video.poster = 'data:base64';
+
+                    video.autoplay = true;
+                    video.playsinline = true;
+                    video.muted = true;
+                    video.loop = true;
+                    video.webkitPlaysinline = true;
+                    video.preload="metadata";
+
+                    if(window.innerWidth < 768){
+                        video.preload = 'none';
+                    }
+
+                    element.replaceWith(video);
+                }
+                // Image
+                else{
+
+                    let url;
+                    let selected = 0;
+                    let keys = Object.keys(imageMap[orientation]);
+                    for(let i = 0; i < keys.length; i++){
+                        let key = parseInt(keys[i]);
+                        if(key <= realWidth && key > selected){
+                            selected = key;
+                        }
+                    }
+                    url = imageMap[orientation][selected];
+
+                    let image = document.createElement('img');
+                    image.src = url;
+                    image.className = element.className + " replaced-responsive-image";
+                    element.replaceWith(image);
+                }
+            };
+
+            window.responsiveVideo({
+                elementQuery: ".preloader__video",
+                videoMap: {
+                    horizontal: {
+                        1 : "/landing_video_bg/bg_particles_480x320.av1.mp4",
+                        768 : "/landing_video_bg/bg_particles_1024x768.av1.mp4",
+                        1280 : "/landing_video_bg/bg_particles_1366x768.av1.mp4",
+                        1920 : "/landing_video_bg/bg_particles_1920x1080.av1.mp4",
+                        2560 : "/landing_video_bg/bg_particles_2560x1440.av1.mp4"
+                    },
+                    vertical: {
+                        1 : "/landing_video_bg/bg_particles_360x640.av1.mp4",
+                        768 : "/landing_video_bg/bg_particles_768x1280.av1.mp4",
+                    },
+                },
+                imageMap: {
+                    horizontal: {
+                        1 : "/preloader/h-1.gif",
+                        1024 : "/preloader/h-1024.gif",
+                        1280 : "/preloader/h-1366.gif",
+                        1920 : "/preloader/h-1920.gif",
+                        2560 : "/preloader/h-2560.gif"
+                    },
+                    vertical: {
+                        1 : "/preloader/v-1.gif",
+                        768 : "/preloader/v-768.gif",
+                    }
+                }
+            });
+
+            // data-360="/landing_video_bg/bg_particles_360x640.av1.mp4"
+            // data-480="/landing_video_bg/bg_particles_480x320.av1.mp4"
+            // data-768="/landing_video_bg/bg_particles_768x1280.av1.mp4"
+            // data-1024="/landing_video_bg/bg_particles_1024x768.av1.mp4"
+            // data-1280="/landing_video_bg/bg_particles_1280x1024.av1.mp4"
+            // data-1366="/landing_video_bg/bg_particles_1366x768.av1.mp4"
+            // data-1920="/landing_video_bg/bg_particles_1920x1080.av1.mp4"
+            // data-2560="/landing_video_bg/bg_particles_2560x1440.av1.mp4"
+
+
+        </script>
+
 <script>
-    let videoSRC = undefined;
-    let vid_container = document.getElementsByClassName('preloader')[0];
-
-    if(window.innerWidth >= 320 && window.innerWidth < 480){
-        videoSRC = 360
-    }else if(window.innerWidth >= 480 && window.innerWidth < 768){
-        videoSRC = 480
-    }else if(window.innerWidth >= 768 && window.innerWidth < 1024){
-        videoSRC = 768
-    }else if(window.innerWidth >= 1024 && window.innerWidth < 1280){
-        videoSRC = 1024
-    }else if(window.innerWidth >= 1280 && window.innerWidth < 1366){
-        videoSRC = 1280
-    }else if(window.innerWidth >= 1366 && window.innerWidth < 1920){
-        videoSRC = 1366
-    }else if(window.innerWidth >= 1920 && window.innerWidth < 2560){
-        videoSRC = 1920
-    }else{
-        videoSRC = 2560
-    }
-
-    let url = vid_container.getAttribute(`data-${videoSRC}`);
-
-    let video = document.createElement('video');
-
-    video.classList.add("preloader__video");
-    video.src =  url;
-    video.poster = 'data:base64';
-
-    video.autoplay = true;
-    video.playsinline = true;
-    video.muted = true;
-    video.loop = true;
-    video.webkitPlaysinline = true;
-    video.preload="metadata";
-
-    if(window.innerWidth < 768){
-	    video.preload = 'none';
-    }
-
-    vid_container.appendChild(video);
+    // let videoSRC = undefined;
+    // let vid_container = document.getElementsByClassName('preloader')[0];
+    //
+    // if(window.innerWidth >= 320 && window.innerWidth < 480){
+    //     videoSRC = 360
+    // }else if(window.innerWidth >= 480 && window.innerWidth < 768){
+    //     videoSRC = 480
+    // }else if(window.innerWidth >= 768 && window.innerWidth < 1024){
+    //     videoSRC = 768
+    // }else if(window.innerWidth >= 1024 && window.innerWidth < 1280){
+    //     videoSRC = 1024
+    // }else if(window.innerWidth >= 1280 && window.innerWidth < 1366){
+    //     videoSRC = 1280
+    // }else if(window.innerWidth >= 1366 && window.innerWidth < 1920){
+    //     videoSRC = 1366
+    // }else if(window.innerWidth >= 1920 && window.innerWidth < 2560){
+    //     videoSRC = 1920
+    // }else{
+    //     videoSRC = 2560
+    // }
+    //
+    // let url = vid_container.getAttribute(`data-${videoSRC}`);
+    //
+    // let video = document.createElement('video');
+    //
+    // video.classList.add("preloader__video");
+    // video.src =  url;
+    // video.poster = 'data:base64';
+    //
+    // video.autoplay = true;
+    // video.playsinline = true;
+    // video.muted = true;
+    // video.loop = true;
+    // video.webkitPlaysinline = true;
+    // video.preload="metadata";
+    //
+    // if(window.innerWidth < 768){
+	 //    video.preload = 'none';
+    // }
+    //
+    // vid_container.appendChild(video);
 </script>
 
 <script>
