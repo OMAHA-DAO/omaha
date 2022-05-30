@@ -449,7 +449,6 @@ const models=Object.create({
             const sceneGlb=gltf.scene
             mixer = new THREE.AnimationMixer(sceneGlb)
             mixer.clipAction((gltf).animations[0]).play()
-            console.log(gltf);
             scene.add(sceneGlb)
             sceneGlb.position.set(.1,-.52,.23)
             sceneGlb.scale.set(.05,.05,.05)
@@ -494,7 +493,7 @@ const models=Object.create({
             window.anime.timeline()
                 .add({targets:preloader,opacity:[0,1],easing,duration:1})
                                                         // POSITION
-                .add({targets:mesh.position,y:[0,-.78],z:[-7,2],delay:2100,duration:duration*2,easing,complete:()=>{
+                .add({targets:mesh.position,y:[0,-.78],z:[-3,2],delay:3600,duration:duration*2,easing,complete:()=>{
                     let temp=0,
                         temp2=0
                     const tmp2scr=screenConst// 2 screen
