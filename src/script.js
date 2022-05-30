@@ -72,7 +72,7 @@ const hdrEquirect = new RGBELoader().load(
 (()=>{
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
     const screenConst=parseInt(window.getComputedStyle(slider).height)/300;//100/7 ( 7 = screens.length)
     const easing='linear'
 
