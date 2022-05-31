@@ -22,21 +22,21 @@ let files = {
 
 const optimization = () => {
     const config = {
-        // splitChunks: {
-        //     cacheGroups: {
-        //         vendors: {
-        //             test: /[\\/]node_modules[\\/]|[\\/]js[\\/]includes[\\/]/,
-        //             chunks: 'all',
-        //             minSize: 999999999,
-        //
-        //             name(module, chunks, cacheGroupKey) {
-        //                 let name = chunks.map((item) => item.name).join('~');
-        //                 return cacheGroupKey+"/"+name;
-        //             },
-        //         },
-        //     }
-        //
-        // },
+        splitChunks: {
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]|[\\/]includes[\\/]/,
+                    chunks: 'all',
+                    minSize: 999999999,
+
+                    name(module, chunks, cacheGroupKey) {
+                        let name = chunks.map((item) => item.name).join('~');
+                        return cacheGroupKey+"/"+name;
+                    },
+                },
+            }
+
+        },
     };
 
     if (isProd) {
@@ -103,7 +103,7 @@ module.exports = {
     output: {
         path: root + '/dist/',
         filename: "[name].js",
-        chunkFilename: 'dist/modules/[name].[chunkhash].js',
+        chunkFilename: 'js/modules/[name].[chunkhash].js',
         publicPath: "/"
         //sourceMapFilename: '[name].js.map'
     },
