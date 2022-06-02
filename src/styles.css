@@ -253,6 +253,18 @@ section{
 	margin-bottom: 25px;
 	width: 100%;
 }
+.cube__item-1{
+	order: 1
+}
+.cube__item-2{
+	order: 3
+}
+.cube__item-3{
+	order: 2
+}
+.cube__item-4{
+	order: 4
+}
 
 .cube__title{
 	font-family: 'Bomber Escort',sans-serif;
@@ -517,6 +529,7 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	
 	.cube__item{
 		padding-top: 2rem;
+		order: 1
 	}
 	
 	.cube__item-1{

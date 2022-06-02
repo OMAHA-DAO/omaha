@@ -10,9 +10,7 @@ $(document).ready(function () {
     console.log("window_width", window.width);
     console.log("window_height", window.height);
 
-    if(window.width >= 768 ){
-        milestones_animation();
-    }
+    milestones_animation();
 });
 
 function milestones_animation() {
@@ -33,22 +31,50 @@ function milestones_animation() {
             milestones_animated = true;
             $(window).off("scroll.milestones");
 
-            $(".cube__item-1").addClass("animated");
-            $(".cube__item-3").addClass("animated");
+            if(window.width >= 768 ){
+                $(".cube__item-1").addClass("animated");
+                $(".cube__item-3").addClass("animated");
 
-            setTimeout(function () {
-                $(".cube__item-2").addClass("animated");
-                $(".cube__item-4").addClass("animated");
-            }, 500);
+                setTimeout(function () {
+                    $(".cube__item-2").addClass("animated");
+                    $(".cube__item-4").addClass("animated");
+                }, 500);
 
-            setTimeout(function () {
-                $(".cube-center").addClass("animated");
-            }, 1000);
+                setTimeout(function () {
+                    $(".cube-center").addClass("animated");
+                }, 1000);
 
-            setTimeout(function () {
-                $(".cube-top").addClass("animated");
-                $(".cube-bottom").addClass("animated");
-            }, 1600);
+                setTimeout(function () {
+                    $(".cube-top").addClass("animated");
+                    $(".cube-bottom").addClass("animated");
+                }, 1600);
+
+                setTimeout(function () {
+                    $(".cube__item-1").addClass("highlight");
+                }, 2100);
+                setTimeout(function () {
+                    $(".cube__item-3").addClass("highlight");
+                }, 2900);
+                setTimeout(function () {
+                    $(".cube__item-2").addClass("highlight");
+                }, 3700);
+                setTimeout(function () {
+                    $(".cube__item-4").addClass("highlight");
+                }, 4500);
+            }else{
+                setTimeout(function () {
+                    $(".cube__item-1").addClass("highlight");
+                }, 0);
+                setTimeout(function () {
+                    $(".cube__item-3").addClass("highlight");
+                }, 800);
+                setTimeout(function () {
+                    $(".cube__item-2").addClass("highlight");
+                }, 1600);
+                setTimeout(function () {
+                    $(".cube__item-4").addClass("highlight");
+                }, 2400);
+            }
         }
     })
 }
