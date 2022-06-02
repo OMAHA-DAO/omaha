@@ -702,7 +702,7 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	.section-third .section__body {
 		max-width: 710px;
 	}
-
+	
 	.cube__desktop{
 		width: 495px;
 		height: 495px;
@@ -716,6 +716,56 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	.cube__desktop .cube-bottom{
 		width: 150px;
 		height: 165px;
+	}
+}
+
+@media(min-width: 1200px) and (max-width: 1439px){
+	.cube__desktop{
+		width: 396px;
+		height: 396px;
+	}
+	
+	.cube__desktop .cube-top{
+		width: 120px;
+		height: 132px;
+	}
+	
+	.cube__desktop .cube-bottom{
+		width: 120px;
+		height: 132px;
+	}
+	
+	.cube__title{
+		font-size: 44px;
+	}
+	
+	.cube__body{
+		font-size: 18px;
+	}
+	
+	.accordeon .accordeon-trigger{
+		font-size: 22px;
+	}
+	
+	.accordeon-text{
+		font-size: 13px;
+	}
+	
+	.post-title{
+		font-size: 22px!important;
+	}
+	
+	.post-description{
+		font-size: 13px;
+	}
+	
+	.social__item img{
+		width: 36px;
+		height: 36px;
+	}
+	
+	.social__item q{
+		font-size: 22px;
 	}
 }
 
@@ -758,6 +808,13 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		font-size: 28px;
 	}
 	
+}
+
+@media(min-width: 1440px){
+	.post-section .post.col-xl-3{
+		flex: 0 0 33.3333333333%;
+		max-width: 33.3333333333%;
+	}
 }
 
 @media(min-width: 1920px){
