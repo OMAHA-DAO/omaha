@@ -11,7 +11,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
 
 const models=Object.create({
-    hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
+    // hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
     girl:'/model/2022-05-31/2022-05-31-shoes-ok.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
 });

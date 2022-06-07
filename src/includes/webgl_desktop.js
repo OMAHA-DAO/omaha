@@ -10,7 +10,7 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 const models=Object.create({
-    hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
+    // hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
     //girl:'/model/2022-05-08/omaha_girl_04_05_17.glb',
     //girl:'/model/2022-05-31/2022-05-31-shoes-ok.glb',
     girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
@@ -18,7 +18,7 @@ const models=Object.create({
     voiting:'/media/voiting_03.webp',
     courses:'/media/courses_top.png',
     coursesBtm:'/media/courses_btm.png',
-    webgl2:'/js/webgl2.js',
+    // webgl2:'/js/webgl2.js',
 });
 
 /* for (const [key, value] of Object.entries(models)) {
@@ -276,24 +276,24 @@ const models=Object.create({
             })
         }
         const canvas1=document.querySelector('.webgl');
-        const canvas2=document.querySelector('.webgl2');
+        // const canvas2=document.querySelector('.webgl2');
         document.body.onscroll = () => {//calculate the current scroll progress as a percentage
             scrollPercent =
                 ((document.documentElement.scrollTop || document.body.scrollTop) /
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            (document.getElementById('scrollProgress')).innerText =
-                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            // (document.getElementById('scrollProgress')).innerText =
+            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
             if(scrollPercent>95){
                 if(canvas1){
                     canvas1.classList.add('canvas1Cl')
-                    canvas2.classList.remove('canvas1Cl')
+                    // canvas2.classList.remove('canvas1Cl')
                 }
             }else{
                 if(canvas1){
                     canvas1.classList.remove('canvas1Cl')
-                    canvas2.classList.add('canvas1Cl')
+                    // canvas2.classList.add('canvas1Cl')
                 }
             }
             //docScrl(scrollPercent)
@@ -830,7 +830,7 @@ const models=Object.create({
         setTimeout(()=>{
             const d=document;
             const sc=d.createElement('script');
-            sc.src=models.webgl2;
+            // sc.src=models.webgl2;
             d.body.appendChild(sc)
         },100)
     }
