@@ -60,6 +60,7 @@ const babelOptions = preset => {
             '@babel/plugin-proposal-object-rest-spread',
             '@babel/plugin-syntax-dynamic-import',
             '@babel/plugin-transform-typescript',
+            '@babel/transform-runtime',
         ]
     };
 
