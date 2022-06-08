@@ -90,8 +90,6 @@ Promise.all([
 
 	window.gsap = gsapModule.default;
 
-	const fundamentals = $('.fundamentals__list');
-
 	let fundamentals_img_1 = $('.fundamentals__desktop_1'),
 		fundamentals_img_2 = $('.fundamentals__desktop_2'),
 		fundamentals_img_3 = $('.fundamentals__desktop_3'),
@@ -168,7 +166,7 @@ Promise.all([
 				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-38%,126%) rotate(270deg)` })
 				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-72%,249%) rotate(26deg)` })
 				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(23%, 97%) rotate(297deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(8%,119%) rotate(260deg)` })
+				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
 
 				break;
 

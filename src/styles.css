@@ -711,6 +711,15 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		transform-style: preserve-3d;
 	}
 	
+	.fundamentals__desktop_arrow{
+		left: 50%;
+		z-index: 5;
+		top: 0;
+		transform: translate(-39%,130%);
+		width: 39%;
+		animation: levitation_arrow ease-in-out infinite 3s;
+	}
+	
 	.fundamentals__desktop_1{
 		top: 0;
 		left: 50%;
@@ -1058,6 +1067,15 @@ button{background-color: transparent;border:0;color:#fff;font-size: 1rem;}
 @media all and (min-width: 420px) {
 	.cube__mobile__img{
 		width: 180px;
+	}
+}
+
+@keyframes levitation_arrow {
+	0%, 100% {
+		transform: translate(-39%,130%);
+	}
+	50%{
+		transform: translate(-39%,127%) rotate(1deg);
 	}
 }
 
