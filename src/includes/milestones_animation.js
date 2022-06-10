@@ -19,7 +19,7 @@ function milestones_animation() {
 
     var milestones_animated = false;
     if(window.width >= 1200){
-        milestones_animation_point = milestones.offset().top - (window.height * 0.1);
+        milestones_animation_point = milestones.offset().top - (window.height * 0.3);
     }else{
         milestones_animation_point = milestones.offset().top - (window.height * 0.5);
     }
@@ -49,18 +49,19 @@ function milestones_animation() {
                     $(".cube-bottom").addClass("animated");
                 }, 1600);
 
+                let time = 500;
                 setTimeout(function () {
                     $(".cube__item-1").addClass("highlight");
-                }, 2100);
+                }, time);
                 setTimeout(function () {
                     $(".cube__item-3").addClass("highlight");
-                }, 2900);
+                }, time += 800);
                 setTimeout(function () {
                     $(".cube__item-2").addClass("highlight");
-                }, 3700);
+                }, time += 800);
                 setTimeout(function () {
                     $(".cube__item-4").addClass("highlight");
-                }, 4500);
+                }, time += 800);
             }else{
                 setTimeout(function () {
                     $(".cube__item-1").addClass("highlight");
