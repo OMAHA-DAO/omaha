@@ -37,7 +37,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
     const easing='linear'
     let mixer;
     let mesh; // Girl
