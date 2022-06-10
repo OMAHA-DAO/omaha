@@ -1,4 +1,6 @@
 
+window.config = require('./config.json');
+
 let webglPromise;
 let webglMode = "desktop";
 
@@ -29,6 +31,10 @@ import "./includes/milestones_animation";
 
 Promise.all([
     import(
+        /* webpackChunkName: "rss-to-json" */
+        `rss-to-json`
+        ),
+    import(
         /* webpackChunkName: "splide" */
         `@splidejs/splide`
         ),
@@ -37,25 +43,58 @@ Promise.all([
 
     // Expand modules into variables for more convenient use
     const [
-        splideModule,
+        rssToJson,
+        splideModule
     ] = modules;
+    window.rssToJson = rssToJson.parse;
     window.Splide = splideModule.default;
 
-    /* Slider Products */
-    let postSlider = {
-        speed: 400,
-        autoWidth: true,
-        // perPage: 1,       // Ignored if autoWidth: true, but need for lazy
-        pagination: false,
-        arrows: false,
-        drag: 'free',
-        flickPower: 300,
-        lazyLoad: 'nearby',
-        preloadPages: 2
-    };
+    let sliderContentElement = $(".splide__list");
 
-    new window.Splide( '.posts-list', postSlider).mount();
+    let p =(async function() {
+        let rssConverterUrl = `https://api.rss2json.com/v1/api.json?rss_url=${window.config.medium.feed}`;
+        let response = await fetch(rssConverterUrl);
+        return await response.json();
+    })();
+    p.then(function (data) {
+        console.log(data);
 
+        let sliderContent = "";
+        let i=0;
+        for(; i < data.items.length && i < window.config.medium.limit; i++){
+            let mediumItem = data.items[i];
+            sliderContent += mediumPost({
+                image: mediumItem.thumbnail,
+                title: mediumItem.title,
+                description: mediumItem.description,
+            });
+        }
+        sliderContentElement.html(sliderContent);
+        if(window.innerWidth >= 768){
+            if(i <= 2){
+                sliderContentElement.addClass("centered")
+            }
+        }else if(window.innerWidth >= 992){
+            if(i <= 3){
+                sliderContentElement.addClass("centered")
+            }
+        }
+
+        /* Slider medium posts */
+        let postSlider = {
+            speed: 400,
+            autoWidth: true,
+            // perPage: 1,       // Ignored if autoWidth: true, but need for lazy
+            pagination: false,
+            arrows: false,
+            drag: 'free',
+            flickPower: 300,
+            lazyLoad: 'nearby',
+            preloadPages: 2
+        };
+
+        new window.Splide( '.posts-list', postSlider).mount();
+    });
 });
 
 if(window.innerWidth < 768){
@@ -70,7 +109,29 @@ if(window.innerWidth < 768){
         } else {
             $('.ANI-main-3').fadeIn();
         }
-
     });
 
+}
+
+// fill post, return html
+function mediumPost({
+    image = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==",
+    title = "",
+    description = "",
+} = {}){
+    if(image.indexOf("event=post.clientViewed") !== -1){
+        image = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
+    }
+    description = description.replace(/(<figure>.*?<\/figure>)|(<img.*?>)|<.*?>/, "");
+    return `
+    <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
+        <div class="post-image" style="background-image: url('${image}')"></div>
+        <div class="post-title">
+            ${title}
+        </div>
+        <div class="post-description">
+            ${description}
+        </div>
+    </div>
+    `;
 }
