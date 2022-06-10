@@ -10,7 +10,7 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../src/FontLoader';
+import { FontLoader } from '../FontLoader';
 
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
