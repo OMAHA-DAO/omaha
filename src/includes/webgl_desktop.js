@@ -632,7 +632,7 @@ const models=Object.create({
                 font:fnt,
                 size:.07,
                 height: .001,
-                curveSegments: 12
+                curveSegments: 1
             });
             const textMesh=new THREE.Mesh(
                 textGeo,
