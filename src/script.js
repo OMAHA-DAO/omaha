@@ -60,15 +60,25 @@ Promise.all([
         console.log(data);
 
         let sliderContent = "";
-        for(let i=0; i < data.items.length && i < window.config.medium.limit; i++){
+        let i=0;
+        for(; i < data.items.length && i < window.config.medium.limit; i++){
             let mediumItem = data.items[i];
             sliderContent += mediumPost({
                 image: mediumItem.thumbnail,
                 title: mediumItem.title,
                 description: mediumItem.description,
-            })
+            });
         }
         sliderContentElement.html(sliderContent);
+        if(window.innerWidth >= 768){
+            if(i <= 2){
+                sliderContentElement.addClass("centered")
+            }
+        }else if(window.innerWidth >= 992){
+            if(i <= 3){
+                sliderContentElement.addClass("centered")
+            }
+        }
 
         /* Slider medium posts */
         let postSlider = {
@@ -112,12 +122,10 @@ function mediumPost({
     if(image.indexOf("event=post.clientViewed") !== -1){
         image = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
     }
-    description = description.replace(/(<figure>.*?<\/figure>)|(<img.*?>)/, "");
+    description = description.replace(/(<figure>.*?<\/figure>)|(<img.*?>)|<.*?>/, "");
     return `
     <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
-        <div class="post-image">
-            <img src="${image}">
-        </div>
+        <div class="post-image" style="background-image: url('${image}')"></div>
         <div class="post-title">
             ${title}
         </div>
