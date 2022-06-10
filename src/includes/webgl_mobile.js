@@ -9,10 +9,11 @@ import Stats from 'three/examples/jsm/libs/stats.module'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
 
 const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
-    girl:'/model/2022-05-31/2022-05-31-shoes-ok.glb',
+    girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
 });
 
@@ -78,6 +79,12 @@ const models=Object.create({
         let pl=null;
         const animationScripts = [{ start:0, end:0, func:0 }]
         const loader = new GLTFLoader();
+
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'); // use a full url path
+        //const gltf = new GLTFLoader();
+        loader.setDRACOLoader(dracoLoader);
+
         // ANIMATE
         let scrollPercent = 0
         function lerp(x, y, a) {return (1 - a) * x + a * y}
