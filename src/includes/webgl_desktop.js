@@ -10,7 +10,7 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../FontLoader';
+import { FontLoader } from '../src/FontLoader';
 
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
@@ -23,7 +23,7 @@ const models=Object.create({
     voiting:'/media/voiting_04.webp',
     courses:'/media/courses_top.png',
     coursesBtm:'/media/courses_btm.png',
-    //webgl2:'/js/webgl2.js',
+    des:'/media/noise.webp',
 });
 
 /* for (const [key, value] of Object.entries(models)) {
@@ -37,7 +37,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
     const easing='linear'
     let mixer;
     let mesh; // Girl
@@ -87,9 +87,10 @@ const models=Object.create({
         const shader = {
             uniforms: {
                 uRender: { value: COMPOSER.renderTarget2 },
-                uTime: { value: TIME }
+                uTime: { value: TIME },
             },
-            vertexShader:`varying vec2 vUv;
+            vertexShader:`
+            varying vec2 vUv;
             void main() {
                 vUv = uv;
                 gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.);
@@ -100,10 +101,17 @@ const models=Object.create({
             varying vec2 vUv;
             float rand(vec2 seed);
             void main() {
-                float randomValue = rand(vec2(floor(vUv.y * 7.0), uTime));
+                float randomValue = rand(vec2(floor(vUv.y * .1), uTime));
                 vec4 color;
-                if (randomValue < 0.02) {
-                    color = texture2D(uRender, vec2(vUv.x + randomValue - 0.01, vUv.y));
+                if (randomValue < .02) {
+                    //color = texture2D(uRender, vec2(vUv.x, 1.1*sin(vUv.y*1.5)*sin(uTime)));
+                    vec2 uVuV = vec2( vUv.x + .005 * sin(vUv.y*1200. + uTime),vUv.y );
+                    color = texture2D(uRender, uVuV);
+
+                    color.r=texture2D(uRender, uVuV + vec2(.008,.0)).r;
+                    color.g=texture2D(uRender, uVuV + vec2(-.009,.0)).g;
+                    //color.b=texture2D(uRender, uVuV + vec2(.01,.0)).b;
+
                 } else {
                     color = texture2D(uRender, vUv);
                 }
@@ -746,8 +754,10 @@ const models=Object.create({
             if (mixer) mixer.update(clock.getDelta());
         }
         const clock = new THREE.Clock()
+        //let yyy=0
         function render() {
             TIME += .001;
+            //yyy+= .5
             if(TIME>10)TIME=0
             //renderer.render(scene, camera)
             if(TIME%4>.5){
@@ -759,13 +769,16 @@ const models=Object.create({
                 });
             }
             if(TIME%2>.05&&TIME%4<.7){//2 4
-                TIME=THREE.Math.randFloat(0,.4)
+                TIME=THREE.Math.randFloat(.1,.5)
                 COMPOSER.passes.forEach((pass) => {
                     if (pass) {
                         if(pass.uniforms)pass.uniforms.uTime.value = TIME;
                     }
                 });
             }
+            //COMPOSER.passes.forEach(pass => {if (pass) {
+            //if(pass.uniforms)pass.uniforms.uTime.value = yyy//TIME;
+            //}});
             COMPOSER.render(scene, camera);
         }
         animate();
