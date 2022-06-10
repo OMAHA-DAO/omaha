@@ -5,16 +5,21 @@
  */
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+
+
+import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
+import { FontLoader } from '../src/FontLoader';
 
 const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
     girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
+    font:'/fonts/no-ru-symb.ttf',
 });
 
 (()=>{
@@ -49,7 +54,7 @@ const models=Object.create({
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
 
-        //const controls = new OrbitControls(camera, canvas)
+        const controls = new OrbitControls(camera, canvas)
 
         const sizes = {
             width: window.innerWidth,
@@ -206,7 +211,7 @@ const models=Object.create({
             scene.add(obj3d)
             const mesh=obj3d
             const preloader=document.querySelector('.preloader');
-            
+            if(courses)mesh.add(courses)
             const duration=1000;
             window.anime.timeline()
                 .add({targets:preloader,opacity:[0,1],easing,duration:1})
@@ -235,7 +240,7 @@ const models=Object.create({
                             )
                             mesh.rotation.set(-.1,lerp(0, 1.1, scalePercent(tmp2scr, tmp3scr)),0)
                             if(Bull){
-                                Bull.position.set(9,0,-6)
+                                Bull.position.set(4,0,-6)
                                 Bull.rotation.set(-1.3,0,.5)
                             }
                         },
@@ -252,7 +257,7 @@ const models=Object.create({
                                 lerp(1.9, 1.2, scalePercent(tmp3scr, tmp4scr))
                             )
                             mesh.rotation.set(
-                                lerp(-.1, .2, scalePercent(tmp3scr, tmp4scr)),
+                                -.1,
                                 lerp(1.1, 3.7, scalePercent(tmp3scr, tmp4scr)),
                                 0
                             )
@@ -275,7 +280,7 @@ const models=Object.create({
                             }else{
                                 if(Bull){
                                     Bull.position.set(
-                                        lerp(9, -.9, scalePercent(tmp3scr, tmp4scr)),
+                                        lerp(4, -.9, scalePercent(tmp3scr, tmp4scr)),
                                         lerp(-1, 0, scalePercent(tmp3scr, tmp4scr)),
                                         lerp(-5, -6, scalePercent(tmp3scr, tmp4scr))
                                     )
@@ -290,9 +295,9 @@ const models=Object.create({
                         end: tmp5scr,
                         func: () => {
                             mesh.position.set(  lerp(.06, .04, scalePercent(tmp4scr, tmp5scr)),  lerp(-.71, -.2, scalePercent(tmp4scr, tmp5scr)),  lerp(1.2, .3, scalePercent(tmp4scr, tmp5scr))  )
-                            mesh.rotation.set(  lerp(.2, -.2, scalePercent(tmp4scr, tmp5scr)),  lerp(3.7, .7, scalePercent(tmp4scr, tmp5scr)),  0  )
+                            mesh.rotation.set(  -.1,  lerp(3.7, 5.7, scalePercent(tmp4scr, tmp5scr)),  0  )
                             if(Bull){//Bull show in viewport
-                                Bull.position.set(lerp(-.9, 9, scalePercent(tmp4scr, tmp5scr)),  0,  lerp(-6, -5, scalePercent(tmp4scr, tmp5scr)))
+                                Bull.position.set(lerp(-.9, -4, scalePercent(tmp4scr, tmp5scr)),  0,  lerp(-6, -5, scalePercent(tmp4scr, tmp5scr)))
                             }
                         }
                     })
@@ -303,15 +308,110 @@ const models=Object.create({
                         func: () => {
                             mesh.position.set(
                                 lerp(.04, .03, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(-.2, -.78, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(.3, 2, scalePercent(tmp5scr, tmp6scr))
+                                lerp(-.2, -.5, scalePercent(tmp5scr, tmp6scr)),
+                                lerp(.3, -2, scalePercent(tmp5scr, tmp6scr))
                             )
-                            mesh.rotation.set( lerp(-.2, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(.7, -1.7, scalePercent(tmp5scr, tmp6scr)),  0 )
+                            mesh.rotation.set( lerp(-.2, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(5.7, 6.2, scalePercent(tmp5scr, tmp6scr)),  0 )
                         }
                     })
                 }})
             }
-        )
+        );
+        // courses | https://threejs.org/examples/#webgl_clipping_intersection
+
+        //
+        renderer.localClippingEnabled = true;
+        // \
+        const objcts=Object.create({});
+        const clipPlanes = [
+            new THREE.Plane( new THREE.Vector3( .8, 0, 0 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( -.8, 0, 0 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( 0, 0, .8 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( .8, 0, .8 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( -.8, 0, .8 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( 0, 0, -.8 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( .8, 0, -.8 ), 5.5 ),
+            new THREE.Plane( new THREE.Vector3( -.8, 0, -.8 ), 5.5 ),
+        ];
+        const helpers = new THREE.Group();
+        helpers.add( new THREE.PlaneHelper( clipPlanes[0], 5, 0xff0000 ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[1], 5, 0x0000ff ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[2], 5, 0x00ff00 ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[3], 5, 0xffff00 ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[4], 5, 0x00ffff ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[5], 5, 0x00ff00 ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[6], 5, 0xffff00 ) );
+        helpers.add( new THREE.PlaneHelper( clipPlanes[7], 5, 0x00ffff ) );
+        //console.log(helpers);
+        helpers.visible = false;
+        scene.add( helpers );
+        //const tobj3d=new THREE.Mesh(
+        //    new THREE.PlaneBufferGeometry(20,.2),
+        //    new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .1 ,clippingPlanes: clipPlanes, clipIntersection: true })
+        //)
+        const courses=new THREE.Group();
+        const tobj3d=new THREE.Group();
+        //tobj3d.position.set(0,0,-2)
+        function textSet(fnt,text,name,color=0xffffff){
+            const textGeo = new THREE.TextGeometry(new String(text),{
+                font:fnt,
+                size:.07,
+                height: .001,
+                curveSegments: 1
+            });
+            const textMesh=new THREE.Mesh(
+                textGeo,
+                new THREE.MeshBasicMaterial({
+                    color,
+                    side:THREE.FrontSide, clippingPlanes: clipPlanes, clipIntersection: false
+                })
+            );
+            if(!objcts.obj1Img){// First BTC ...
+                textMesh.position.set(tobj3d.position.x,tobj3d.position.y,tobj3d.position.z)
+                objcts[name]=tobj3d;
+                tobj3d.add(textMesh)
+                //scene.add(tobj3d)
+                // 2 text (cloned)
+                const cloned=textMesh.clone()
+                cloned.position.set(tobj3d.position.x+10.2,tobj3d.position.y,tobj3d.position.z)
+                textMesh.add(cloned)
+                anime({targets:textMesh.position,x:[-4.81,-15],duration:2e4,loop:true,easing,delay:0,});
+            }else{// Second +1.05 ...
+                objcts.obj1Img.add(textMesh);
+                textMesh.position.set(tobj3d.position.x,tobj3d.position.y-.13,tobj3d.position.z)
+                objcts[name]=tobj3d;
+                tobj3d.add(textMesh)
+                //scene.add(tobj3d)
+                // 2 text (cloned)
+                const cloned=textMesh.clone()
+                cloned.position.set(tobj3d.position.x+10.2,tobj3d.position.y,tobj3d.position.z)
+                textMesh.add(cloned)
+                anime({targets:textMesh.position,x:[-4.81,-15],duration:18e3,loop:true,easing,delay:0,});
+            }
+        }
+        courses.add(tobj3d)
+        courses.position.set(0,1.6,-3)
+        const ttfLoader = new TTFLoader()
+        const fontLoader = new FontLoader()
+        ttfLoader.load(
+            models.font,
+            fnt=>{
+                fnt=fontLoader.parse(fnt);
+                textSet(
+                    fnt,
+                    'BTC        ETH        TSLA        XMR        EDO        ETP        BTG        ETC        NEO        BSV        DGW        DLT        USDT        TRX        EOS        XRP        LTC       DASH       MANA        XTZ        OMG        DGB',
+                    'obj1Img',
+                    0x00CEE5,
+                )
+                textSet(
+                    fnt,
+                    '+1.05        -0.05        -.002        +0.095        +2.091        -0.094        +1.098        -4.98        +5.01547        -0.03        -0.015        +7.058        -0.64        -0.871        +5.42        +10.573        -0.180        +11.01',
+                    'obj1Img2',
+                    0xDAB457
+                )
+            }
+        );
+        // \ courses
         // \ girl and bull loaders
         window.addEventListener('resize', () =>{
             sizes.width = window.innerWidth
