@@ -100,16 +100,19 @@ const models=Object.create({
             uniform float uTime;
             varying vec2 vUv;
             float rand(vec2 seed);
+            float rand2(vec2 co);
             void main() {
+                //float rv = rand2(vec2(.1, 8.1))*5.;
+                //float randomValue = rand(vec2(floor(vUv.y * rv), uTime));
                 float randomValue = rand(vec2(floor(vUv.y * .1), uTime));
                 vec4 color;
                 if (randomValue < .02) {
                     //color = texture2D(uRender, vec2(vUv.x, 1.1*sin(vUv.y*1.5)*sin(uTime)));
-                    vec2 uVuV = vec2( vUv.x + .005 * sin(vUv.y*1200. + uTime),vUv.y );
+                    vec2 uVuV = vec2( vUv.x + .003 * sin(vUv.y*1200. + uTime),vUv.y );
                     color = texture2D(uRender, uVuV);
 
-                    color.r=texture2D(uRender, uVuV + vec2(.008,.0)).r;
-                    color.g=texture2D(uRender, uVuV + vec2(-.009,.0)).g;
+                    color.r=texture2D(uRender, uVuV + vec2(.002,.0)).r;
+                    color.g=texture2D(uRender, uVuV + vec2(-.002,.0)).g;
                     //color.b=texture2D(uRender, uVuV + vec2(.01,.0)).b;
 
                 } else {
@@ -119,7 +122,10 @@ const models=Object.create({
             }
             float rand(vec2 seed) {
                 return fract(sin(dot(seed, vec2(2.,5.))) * 999.);
-            }`,
+            }
+            float rand2(vec2 co){
+                return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+              }`,
         };
 
         const shaderPass = new ShaderPass(shader);
