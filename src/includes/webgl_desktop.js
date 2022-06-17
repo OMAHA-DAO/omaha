@@ -234,8 +234,8 @@ const models=Object.create({
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            (document.getElementById('scrollProgress')).innerText =
-                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            // (document.getElementById('scrollProgress')).innerText =
+            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
             if(scrollPercent>95){
                 if(canvas1){
                     canvas1.classList.add('canvas1Cl')
@@ -543,7 +543,7 @@ const models=Object.create({
                             }
                             oncedLight.intensity=lerp(0, 1.2, scalePercent(tmp3scr,tmp4scr))
                             oncedLight2.intensity=(lerp(0, 0, scalePercent(tmp3scr,tmp4scr)));
-                            
+
                         },
                     })
                     const tmp5scr=screenConst*4// 5 screen
@@ -610,7 +610,7 @@ const models=Object.create({
         )
         // \ girl and bull loaders
 
- 
+
         // courses | https://threejs.org/examples/#webgl_clipping_intersection
         const clipPlanes = [
             new THREE.Plane( new THREE.Vector3( .8, 0, 0 ), 5.5 ),
@@ -718,7 +718,7 @@ const models=Object.create({
 //                    alphaTest:.5,
 //                });
 //            }
-//            
+//
 //            const meshTexture = new THREE.Mesh(
 //                new THREE.PlaneGeometry(size[0],size[1]),
 //                material
