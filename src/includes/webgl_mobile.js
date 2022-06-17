@@ -180,7 +180,7 @@ const models=Object.create({
                             })
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:['-100%',0],  easing,  duration:700,
+                                translateY:[0],  easing,  duration:700,
                             })
                         }
                     })
