@@ -529,7 +529,7 @@ button{background-color: transparent;border:0;color:#fff;font-size: 1rem;}
 .webgl{transition:transform linear .1s,opacity linear .1s}
 .canvas1Cl{transform: translateY(-500vh);display:none;opacity:0;width:0!important;height:0!important}
 
-.webgl2{transform: translateY(20%);}
+/*.webgl2{transform: translateY(20%);}*/
 
 q:before,q:after{display: none;}
 

@@ -18,6 +18,8 @@ const isProd = !isDev;
 let files = {
     'bundle.js' : './src/script.js',
     'css/styles': './src/styles.css',
+
+	'css/404': './src/404.css',
 };
 
 const optimization = () => {
@@ -127,10 +129,19 @@ module.exports = {
             ]
         }),
         new HtmlWebpackPlugin({
+	        filename: 'index.html',
             template: path.resolve(__dirname, '../src/index.html'),
             minify: true,
+	        chunks: ['main']
             //excludeAssets: [/css\/.*js/],
         }),
+	    new HtmlWebpackPlugin({
+		    filename: '404.html',
+		    template: path.resolve(__dirname, '../src/404.html'),
+		    minify: true,
+		    chunks: ['404']
+		    //excludeAssets: [/css\/.*js/],
+	    }),
         new HtmlWebpackSkipAssetsPlugin({
             excludeAssets: [/css\/.*js/]
         }),
