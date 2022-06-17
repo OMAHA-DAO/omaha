@@ -13,7 +13,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../src/FontLoader';
+import { FontLoader } from '../FontLoader';
 
 const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
