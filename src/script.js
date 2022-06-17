@@ -1,4 +1,5 @@
-//import gsap from "gsap";
+
+window.config = require('./config.json');
 
 let webglPromise;
 let webglMode = "desktop";
