@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
@@ -35,7 +35,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=true;
+    const DEBUG=false;
     const easing='linear'
     let mixer;
     let mesh; // Girl
@@ -116,7 +116,7 @@ const models=Object.create({
         COMPOSER.addPass(shaderPass);
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
-        const controls = new OrbitControls(camera, canvas)
+        //const controls = new OrbitControls(camera, canvas)
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
@@ -191,7 +191,7 @@ const models=Object.create({
             if((oldScrollPercent)<(scrollPercent)){
                 oldScrollPercent+=.04
             }
-            if(scrollPercent>screenConst*5-.1){// we scrolled to end
+            if(scrollPercent>screenConst*5+.2){// we scrolled to end
                 oldScrollPercent-=.04
             }
             return (oldScrollPercent - start) / (end - start)
@@ -432,7 +432,7 @@ const models=Object.create({
                                 objcts.obj1ImgPhone.scale.set(.8,.8,1)
                                 if(!objcts.loadLight){
                                     objcts.loadLight=true
-                                    const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.5, 2, 32, 20, true)
+                                    const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 2, 1.5, 64, 20, true)
                                     cylForLight.applyMatrix4( new THREE.Matrix4().makeTranslation( 0, -cylForLight.parameters.height/2, 0 ) );
                                     cylForLight.rotateX( -Math.PI / 2 );
                                     const matForLight=VolumetricMatrial()
@@ -441,7 +441,7 @@ const models=Object.create({
                                     meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,-1))
                                     matForLight.uniforms.lightColor.value.set(0xf0cefb)
                                     matForLight.uniforms.spotPosition.value=meshForLight2.position
-                                    matForLight.uniforms.anglePower.value=.5
+                                    matForLight.uniforms.anglePower.value=20.
                                     //matForLight.uniforms.attenuation.value	= 5.
                                     objcts.obj1ImgPhone.add( meshForLight2 );
                                 }
