@@ -191,7 +191,7 @@ const models=Object.create({
             if((oldScrollPercent)<(scrollPercent)){
                 oldScrollPercent+=.04
             }
-            if(scrollPercent>screenConst*5+.2){// we scrolled to end
+            if(scrollPercent>screenConst*5-.1){// we scrolled to end
                 oldScrollPercent-=.04
             }
             return (oldScrollPercent - start) / (end - start)
