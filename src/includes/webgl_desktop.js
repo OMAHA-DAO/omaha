@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
@@ -21,12 +21,9 @@ const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
     font:'/fonts/no-ru-symb.ttf',
     girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
-    pseudoLight:'/model/2022-05-31/pseudoLight2.glb',
+    //pseudoLight:'/model/2022-05-31/pseudoLight2.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
     voiting:'/media/voiting_04.webp',
-    //courses:'/media/courses_top.png',
-    //coursesBtm:'/media/courses_btm.png',
-    des:'/media/noise.webp',
 });
 (()=>{
     const hdrEquirect = new RGBELoader().load(
@@ -39,6 +36,7 @@ const models=Object.create({
     const easing='linear'
     let mixer;
     let mesh; // Girl
+    let matForLight; // for pseudo light for girl
         // https://sbcode.net/threejs/animate-on-scroll/
         const scene = new THREE.Scene()
         const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
@@ -57,8 +55,7 @@ const models=Object.create({
         });
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.BasicShadowMap;
-
-        //
+const controls = new OrbitControls(camera, canvas)
         renderer.localClippingEnabled = true;
         renderer.setClearColor( 0x000000, 1);
         let TIME=0//GLITCH FROM https://codepen.io/sfi0zy/pen/MZdeKB
@@ -116,29 +113,28 @@ const models=Object.create({
         COMPOSER.addPass(shaderPass);
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
-        //const controls = new OrbitControls(camera, canvas)
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
         }
         const lightHolder = new THREE.Group();
         // top left
-        const aLight2=new THREE.DirectionalLight(0xffffff,.7);
-        aLight2.position.set(-1.5,1.7,0);
-        lightHolder.add(aLight2);
+        //      const aLight2=new THREE.DirectionalLight(0xffffff,.7);
+        //      aLight2.position.set(-1.5,1.7,0);
+        //      lightHolder.add(aLight2);
         //frontSide (golden)
-        const aLight4=new THREE.DirectionalLight(0xffffff,1);//0xe7ba92/DE9C63
-        aLight4.position.set(-1,.5,2);
+        //const aLight4=new THREE.DirectionalLight(0xffffff,1);//0xe7ba92/DE9C63
+        //aLight4.position.set(-1,.5,2);
         //lightHolder.add(aLight4);
         //oncedLight
-        const oncedLight=new THREE.DirectionalLight(0x77edff,0);//0xfbc759/0x00e6e6
-        oncedLight.position.set(1.5,1,1);
+        //const oncedLight=new THREE.DirectionalLight(0x77edff,0);//0xfbc759/0x00e6e6
+        //oncedLight.position.set(1.5,1,1);
         //lightHolder.add(oncedLight);
         //oncedLight2
-        const oncedLight2=new THREE.DirectionalLight(0xffffff,0);//0xfbc759/0x00e6e6
-        oncedLight2.position.set(2,0,1);
+        //const oncedLight2=new THREE.DirectionalLight(0xffffff,0);//0xfbc759/0x00e6e6
+        //oncedLight2.position.set(2,0,1);
         //lightHolder.add(oncedLight2);
-        scene.add(lightHolder)
+        
         // imgs
         const loaderImg = new THREE.TextureLoader()
         let objcts=Object.create({});
@@ -222,7 +218,7 @@ const models=Object.create({
         }
         // \ ANIMATE
         const mainColor=0x1c1710;
-        const planeGroupe = new THREE.Group();
+        //const planeGroupe = new THREE.Group();
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'); // use a full url path
         loader.setDRACOLoader(dracoLoader);
@@ -294,34 +290,45 @@ const models=Object.create({
             obj3d.add(sceneGlb)
             scene.add(obj3d)
             mesh=obj3d
+            mesh.add(lightHolder)
             // Volumetric
-            const spotLight = new THREE.SpotLight( 0xffffff,3,30,.5,2,7 );// TO GIRL
-            spotLight.position.set(1.5,2,1.8);
+            const spotLight = new THREE.SpotLight( 0xffffff,3,30,.4,2,7 );// TO GIRL
+            spotLight.position.set(1.5,2,1);
             spotLight.focus=.9
             spotLight.castShadow = true;
             spotLight.shadow.mapSize.width = 2048*4;
             spotLight.shadow.mapSize.height = 2048*4;
+            //console.log(spotLight);
+           
+            //const spotLightHelper = new THREE.SpotLightHelper( spotLight, 0xff0000 );
+            //scene.add( spotLightHelper );
+
+
             //spotLight.shadow.camera.near = 1;
             //spotLight.shadow.camera.far = 25;
             //spotLight.shadow.camera.fov = 3;
             mesh.add( spotLight );
+            mesh.add( spotLight.target );
             // add spot light
-            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.5, 7, 16, 20, true)
-            cylForLight.applyMatrix4( new THREE.Matrix4().makeTranslation( 0, -cylForLight.parameters.height/2, 0 ) );
-            cylForLight.applyMatrix4( new THREE.Matrix4().makeRotationX( -Math.PI / 2 ) );
-            const matForLight	= VolumetricMatrial()
-            const meshForLight	= new THREE.Mesh( cylForLight, matForLight );
-            meshForLight.position.set(1.5,2,1.8)
+            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.4, 7, 10, 20, true)
+            cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
+            cylForLight.rotateX( -Math.PI / 2 );
+            matForLight	= VolumetricMatrial()
+            const meshForLight	= new THREE.Mesh( cylForLight, matForLight);
+            meshForLight.position.set(1,2.1,1.3)
             meshForLight.lookAt(mesh.position.x,mesh.position.y+.5,mesh.position.z)
             matForLight.uniforms.lightColor.value.set(0xffffff)
             matForLight.uniforms.spotPosition.value	= meshForLight.position
-            matForLight.uniforms.anglePower.value	= 8.
-            //matForLight.uniforms.attenuation.value	= 5.
+            matForLight.uniforms.anglePower.value= 5.
+            matForLight.uniforms.yy.value=.5
+            matForLight.uniforms.rotationY.value=mesh.rotation.y
+            matForLight.uniforms.need.value	= 0.1
+            //matForLight.uniforms.attenuation.value	= 3.
             mesh.add( meshForLight );
             // \ Volumetric
 
-            const directionalLight = new THREE.DirectionalLight( 0xffffff,2 );
-            mesh.add( directionalLight );
+            //const directionalLight = new THREE.DirectionalLight( 0xffffff,2 );
+            //mesh.add( directionalLight );
             //const helper = new THREE.DirectionalLightHelper( directionalLight, 5, 0xff0000 );
             //mesh.add( helper );
 
@@ -329,8 +336,8 @@ const models=Object.create({
             const preloader=document.querySelector('.preloader');
             const tmp={}
             const duration=1000;
-            tmp.animeoncedLight2Start=anime({targets:oncedLight2,intensity:[0,2,1,.5,0,1,1.5,2.5,0,.1,.5,2,,1.7,.7,0],duration:8000,easing,loop:true,delay:1000});
-            tmp.animeoncedLight2Start.pause()
+            //tmp.animeoncedLight2Start=anime({targets:oncedLight2,intensity:[0,2,1,.5,0,1,1.5,2.5,0,.1,.5,2,,1.7,.7,0],duration:8000,easing,loop:true,delay:1000});
+            //tmp.animeoncedLight2Start.pause()
             //https://stackoverflow.com/questions/56071764/how-to-use-dracoloader-with-gltfloader-in-reactjs   DRACO FIX LOADER
             let deburTrue=3600
             if(DEBUG)deburTrue=100
@@ -348,16 +355,16 @@ const models=Object.create({
                                 lerp(2, 1.3, scalePercent(0, tmp2scr))
                             )
                             mesh.rotation.set(0,lerp(0, .7, scalePercent(0, tmp2scr)),0)
-                            oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
-                            if(!tmp.oncedL){
-                                tmp.oncedL=1
-                                anime({targets:oncedLight.position,y:[1.7,-1,1],duration:10000,loop:true,easing,})
-                            };
-                            if(planeGroupe){
-                                planeGroupe.position.z=(lerp(2.3, 1.7, scalePercent(0, tmp2scr)));
-                            }
-                            tmp.animeoncedLight2Start.pause()
-                            oncedLight2.intensity=(lerp(0, 0, scalePercent(0, tmp2scr)));
+                            //oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
+                            //if(!tmp.oncedL){
+                            //    tmp.oncedL=1
+                            //    anime({targets:oncedLight.position,y:[1.7,-1,1],duration:10000,loop:true,easing,})
+                            //};
+                            //if(planeGroupe){
+                            //    planeGroupe.position.z=(lerp(2.3, 1.7, scalePercent(0, tmp2scr)));
+                            //}
+                            //tmp.animeoncedLight2Start.pause()
+                            //oncedLight2.intensity=(lerp(0, 0, scalePercent(0, tmp2scr)));
                         },
                     })
                     const tmp3scr=screenConst*2// 3 screen
@@ -371,17 +378,17 @@ const models=Object.create({
                                 lerp(1.3, .85, scalePercent(tmp2scr, tmp3scr)),//z
                             )
                             mesh.rotation.set(0,lerp(.7, 1.85, scalePercent(tmp2scr, tmp3scr)),0)
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(.4, -.2, scalePercent(tmp2scr, tmp3scr)),
-                                    lerp(.2, -.3, scalePercent(tmp2scr, tmp3scr)),
-                                    lerp(1.7, 2.3, scalePercent(tmp2scr, tmp3scr))
-                                );
-                                planeGroupe.rotation.z=lerp(-.5, -.05, scalePercent(tmp2scr, tmp3scr))
-                                planeGroupe.scale.x=lerp(.4, .18, scalePercent(tmp2scr, tmp3scr))
-                            }
-                            tmp.animeoncedLight2Start.play();
-                            oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp2scr, tmp3scr))
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(.4, -.2, scalePercent(tmp2scr, tmp3scr)),
+                            //        lerp(.2, -.3, scalePercent(tmp2scr, tmp3scr)),
+                            //        lerp(1.7, 2.3, scalePercent(tmp2scr, tmp3scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(-.5, -.05, scalePercent(tmp2scr, tmp3scr))
+                            //    planeGroupe.scale.x=lerp(.4, .18, scalePercent(tmp2scr, tmp3scr))
+                            //}
+                            //tmp.animeoncedLight2Start.play();
+                            //oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp2scr, tmp3scr))
                             if(!objcts.loadImg){
                                 objcts.loadImg=true
                                 setImage(
@@ -401,7 +408,7 @@ const models=Object.create({
                         start: tmp3scr,
                         end: tmp4scr,
                         func: () => {
-                            tmp.animeoncedLight2Start.pause();
+                            //tmp.animeoncedLight2Start.pause();
                             mesh.position.set(
                                 lerp(-.7, .4, scalePercent(tmp3scr, tmp4scr)),
                                 lerp(-.6, -.85, scalePercent(tmp3scr, tmp4scr)),
@@ -430,9 +437,26 @@ const models=Object.create({
                                 objcts.obj1ImgPhone.position.set(-.5,-4,-1)
                                 objcts.obj1ImgPhone.rotation.set(0,-1.6,0)
                                 objcts.obj1ImgPhone.scale.set(.8,.8,1)
+                                //if(!objcts.loadLight){
+                                //    objcts.loadLight=true
+                                //    const cylForLight	= new THREE.CylinderBufferGeometry(0,1,4,64,20,true)
+                                //    cylForLight.translate(0,-cylForLight.parameters.height/2,0);
+                                //    cylForLight.rotateX(-Math.PI/2);
+                                //    const matForLight=VolumetricMatrial()
+                                //    meshForLight2=new THREE.Mesh(cylForLight,matForLight)
+                                //    meshForLight2.position.set(-2,.2,2)
+                                //    meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,0))
+                                //    matForLight.uniforms.lightColor.value.set(0xf0cefb)
+                                //    matForLight.uniforms.spotPosition.value=meshForLight2.position
+                                //    matForLight.uniforms.anglePower.value=10.
+                                //    matForLight.uniforms.yy.value=.0
+                                //    matForLight.uniforms.need.value=0.0
+                                //    matForLight.uniforms.attenuation.value=7.
+                                //    objcts.obj1ImgPhone.add(meshForLight2);
+                                //}
                                 if(!objcts.loadLight){
                                     objcts.loadLight=true
-                                    const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 2, 1.5, 64, 20, true)
+                                    const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1, 2, 32, 20, true)
                                     cylForLight.applyMatrix4( new THREE.Matrix4().makeTranslation( 0, -cylForLight.parameters.height/2, 0 ) );
                                     cylForLight.rotateX( -Math.PI / 2 );
                                     const matForLight=VolumetricMatrial()
@@ -441,22 +465,22 @@ const models=Object.create({
                                     meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,-1))
                                     matForLight.uniforms.lightColor.value.set(0xf0cefb)
                                     matForLight.uniforms.spotPosition.value=meshForLight2.position
-                                    matForLight.uniforms.anglePower.value=20.
-                                    //matForLight.uniforms.attenuation.value	= 5.
+                                    matForLight.uniforms.anglePower.value=10.
+                                    matForLight.uniforms.attenuation.value	= 1.2
                                     objcts.obj1ImgPhone.add( meshForLight2 );
                                 }
                             }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(-.2, 0, scalePercent(tmp3scr,tmp4scr)),
-                                    lerp(-.3,.2, scalePercent(tmp3scr,tmp4scr)),
-                                    lerp(2.3, 2.4, scalePercent(tmp3scr,tmp4scr))
-                                )
-                                planeGroupe.rotation.z=lerp(-.05, .5, scalePercent(tmp3scr,tmp4scr))
-                                planeGroupe.scale.x=lerp(.2, .3, scalePercent(tmp3scr,tmp4scr))
-                            }
-                            oncedLight.intensity=lerp(0, 1.2, scalePercent(tmp3scr,tmp4scr))
-                            oncedLight2.intensity=(lerp(0, 0, scalePercent(tmp3scr,tmp4scr)));
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(-.2, 0, scalePercent(tmp3scr,tmp4scr)),
+                            //        lerp(-.3,.2, scalePercent(tmp3scr,tmp4scr)),
+                            //        lerp(2.3, 2.4, scalePercent(tmp3scr,tmp4scr))
+                            //    )
+                            //    planeGroupe.rotation.z=lerp(-.05, .5, scalePercent(tmp3scr,tmp4scr))
+                            //    planeGroupe.scale.x=lerp(.2, .3, scalePercent(tmp3scr,tmp4scr))
+                            //}
+                            //oncedLight.intensity=lerp(0, 1.2, scalePercent(tmp3scr,tmp4scr))
+                            //oncedLight2.intensity=(lerp(0, 0, scalePercent(tmp3scr,tmp4scr)));
                             
                         },
                     })
@@ -471,38 +495,52 @@ const models=Object.create({
                                 anime({targets:objcts.obj1ImgPhone.position,x:-.5,y:.35,z:-1.5,duration:500,easing:'linear'})
                                 anime({targets:objcts.obj1ImgPhone.rotation,y:.2,duration:500,easing:'linear'})
                             }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(0, -.2, scalePercent(tmp4scr,tmp5scr)),
-                                    .2,
-                                    lerp(2.4, 2, scalePercent(tmp4scr,tmp5scr))
-                                );
-                                planeGroupe.rotation.z=lerp(.5, -.1, scalePercent(tmp4scr,tmp5scr))
-                                planeGroupe.scale.x=lerp(.3, .2, scalePercent(tmp4scr,tmp5scr))
-                            }
-                            oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp4scr, tmp5scr))
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(0, -.2, scalePercent(tmp4scr,tmp5scr)),
+                            //        .2,
+                            //        lerp(2.4, 2, scalePercent(tmp4scr,tmp5scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(.5, -.1, scalePercent(tmp4scr,tmp5scr))
+                            //    planeGroupe.scale.x=lerp(.3, .2, scalePercent(tmp4scr,tmp5scr))
+                            //}
+                            //oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp4scr, tmp5scr))
                         }
                     })
+                    
                     const tmp6scr=screenConst*5// 6 screen Join the
+                    //5.5 screen
+                    //const tmp55scr=screenConst*4.5// 5.5 screen Join the
+                    //animationScripts.push({
+                    //    start: tmp55scr,
+                    //    end: tmp6scr,
+                    //    func: () => {
+                    //        if(objcts.obj1ImgPhone){// Phone Object3d
+                    //            anime({targets:objcts.obj1ImgPhone.position,x:-.5,y:.35,z:-1.5,duration:500,easing:'linear'})
+                    //            anime({targets:objcts.obj1ImgPhone.rotation,y:.2,duration:500,easing:'linear'})
+                    //        }
+                    //    }
+                    //})
+                    // 6 scr
                     animationScripts.push({
                         start: tmp5scr,
                         end: tmp6scr,
                         func: () => {
                             mesh.position.set(  lerp(-.7, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(-.4, -.3, scalePercent(tmp5scr, tmp6scr)),  lerp(.1, -1, scalePercent(tmp5scr, tmp6scr))  )
                             mesh.rotation.set( 0,  lerp(5.7, 6.1, scalePercent(tmp5scr, tmp6scr)),  0 )
-                            if(objcts.obj1ImgPhone){// Phone Object3d
-                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
-                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
-                            }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    -.2,//lerp(-.2, 0, scalePercent(tmp5scr,tmp6scr)),
-                                    .2,
-                                    lerp(2, 2.08, scalePercent(tmp5scr,tmp6scr))
-                                );
-                                planeGroupe.rotation.z=lerp(-.1, 0, scalePercent(tmp5scr,tmp6scr))
-                                planeGroupe.scale.x=lerp(.2, .1, scalePercent(tmp5scr,tmp6scr))
-                            }
+                            //if(objcts.obj1ImgPhone){// Phone Object3d
+                            //    anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                            //    anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
+                            //}
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        -.2,//lerp(-.2, 0, scalePercent(tmp5scr,tmp6scr)),
+                            //        .2,
+                            //        lerp(2, 2.08, scalePercent(tmp5scr,tmp6scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(-.1, 0, scalePercent(tmp5scr,tmp6scr))
+                            //    planeGroupe.scale.x=lerp(.2, .1, scalePercent(tmp5scr,tmp6scr))
+                            //}
                         }
                     })
                 }});
@@ -664,6 +702,12 @@ const models=Object.create({
         const clock = new THREE.Clock()
         function render() {
             TIME += .001;
+
+            if(matForLight&&mesh&&mesh.rotation){
+                matForLight.uniforms.rotationY.value=mesh.rotation.y
+            //    console.log(mesh.rotation.y)
+            }
+
             if(TIME>10)TIME=0
             if(TIME%4>.5){
                 TIME=0
