@@ -40,14 +40,12 @@ const models=Object.create({
         // https://sbcode.net/threejs/animate-on-scroll/
         const scene = new THREE.Scene()
         const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
-        let isMobile=false;
         let percentToScreens=330;
         if(window.innerWidth<1025){//MOBILE
             camera.position.set(0, 0, 3.2);
-            isMobile=true
             percentToScreens=400
         }
-        if(window.innerWidth>1024){camera.position.set(0, 0, 3); isMobile=false}
+        if(window.innerWidth>1024){camera.position.set(0, 0, 3)}
         const screenConst=parseInt(window.getComputedStyle(slider).height)/percentToScreens;//100/7 ( 7 = screens.length)
         const canvas = document.querySelector('canvas.webgl')
         const renderer = new THREE.WebGLRenderer({
@@ -310,7 +308,7 @@ const models=Object.create({
             mesh.add( spotLight );
             mesh.add( spotLight.target );
             // add spot light
-            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.4, 7, 10, 20, true)
+            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.4, 7, 18, 80, true)
             cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
             cylForLight.rotateX( -Math.PI / 2 );
             matForLight	= VolumetricMatrial()
@@ -319,7 +317,7 @@ const models=Object.create({
             meshForLight.lookAt(mesh.position.x,mesh.position.y+.5,mesh.position.z)
             matForLight.uniforms.lightColor.value.set(0xffffff)
             matForLight.uniforms.spotPosition.value	= meshForLight.position
-            matForLight.uniforms.anglePower.value= 5.
+            matForLight.uniforms.anglePower.value= 3.
             matForLight.uniforms.yy.value=.5
             matForLight.uniforms.rotationY.value=mesh.rotation.y
             matForLight.uniforms.need.value	= 0.1
@@ -462,7 +460,7 @@ const models=Object.create({
                                     const matForLight=VolumetricMatrial()
                                     meshForLight2=new THREE.Mesh( cylForLight, matForLight );
                                     meshForLight2.position.set(1,.2,1.5)
-                                    meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,-1))
+                                    meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,-1.5))
                                     matForLight.uniforms.lightColor.value.set(0xf0cefb)
                                     matForLight.uniforms.spotPosition.value=meshForLight2.position
                                     matForLight.uniforms.anglePower.value=10.

@@ -65,13 +65,13 @@ const VolumetricMatrial = ()=>{
       intensity  = distance(vWorldPosition, spotPosition)/attenuation;
       intensity  = 1.0 - clamp(intensity, 0.2, 1.0);
       // intensity on angle
-      vec3 normal  = vec3(vNormal.x, vNormal.y, abs(vNormal.z));
+      vec3 normal  = vec3(vNormal);
 			if(need==0.1){
 				if(intensity<.5){
-					intensity=.1;
+					intensity=.4;
 				}
-				if(intensity>.2){
-					intensity=.1;
+				if(intensity>.15){
+					intensity=.15;
 				}
 			}
       float yyy=yy;
