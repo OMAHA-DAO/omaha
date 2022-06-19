@@ -308,13 +308,13 @@ const models=Object.create({
             mesh.add( spotLight );
             mesh.add( spotLight.target );
             // add spot light
-            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.4, 7, 18, 80, true)
+            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.5, 7, 18, 80, true)
             cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
             cylForLight.rotateX( -Math.PI / 2 );
             matForLight	= VolumetricMatrial()
             const meshForLight	= new THREE.Mesh( cylForLight, matForLight);
-            meshForLight.position.set(1,2.1,1.3)
-            meshForLight.lookAt(mesh.position.x,mesh.position.y+.5,mesh.position.z)
+            meshForLight.position.set(1,2.1,.2)
+            meshForLight.lookAt(mesh.position.x+.1,mesh.position.y+.7,mesh.position.z)
             matForLight.uniforms.lightColor.value.set(0xffffff)
             matForLight.uniforms.spotPosition.value	= meshForLight.position
             matForLight.uniforms.anglePower.value= 3.
