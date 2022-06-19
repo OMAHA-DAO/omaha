@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader'
@@ -55,7 +55,7 @@ const models=Object.create({
         });
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.BasicShadowMap;
-const controls = new OrbitControls(camera, canvas)
+//const controls = new OrbitControls(camera, canvas)
         renderer.localClippingEnabled = true;
         renderer.setClearColor( 0x000000, 1);
         let TIME=0//GLITCH FROM https://codepen.io/sfi0zy/pen/MZdeKB
