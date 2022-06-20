@@ -393,7 +393,7 @@ footer{
 	margin-bottom: 45px;
 }
 
-.social__item img{
+.social__item svg{
 	margin-bottom: 15px;
 	filter:drop-shadow(0 0 6px #DAB457);
 }
@@ -913,7 +913,7 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 /*		font-size: 13px;*/
 /*	}*/
 /*	*/
-	.social__item img{
+	.social__item svg{
 		width: 36px;
 		height: 36px;
 	}

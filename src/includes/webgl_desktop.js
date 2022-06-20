@@ -10,9 +10,9 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../src/FontLoader';
+import { FontLoader } from '../FontLoader';
 
-import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
+import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
 
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
@@ -206,8 +206,8 @@ const models=Object.create({
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            (document.getElementById('scrollProgress')).innerText =
-                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            // (document.getElementById('scrollProgress')).innerText =
+            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
             /* if(scrollPercent>95){
                 if(canvas1){canvas1.classList.add('canvas1Cl')}
             }else{
