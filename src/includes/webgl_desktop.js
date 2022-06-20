@@ -10,9 +10,12 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../FontLoader';
+import { FontLoader } from '../src/FontLoader';
 
-import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
+import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
+import { PlaneGeometry } from 'three';
+
+import { GUI } from 'dat.gui'
 
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
@@ -32,7 +35,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=false;
+    const DEBUG=true;
     const easing='linear'
     let mixer;
     let mesh; // Girl
@@ -52,7 +55,7 @@ const models=Object.create({
             canvas, /* alpha: true, */ antialias: true,
         });
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.BasicShadowMap;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 //const controls = new OrbitControls(camera, canvas)
         renderer.localClippingEnabled = true;
         renderer.setClearColor( 0x000000, 1);
@@ -206,8 +209,8 @@ const models=Object.create({
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            // (document.getElementById('scrollProgress')).innerText =
-            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
+            (document.getElementById('scrollProgress')).innerText =
+                'Scroll Progress : ' + scrollPercent.toFixed(2)
             /* if(scrollPercent>95){
                 if(canvas1){canvas1.classList.add('canvas1Cl')}
             }else{
@@ -290,59 +293,78 @@ const models=Object.create({
             mesh=obj3d
             mesh.add(lightHolder)
             // Volumetric
-            const spotLight = new THREE.SpotLight( 0xffffff,3,30,.4,2,7 );// TO GIRL
-            spotLight.position.set(1.5,2,1);
-            spotLight.focus=.9
-            spotLight.castShadow = true;
-            spotLight.shadow.mapSize.width = 2048*4;
-            spotLight.shadow.mapSize.height = 2048*4;
-            //console.log(spotLight);
-           
-            //const spotLightHelper = new THREE.SpotLightHelper( spotLight, 0xff0000 );
-            //scene.add( spotLightHelper );
-
-
-            //spotLight.shadow.camera.near = 1;
-            //spotLight.shadow.camera.far = 25;
-            //spotLight.shadow.camera.fov = 3;
+            const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
+            spotLightMAIN.position.set(1,2.1,.2);
+            spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            spotLightMAIN.shadow.mapSize.width = 2048*5;
+            spotLightMAIN.shadow.mapSize.height = 2048*5;
+            spotLightMAIN.shadow.camera.near = .1;
+            spotLightMAIN.castShadow = true;
+            mesh.add(spotLightMAIN)
+            mesh.add( spotLightMAIN.target );
+/* const gui = new GUI()
+const spotLightFolder = gui.addFolder('THREE.SpotLight')
+spotLightFolder.add(spotLightMAIN, 'distance', 0, 100, 0.01)
+spotLightFolder.add(spotLightMAIN, 'decay', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN, 'angle', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN, 'penumbra', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN.shadow.camera, "near", 0.1, 100).onChange(() => spotLightMAIN.shadow.camera.updateProjectionMatrix())
+spotLightFolder.add(spotLightMAIN.shadow.camera, "far", 0.1, 100).onChange(() => spotLightMAIN.shadow.camera.updateProjectionMatrix())
+//spotLightFolder.add(data, "shadowMapSizeWidth", [256, 512, 1024, 2048, 4096]).onChange(() => updateShadowMapSize())
+//spotLightFolder.add(data, "shadowMapSizeHeight", [256, 512, 1024, 2048, 4096]).onChange(() => updateShadowMapSize())
+spotLightFolder.add(spotLightMAIN.position, 'x', -50, 50, 0.01)
+spotLightFolder.add(spotLightMAIN.position, 'y', -50, 50, 0.01)
+spotLightFolder.add(spotLightMAIN.position, 'z', -50, 50, 0.01)
+spotLightFolder.open() */
+            const spotLight = new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
+            spotLight.position.set(1,2.1,.2);
+            //spotLight.focus=.9
+            //spotLight.castShadow = true;
+            ////spotLight.receiveShadow = true;
+            //spotLight.shadow.mapSize.width = 2048;
+            //spotLight.shadow.mapSize.height = 2048;
+            spotLight.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            scene.add(spotLight.target);
+            //spotLight.shadow.camera.near = .56;
             mesh.add( spotLight );
             mesh.add( spotLight.target );
+            // floor
+            const floor=new THREE.Mesh(new PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
+            floor.rotateX(-Math.PI/2)
+            floor.position.set(0,-.45,0)
+            floor.receiveShadow = true;
+            mesh.add(floor)
+            // \ floor
             // add spot light
-            const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1.5, 7, 18, 80, true)
+            const cylForLight=new THREE.CylinderBufferGeometry( 0.01, 1.72, 7, 32, 80, true)
             cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
             cylForLight.rotateX( -Math.PI / 2 );
             matForLight	= VolumetricMatrial()
             const meshForLight	= new THREE.Mesh( cylForLight, matForLight);
             meshForLight.position.set(1,2.1,.2)
-            meshForLight.lookAt(mesh.position.x+.1,mesh.position.y+.7,mesh.position.z)
+            //meshForLight.lookAt(mesh.position.x+.1,mesh.position.y+.7,mesh.position.z)
+            meshForLight.lookAt(mesh.position.x-.25,mesh.position.y,mesh.position.z)
             matForLight.uniforms.lightColor.value.set(0xffffff)
             matForLight.uniforms.spotPosition.value	= meshForLight.position
-            matForLight.uniforms.anglePower.value= 3.
+            matForLight.uniforms.anglePower.value=3.
             matForLight.uniforms.yy.value=.5
-            matForLight.uniforms.rotationY.value=mesh.rotation.y
-            matForLight.uniforms.need.value	= 0.1
-            //matForLight.uniforms.attenuation.value	= 3.
+            //matForLight.uniforms.rotationY.value=mesh.rotation.y
+            matForLight.uniforms.need.value=.1
+            //matForLight.uniforms.attenuation.value=3.
             mesh.add( meshForLight );
             // \ Volumetric
-
-            //const directionalLight = new THREE.DirectionalLight( 0xffffff,2 );
-            //mesh.add( directionalLight );
-            //const helper = new THREE.DirectionalLightHelper( directionalLight, 5, 0xff0000 );
-            //mesh.add( helper );
-
             if(courses)mesh.add(courses)
             const preloader=document.querySelector('.preloader');
-            const tmp={}
+            //const tmp={}
             const duration=1000;
             //tmp.animeoncedLight2Start=anime({targets:oncedLight2,intensity:[0,2,1,.5,0,1,1.5,2.5,0,.1,.5,2,,1.7,.7,0],duration:8000,easing,loop:true,delay:1000});
             //tmp.animeoncedLight2Start.pause()
             //https://stackoverflow.com/questions/56071764/how-to-use-dracoloader-with-gltfloader-in-reactjs   DRACO FIX LOADER
-            let deburTrue=3600
-            if(DEBUG)deburTrue=100
+            let debugTrue=3600
+            if(DEBUG)debugTrue=100
             anime.timeline()
-                .add({targets:mesh.position,x:[0,.04],y:[0,-.78],z:[-3,2],delay:deburTrue,duration:duration*2,easing,complete:()=>{
+                .add({targets:mesh.position,x:[0,.04],y:[0,-.78],z:[-3,2],delay:debugTrue,duration:duration*2,easing,complete:()=>{
                     const tmp2scr=screenConst// 2 screen
-
                     animationScripts.push({
                         start: 0,
                         end: tmp2scr,
@@ -420,8 +442,8 @@ const models=Object.create({
                                     bull=>{
                                         Bull=bull.scene.children[0].children[0]
                                         Bull.material.envMap = hdrEquirect
-                                        Bull.position.set(.4,0,6)
-                                        Bull.rotation.set(-1.7,0,3.3)
+                                        Bull.position.set(.4,-.48,5.5)
+                                        Bull.rotation.set(-1.54,0,3.3)
                                         Bull.material.color=new THREE.Color(mainColor)
                                         Bull.material.roughness=.4
                                         Bull.material.metalness=.5
@@ -680,6 +702,7 @@ const models=Object.create({
             }
         );
         // \ courses
+
         window.addEventListener('resize', () =>{
             sizes.width = window.innerWidth
             sizes.height = window.innerHeight
@@ -701,10 +724,10 @@ const models=Object.create({
         function render() {
             TIME += .001;
 
-            if(matForLight&&mesh&&mesh.rotation){
-                matForLight.uniforms.rotationY.value=mesh.rotation.y
-            //    console.log(mesh.rotation.y)
-            }
+            //if(matForLight&&mesh&&mesh.rotation){
+            //    matForLight.uniforms.rotationY.value=mesh.rotation.y
+            ////    console.log(mesh.rotation.y)
+            //}
 
             if(TIME>10)TIME=0
             if(TIME%4>.5){

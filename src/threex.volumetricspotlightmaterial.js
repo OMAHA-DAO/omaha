@@ -30,10 +30,6 @@ const VolumetricMatrial = ()=>{
       yy  : {
         type: "f", value: .2
       },
-      rotationY:{
-        type: "f",
-        value: 0.
-      },
       need:{
         type: "f",
         value: 0.0
@@ -57,7 +53,6 @@ const VolumetricMatrial = ()=>{
     uniform float anglePower;
     uniform float yy;
     uniform float need;
-    uniform float rotationY;
 
     void main(){
       float intensity;
@@ -74,11 +69,7 @@ const VolumetricMatrial = ()=>{
 					intensity=.15;
 				}
 			}
-      float yyy=yy;
-      if(rotationY>4.7){
-        yyy=.0;
-      }
-      float angleIntensity  = pow( dot(normal, vec3(0.0, yyy, 1.0)), anglePower );
+      float angleIntensity  = pow( dot(normal, vec3(0.0, yy, 1.0)), anglePower );
       intensity  = intensity * angleIntensity;
       
       // final color
