@@ -262,6 +262,9 @@ const models=Object.create({
             spotLightMAIN.shadow.mapSize.width = 2048*2;
             spotLightMAIN.shadow.mapSize.height = 2048*2;
             spotLightMAIN.shadow.camera.near = .1;
+            mesh.add( spotLightMAIN );
+            mesh.add( spotLightMAIN.target );
+
 
         // \ Volumetric
 
