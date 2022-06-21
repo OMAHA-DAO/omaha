@@ -13,9 +13,9 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../src/FontLoader';
+import { FontLoader } from '../FontLoader';
 
-import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
+import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
 
 const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
@@ -31,23 +31,23 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
     const easing='linear'
     let mixer
 
     //setTimeout(() => {
         // https://sbcode.net/threejs/animate-on-scroll/
         const scene = new THREE.Scene()
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 100)
+        const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
         let percentToScreens=330;
         if(window.innerWidth<1025){//MOBILE | !!! the code below assumes only a mobile version of the site !!!
-            camera.position.set(0, .1, 3.2);
+            camera.position.set(0,.2,3.2);
             percentToScreens=400
         }
         if(window.innerWidth>1024){
             camera.position.set(0, 0, 3);
         }
-        camera.rotation.set(-.3,0,0)
+        camera.rotation.set(-.2,0,0)
         let screenConst=parseInt(window.getComputedStyle(slider).height)/percentToScreens;//100/7 ( 7 = screens.length)
         const canvas = document.querySelector('canvas.webgl')
         const renderer = new THREE.WebGLRenderer({
@@ -116,8 +116,8 @@ const models=Object.create({
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            (document.getElementById('scrollProgress')).innerText =
-                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            //(document.getElementById('scrollProgress')).innerText =
+            //    'Scroll Progress : ' + scrollPercent.toFixed(2)
             //if(scrollPercent>95){
             //    if(canvas1){
             //        canvas1.classList.add('canvas1Cl')
@@ -185,7 +185,7 @@ const models=Object.create({
                             })
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:['-100%',0],  easing,  duration:700,
+                                translateY:0,  easing,  duration:700,
                             })
                         }
                     })
@@ -219,27 +219,27 @@ const models=Object.create({
             const mesh=obj3d
 
         // Volumetric
-            const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
-            spotLightMAIN.position.set(1,2.1,.2);
-            spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
-            spotLightMAIN.shadow.mapSize.width = 2048*2;
-            spotLightMAIN.shadow.mapSize.height = 2048*2;
-            spotLightMAIN.shadow.camera.near = .1;
-            spotLightMAIN.castShadow = true;
-            mesh.add(spotLightMAIN)
-            mesh.add( spotLightMAIN.target );
-            const spotLight=new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
-            spotLight.position.set(1,2.1,.2);
-            spotLight.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z-.3);
-            scene.add(spotLight.target);
-            mesh.add(spotLight);
-            mesh.add(spotLight.target);
+            //const spotLightMAIN = new THREE.SpotLight(0xffffff,3,30,1.8,1,9);// TO GIRL
+            //spotLightMAIN.position.set(1,2.1,.2);
+            //spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            //spotLightMAIN.shadow.mapSize.width = 2048*2;
+            //spotLightMAIN.shadow.mapSize.height = 2048*2;
+            //spotLightMAIN.shadow.camera.near = .1;
+            //spotLightMAIN.castShadow = true;
+            //mesh.add(spotLightMAIN)
+            //mesh.add( spotLightMAIN.target );
+            //const spotLight=new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
+            //spotLight.position.set(1,2.1,.2);
+            //spotLight.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z-.3);
+            //scene.add(spotLight.target);
+            //mesh.add(spotLight);
+            //mesh.add(spotLight.target);
             // floor
-            const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
-            floor.rotateX(-Math.PI/2)
-            floor.position.set(0,-.45,0)
-            floor.receiveShadow = true;
-            mesh.add(floor)
+            //const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
+            //floor.rotateX(-Math.PI/2)
+            //floor.position.set(0,-.45,0)
+            //floor.receiveShadow = true;
+            //mesh.add(floor)
             // \ floor
             // add spot light
             const cylForLight=new THREE.CylinderBufferGeometry( 0.01, 1.72, 7, 32, 80, true)
@@ -255,6 +255,14 @@ const models=Object.create({
             matForLight.uniforms.yy.value=.5
             matForLight.uniforms.need.value=.1
             mesh.add( meshForLight );
+
+            const spotLightMAIN = new THREE.SpotLight(0xffffff,3,30,1.8,1,9);// TO GIRL
+            spotLightMAIN.position.set(1,2.1,.2);
+            spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            spotLightMAIN.shadow.mapSize.width = 2048*2;
+            spotLightMAIN.shadow.mapSize.height = 2048*2;
+            spotLightMAIN.shadow.camera.near = .1;
+
         // \ Volumetric
 
             const preloader=document.querySelector('.preloader');
@@ -262,17 +270,18 @@ const models=Object.create({
             const duration=1000;
             window.anime.timeline()
                 .add({targets:preloader,opacity:[0,1],easing,duration:1})
-                .add({targets:mesh.position,x:[0,.04],y:[0,-.78],z:[-7,2],delay:2800,duration:duration*2,easing:'easeOutQuad',complete:()=>{
+                .add({targets:mesh.position,x:[0,.06],y:[0,-.65],z:[-7,2.2],delay:0/* 2800 */,duration:duration*2,easing:'easeOutQuad',complete:()=>{
                     const tmp2scr=screenConst// 2 screen
                     animationScripts.push({
                         start: 0,
                         end: tmp2scr,
                         func: () => {
                             mesh.position.set(
-                                .04,
-                                lerp(-.78,-.6, scalePercent(0, tmp2scr)),
-                                lerp(2, .1, scalePercent(0, tmp2scr))
+                                lerp(.06, .2, scalePercent(0, tmp2scr)),
+                                lerp(-.65,-.8, scalePercent(0, tmp2scr)),
+                                lerp(2.2, 1.9, scalePercent(0, tmp2scr))
                             )
+                            mesh.rotation.set(0,lerp(0, 1.1, scalePercent(0, tmp2scr)),0)
                         },
                     })
                     const tmp3scr=screenConst*2// 3 screen
@@ -281,11 +290,11 @@ const models=Object.create({
                         end: tmp3scr,
                         func: () => {
                             mesh.position.set(
-                                .04,
-                                lerp(-.6, -.8, scalePercent(tmp2scr, tmp3scr)),//y
-                                lerp(.1, 1.9, scalePercent(tmp2scr, tmp3scr)),//z
+                                lerp(.2, 0, scalePercent(tmp2scr, tmp3scr)),
+                                -.8,//lerp(-.8, -.8, scalePercent(tmp2scr, tmp3scr)),//y
+                                lerp(1.9, 1.6, scalePercent(tmp2scr, tmp3scr)),//z
                             )
-                            mesh.rotation.set(-.1,lerp(0, 1.1, scalePercent(tmp2scr, tmp3scr)),0)
+                            mesh.rotation.set(0,lerp(1.1, 1.5, scalePercent(tmp2scr, tmp3scr)),0)
                             //if(Bull){
                             //    Bull.position.set(4,0,-6)
                             //    Bull.rotation.set(-1.3,0,.5)
@@ -299,15 +308,11 @@ const models=Object.create({
                         end: tmp4scr,
                         func: () => {
                             mesh.position.set(
-                                lerp(.04, .2, scalePercent(tmp3scr, tmp4scr)),
-                                lerp(-.8, -.8, scalePercent(tmp3scr, tmp4scr)),
-                                lerp(1.9, 1.2, scalePercent(tmp3scr, tmp4scr))
+                                lerp(0, .2, scalePercent(tmp3scr, tmp4scr)),
+                                -.8,//lerp(-.5, -.7, scalePercent(tmp3scr, tmp4scr)),
+                                lerp(1.6, 1.2, scalePercent(tmp3scr, tmp4scr))
                             )
-                            mesh.rotation.set(
-                                -.1,
-                                lerp(1.1, 3.7, scalePercent(tmp3scr, tmp4scr)),
-                                0
-                            )
+                            mesh.rotation.set( 0,  lerp(1.5, 3.7, scalePercent(tmp3scr, tmp4scr)),  0 )
                             if(!BullLoaded){
                                 BullLoaded=true
                                 loader.load(
