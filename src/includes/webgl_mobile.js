@@ -5,7 +5,7 @@
  */
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+//import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader';
@@ -13,7 +13,9 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../FontLoader';
+import { FontLoader } from '../src/FontLoader';
+
+import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
 
 const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
@@ -36,49 +38,52 @@ const models=Object.create({
     //setTimeout(() => {
         // https://sbcode.net/threejs/animate-on-scroll/
         const scene = new THREE.Scene()
-        const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, .1, 100)
         let percentToScreens=330;
         if(window.innerWidth<1025){//MOBILE | !!! the code below assumes only a mobile version of the site !!!
-            camera.position.set(0, 0, 3.2);
+            camera.position.set(0, .1, 3.2);
             percentToScreens=400
         }
         if(window.innerWidth>1024){
             camera.position.set(0, 0, 3);
         }
+        camera.rotation.set(-.3,0,0)
         let screenConst=parseInt(window.getComputedStyle(slider).height)/percentToScreens;//100/7 ( 7 = screens.length)
         const canvas = document.querySelector('canvas.webgl')
         const renderer = new THREE.WebGLRenderer({
-            canvas, alpha: true, antialias: true,
+            canvas, /* alpha: true, */ antialias: true,
         });
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         let TIME=0//GLITCH FROM https://codepen.io/sfi0zy/pen/MZdeKB
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
 
-        const controls = new OrbitControls(camera, canvas)
+//const controls = new OrbitControls(camera, canvas)
 
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
         }
-        const lightHolder = new THREE.Group();
+        //const lightHolder = new THREE.Group();
         // 0 0 3
-        const aLight=new THREE.PointLight(0xffffff,1,10);//0xfbc759
-        aLight.position.set(0,0,3);
-        lightHolder.add(aLight);
-        // top left
-        const aLight2=new THREE.DirectionalLight(0xffffff,.7);
-        aLight2.position.set(-1.5,1.7,0);
-        lightHolder.add(aLight2);
-        //frontSide
-        const aLight4=new THREE.DirectionalLight(0xffffff,.5);//0xe7ba92/DE9C63
-        aLight4.position.set(2,1,2);
-        lightHolder.add(aLight4);
-        //frontSide 2
-        const aLight5=new THREE.DirectionalLight(0xffffff,.5);//0xe7ba92/DE9C63
-        aLight5.position.set(2,1.7,-1);
-        lightHolder.add(aLight5);
-
-        scene.add(lightHolder)
+        //const aLight=new THREE.PointLight(0xffffff,1,10);//0xfbc759
+        //aLight.position.set(0,0,3);
+        //lightHolder.add(aLight);
+        //// top left
+        //const aLight2=new THREE.DirectionalLight(0xffffff,.7);
+        //aLight2.position.set(-1.5,1.7,0);
+        //lightHolder.add(aLight2);
+        ////frontSide
+        //const aLight4=new THREE.DirectionalLight(0xffffff,.5);//0xe7ba92/DE9C63
+        //aLight4.position.set(2,1,2);
+        //lightHolder.add(aLight4);
+        ////frontSide 2
+        //const aLight5=new THREE.DirectionalLight(0xffffff,.5);//0xe7ba92/DE9C63
+        //aLight5.position.set(2,1.7,-1);
+        //lightHolder.add(aLight5);
+//
+        //scene.add(lightHolder)
 
         // girl and bull loaders
         let pl=null;
@@ -113,15 +118,15 @@ const models=Object.create({
                         document.documentElement.clientHeight)) * 100;
             (document.getElementById('scrollProgress')).innerText =
                 'Scroll Progress : ' + scrollPercent.toFixed(2)
-            if(scrollPercent>95){
-                if(canvas1){
-                    canvas1.classList.add('canvas1Cl')
-                }
-            }else{
-                if(canvas1){
-                    canvas1.classList.remove('canvas1Cl')
-                }
-            }
+            //if(scrollPercent>95){
+            //    if(canvas1){
+            //        canvas1.classList.add('canvas1Cl')
+            //    }
+            //}else{
+            //    if(canvas1){
+            //        canvas1.classList.remove('canvas1Cl')
+            //    }
+            //}
         }
         // \ ANIMATE
 
@@ -180,7 +185,7 @@ const models=Object.create({
                             })
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:[0],  easing,  duration:700,
+                                translateY:['-100%',0],  easing,  duration:700,
                             })
                         }
                     })
@@ -190,7 +195,7 @@ const models=Object.create({
             mixer = new THREE.AnimationMixer(sceneGlb)
             mixer.clipAction((gltf).animations[0]).play()
             scene.add(sceneGlb)
-            sceneGlb.position.set(.08,-.45,.11)
+            sceneGlb.position.set(.08,-.52,.11)
             sceneGlb.rotation.set(-.1,0,0)
             sceneGlb.scale.set(.05,.05,.05)
 
@@ -205,11 +210,53 @@ const models=Object.create({
                     mesh.material.metalness=.5
                     mesh.material.envMapIntensity=1.4
                     mesh.material.envMap = hdrEquirect
+                    mesh.receiveShadow=true
+                    mesh.castShadow=true
                 }
             });
             obj3d.add(sceneGlb)
             scene.add(obj3d)
             const mesh=obj3d
+
+        // Volumetric
+            const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
+            spotLightMAIN.position.set(1,2.1,.2);
+            spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            spotLightMAIN.shadow.mapSize.width = 2048*2;
+            spotLightMAIN.shadow.mapSize.height = 2048*2;
+            spotLightMAIN.shadow.camera.near = .1;
+            spotLightMAIN.castShadow = true;
+            mesh.add(spotLightMAIN)
+            mesh.add( spotLightMAIN.target );
+            const spotLight=new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
+            spotLight.position.set(1,2.1,.2);
+            spotLight.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z-.3);
+            scene.add(spotLight.target);
+            mesh.add(spotLight);
+            mesh.add(spotLight.target);
+            // floor
+            const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
+            floor.rotateX(-Math.PI/2)
+            floor.position.set(0,-.45,0)
+            floor.receiveShadow = true;
+            mesh.add(floor)
+            // \ floor
+            // add spot light
+            const cylForLight=new THREE.CylinderBufferGeometry( 0.01, 1.72, 7, 32, 80, true)
+            cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
+            cylForLight.rotateX( -Math.PI / 2 );
+            const matForLight	= VolumetricMatrial()
+            const meshForLight	= new THREE.Mesh( cylForLight, matForLight);
+            meshForLight.position.set(1,2.1,.2)
+            meshForLight.lookAt(mesh.position.x-.25,mesh.position.y,mesh.position.z-.3)
+            matForLight.uniforms.lightColor.value.set(0xffffff)
+            matForLight.uniforms.spotPosition.value	= meshForLight.position
+            matForLight.uniforms.anglePower.value=3.
+            matForLight.uniforms.yy.value=.5
+            matForLight.uniforms.need.value=.1
+            mesh.add( meshForLight );
+        // \ Volumetric
+
             const preloader=document.querySelector('.preloader');
             if(courses)mesh.add(courses)
             const duration=1000;
@@ -223,7 +270,7 @@ const models=Object.create({
                         func: () => {
                             mesh.position.set(
                                 .04,
-                                lerp(-.78,-.3, scalePercent(0, tmp2scr)),
+                                lerp(-.78,-.6, scalePercent(0, tmp2scr)),
                                 lerp(2, .1, scalePercent(0, tmp2scr))
                             )
                         },
@@ -235,14 +282,14 @@ const models=Object.create({
                         func: () => {
                             mesh.position.set(
                                 .04,
-                                lerp(-.3, -.68, scalePercent(tmp2scr, tmp3scr)),//y
+                                lerp(-.6, -.8, scalePercent(tmp2scr, tmp3scr)),//y
                                 lerp(.1, 1.9, scalePercent(tmp2scr, tmp3scr)),//z
                             )
                             mesh.rotation.set(-.1,lerp(0, 1.1, scalePercent(tmp2scr, tmp3scr)),0)
-                            if(Bull){
-                                Bull.position.set(4,0,-6)
-                                Bull.rotation.set(-1.3,0,.5)
-                            }
+                            //if(Bull){
+                            //    Bull.position.set(4,0,-6)
+                            //    Bull.rotation.set(-1.3,0,.5)
+                            //}
                         },
                     })
                     let BullLoaded=false// 4 screen
@@ -252,8 +299,8 @@ const models=Object.create({
                         end: tmp4scr,
                         func: () => {
                             mesh.position.set(
-                                lerp(.04, .06, scalePercent(tmp3scr, tmp4scr)),
-                                lerp(-.68, -.71, scalePercent(tmp3scr, tmp4scr)),
+                                lerp(.04, .2, scalePercent(tmp3scr, tmp4scr)),
+                                lerp(-.8, -.8, scalePercent(tmp3scr, tmp4scr)),
                                 lerp(1.9, 1.2, scalePercent(tmp3scr, tmp4scr))
                             )
                             mesh.rotation.set(
@@ -268,23 +315,20 @@ const models=Object.create({
                                     bull=>{
                                         Bull=bull.scene.children[0].children[0]
                                         Bull.material.envMap = hdrEquirect
-                                        Bull.position.set(0,-1,-5)
-                                        Bull.rotation.set(-1.7,0,0)
+                                        Bull.position.set(.4,-.48,5.5)
+                                        Bull.rotation.set(-1.54,0,3.3)
                                         Bull.material.color=new THREE.Color(mainColor)
                                         Bull.material.transparent=false
                                         Bull.material.roughness=.4
                                         Bull.material.metalness=.5
-                                        scene.add(Bull)
+                                        Bull.receiveShadow=true
+                                        Bull.castShadow=true
+                                        mesh.add(Bull)
                                     }
                                 )
                             }else{
                                 if(Bull){
-                                    Bull.position.set(
-                                        lerp(4, -.9, scalePercent(tmp3scr, tmp4scr)),
-                                        lerp(-1, 0, scalePercent(tmp3scr, tmp4scr)),
-                                        lerp(-5, -6, scalePercent(tmp3scr, tmp4scr))
-                                    )
-                                    Bull.rotation.set(-1.3,0,.5)
+                                    Bull.position.set(.4,-.48,5.5)
                                 }
                             }
                         },
@@ -294,11 +338,14 @@ const models=Object.create({
                         start: tmp4scr,
                         end: tmp5scr,
                         func: () => {
-                            mesh.position.set(  lerp(.06, .04, scalePercent(tmp4scr, tmp5scr)),  lerp(-.71, -.2, scalePercent(tmp4scr, tmp5scr)),  lerp(1.2, .3, scalePercent(tmp4scr, tmp5scr))  )
+                            mesh.position.set(  lerp(.2, .04, scalePercent(tmp4scr, tmp5scr)), -.8 /* lerp(-.8, -.6, scalePercent(tmp4scr, tmp5scr)) */,  lerp(1.2, .3, scalePercent(tmp4scr, tmp5scr))  )
                             mesh.rotation.set(  -.1,  lerp(3.7, 5.7, scalePercent(tmp4scr, tmp5scr)),  0  )
                             if(Bull){//Bull show in viewport
-                                Bull.position.set(lerp(-.9, -4, scalePercent(tmp4scr, tmp5scr)),  0,  lerp(-6, -5, scalePercent(tmp4scr, tmp5scr)))
+                                Bull.position.set(.4,-.48,5.5)
                             }
+                            //if(Bull){//Bull show in viewport
+                            //    Bull.position.set(lerp(-.9, -4, scalePercent(tmp4scr, tmp5scr)),  0,  lerp(-6, -5, scalePercent(tmp4scr, tmp5scr)))
+                            //}
                         }
                     })
                     const tmp6scr=screenConst*5// 6 screen Join the
@@ -308,10 +355,13 @@ const models=Object.create({
                         func: () => {
                             mesh.position.set(
                                 lerp(.04, .03, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(-.2, -.5, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(.3, -2, scalePercent(tmp5scr, tmp6scr))
+                                -.8,//lerp(-.7, -.25, scalePercent(tmp5scr, tmp6scr)),
+                                lerp(.3, -1, scalePercent(tmp5scr, tmp6scr))
                             )
-                            mesh.rotation.set( lerp(-.2, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(5.7, 6.2, scalePercent(tmp5scr, tmp6scr)),  0 )
+                            mesh.rotation.set( lerp(-.1, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(5.7, 6.2, scalePercent(tmp5scr, tmp6scr)),  0 )
+                            if(Bull){//Bull show in viewport
+                                Bull.position.set(0,0,10)
+                            }
                         }
                     })
                 }})
@@ -390,7 +440,7 @@ const models=Object.create({
             }
         }
         courses.add(tobj3d)
-        courses.position.set(0,1.6,-3)
+        courses.position.set(0,1.2,-2.5)
         const ttfLoader = new TTFLoader()
         const fontLoader = new FontLoader()
         ttfLoader.load(
