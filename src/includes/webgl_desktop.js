@@ -179,23 +179,42 @@ const models=Object.create({
         // ANIMATE
         function lerp(x, y, a) {return (1 - a) * x + a * y}
         // Used to fit the lerps to start and end at specific scrolling percentages
+        let scrollPercent =0, oldScrollPercent = 0, old2=0
         function scalePercent(start, end) {
-            oldScrollPercent=parseFloat(oldScrollPercent.toFixed(2))
-            scrollPercent=parseFloat(scrollPercent.toFixed(2))
-            if(parseFloat((oldScrollPercent)-(scrollPercent))>0){
-                oldScrollPercent-=.04
+            //console.log('OLD: '+oldScrollPercent,'CUR: '+scrollPercent,'OLD2: '+old2,`MIN: ${scrollPercent-old2}`)
+            let howTo=.04;
+            if(Math.abs(old2-scrollPercent)>10){
+                howTo=.1
+            }
+            if(Math.abs(old2-scrollPercent)>15){
+                howTo=1
+            }
+            if(scrollPercent>70)howTo=1
+            oldScrollPercent=parseFloat(parseFloat(oldScrollPercent).toFixed(2))
+            scrollPercent=parseFloat(parseFloat(scrollPercent).toFixed(2))
+            //console.log(oldScrollPercent);
+            //console.log('MINUS',oldScrollPercent-scrollPercent,'OLD:' + oldScrollPercent,'CUR:' + scrollPercent, `howTo => ${howTo}` );
+            if(parseFloat(oldScrollPercent-scrollPercent)>0){
+                oldScrollPercent=parseFloat(oldScrollPercent)-howTo;
+                //console.log('HERE',oldScrollPercent-scrollPercent);
             }
             if((oldScrollPercent)<(scrollPercent)){
-                oldScrollPercent+=.04
+                //console.log(Math.abs(scrollPercent-oldScrollPercent))
+                //if(Math.abs(scrollPercent-oldScrollPercent)>.1){
+                    oldScrollPercent=parseFloat(oldScrollPercent)+howTo
+                //}
             }
-            if(scrollPercent>screenConst*5-.1){// we scrolled to end
-                oldScrollPercent-=.04
+            if(parseInt(oldScrollPercent)===parseInt(scrollPercent)){
+                old2=scrollPercent
             }
+            //if(scrollPercent>screenConst*5-.1){// we scrolled to end
+            //    oldScrollPercent-=howTo
+            //}
+            //console.log(parseFloat(oldScrollPercent),howTo);
             return (oldScrollPercent - start) / (end - start)
         };
-        let scrollPercent =0, oldScrollPercent = 0
         pl=()=>{
-            if(oldScrollPercent<scrollPercent){}
+            //if(oldScrollPercent<scrollPercent){oldScrollPercent=scrollPercent}
             animationScripts.forEach(a=>{
                 if (oldScrollPercent >= a.start && oldScrollPercent < a.end) {
                     a.func()
@@ -375,6 +394,10 @@ spotLightFolder.open() */
                                 lerp(2, 1.3, scalePercent(0, tmp2scr))
                             )
                             mesh.rotation.set(0,lerp(0, .7, scalePercent(0, tmp2scr)),0)
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
+                            }
                             //oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
                             //if(!tmp.oncedL){
                             //    tmp.oncedL=1
@@ -418,6 +441,10 @@ spotLightFolder.open() */
                                     [0,-4,0], // position
                                     'obj1ImgPhone',
                                 );
+                            }
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
                             }
                         },
                     })
@@ -490,6 +517,10 @@ spotLightFolder.open() */
                                     objcts.obj1ImgPhone.add( meshForLight2 );
                                 }
                             }
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
+                            }
                             //if(planeGroupe){
                             //    planeGroupe.position.set(
                             //        lerp(-.2, 0, scalePercent(tmp3scr,tmp4scr)),
@@ -561,6 +592,13 @@ spotLightFolder.open() */
                             //    planeGroupe.rotation.z=lerp(-.1, 0, scalePercent(tmp5scr,tmp6scr))
                             //    planeGroupe.scale.x=lerp(.2, .1, scalePercent(tmp5scr,tmp6scr))
                             //}
+                        }
+                    })
+                    animationScripts.push({
+                        start: tmp6scr,
+                        end: 101,
+                        func: () => {
+                            scalePercent(tmp6scr, 101)
                         }
                     })
                 }});
