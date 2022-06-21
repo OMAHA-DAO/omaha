@@ -55,7 +55,7 @@ const models=Object.create({
             canvas, /* alpha: true, */ antialias: true,
         });
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        renderer.shadowMap.type = THREE.BasicShadowMap;
 //const controls = new OrbitControls(camera, canvas)
         renderer.localClippingEnabled = true;
         renderer.setClearColor( 0x000000, 1);
@@ -189,7 +189,7 @@ const models=Object.create({
             if(Math.abs(old2-scrollPercent)>15){
                 howTo=1
             }
-            if(scrollPercent>70)howTo=1
+            if(scrollPercent>75)howTo=1
             oldScrollPercent=parseFloat(parseFloat(oldScrollPercent).toFixed(2))
             scrollPercent=parseFloat(parseFloat(scrollPercent).toFixed(2))
             //console.log(oldScrollPercent);
@@ -312,15 +312,15 @@ const models=Object.create({
             mesh=obj3d
             mesh.add(lightHolder)
             // Volumetric
-            const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
-            spotLightMAIN.position.set(1,2.1,.2);
-            spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
-            spotLightMAIN.shadow.mapSize.width = 2048*5;
-            spotLightMAIN.shadow.mapSize.height = 2048*5;
-            spotLightMAIN.shadow.camera.near = .1;
-            spotLightMAIN.castShadow = true;
-            mesh.add(spotLightMAIN)
-            mesh.add( spotLightMAIN.target );
+            //const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
+            //spotLightMAIN.position.set(1,2.1,.2);
+            //spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            //spotLightMAIN.shadow.mapSize.width = 2048*5;
+            //spotLightMAIN.shadow.mapSize.height = 2048*5;
+            //spotLightMAIN.shadow.camera.near = .1;
+            //spotLightMAIN.castShadow = true;
+            //mesh.add(spotLightMAIN)
+            //mesh.add( spotLightMAIN.target );
 /* const gui = new GUI()
 const spotLightFolder = gui.addFolder('THREE.SpotLight')
 spotLightFolder.add(spotLightMAIN, 'distance', 0, 100, 0.01)
@@ -348,11 +348,11 @@ spotLightFolder.open() */
             mesh.add( spotLight );
             mesh.add( spotLight.target );
             // floor
-            const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
-            floor.rotateX(-Math.PI/2)
-            floor.position.set(0,-.45,0)
-            floor.receiveShadow = true;
-            mesh.add(floor)
+            //const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}//))
+            //floor.rotateX(-Math.PI/2)
+            //floor.position.set(0,-.45,0)
+            //floor.receiveShadow = true;
+            //mesh.add(floor)
             // \ floor
             // add spot light
             const cylForLight=new THREE.CylinderBufferGeometry( 0.01, 1.72, 7, 32, 80, true)
