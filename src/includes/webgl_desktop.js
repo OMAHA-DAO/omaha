@@ -13,7 +13,7 @@ import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
 import { FontLoader } from '../FontLoader';
 
 import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
-import { PlaneGeometry } from 'three';
+//import { PlaneGeometry } from 'three';
 
 //import { GUI } from 'dat.gui'
 
@@ -110,7 +110,7 @@ const models=Object.create({
               }`,
         };
         const shaderPass = new ShaderPass(shader);
-        shaderPass.renderToScreen = true;
+        //shaderPass.renderToScreen = true;
         COMPOSER.addPass(shaderPass);
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
@@ -348,7 +348,7 @@ spotLightFolder.open() */
             mesh.add( spotLight );
             mesh.add( spotLight.target );
             // floor
-            const floor=new THREE.Mesh(new PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
+            const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}))
             floor.rotateX(-Math.PI/2)
             floor.position.set(0,-.45,0)
             floor.receiveShadow = true;
