@@ -15,7 +15,7 @@ import { FontLoader } from '../src/FontLoader';
 import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
 import { PlaneGeometry } from 'three';
 
-import { GUI } from 'dat.gui'
+//import { GUI } from 'dat.gui'
 
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
@@ -35,7 +35,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=true;
+    const DEBUG=false;
     const easing='linear'
     let mixer;
     let mesh; // Girl
