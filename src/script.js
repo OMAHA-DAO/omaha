@@ -233,7 +233,15 @@ function mediumPost({
     if(image.indexOf("event=post.clientViewed") !== -1){
         image = "data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==";
     }
-    description = description.replace(/(<figure>.*?<\/figure>)|(<img.*?>)|<.*?>/, "");
+    //description = description.replace(/(<figure>.*?<\/figure>)|(<img.*?>)|<.*?>/, "");
+
+    description = excerpt({
+        text: description,
+        count: 100,
+        ending: "...",
+    });
+
+
     return `
     <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
         <div class="post-image" style="background-image: url('${image}')"></div>
@@ -245,4 +253,34 @@ function mediumPost({
         </div>
     </div>
     `;
+}
+
+function excerpt({
+    text = "",
+    count = 0,
+    ending = " ..."
+} = {}){
+
+    // Strip tags
+    let doc = new DOMParser().parseFromString(text, 'text/html');
+    text = doc.body.textContent || "";
+    console.log("BEFORE", text);
+
+    let max = text.length;
+    if(count >= max){
+        return text;
+    }else{
+        do{
+            count--;
+
+        }while(count >= 0 && text[count] !== " " && ([".", ",", "!", "?"].includes(text[count-1] || "")));
+
+        console.log("AFTER", text);
+        text = text.substr(0, count) + ending;
+
+    }
+
+
+
+    return text;
 }
