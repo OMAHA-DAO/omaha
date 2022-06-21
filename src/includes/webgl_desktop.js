@@ -10,9 +10,9 @@ import {RenderPass} from 'three/examples/jsm/postprocessing/RenderPass';
 import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
-import { FontLoader } from '../src/FontLoader';
+import { FontLoader } from '../FontLoader';
 
-import {VolumetricMatrial} from '../src/threex.volumetricspotlightmaterial'
+import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
 import { PlaneGeometry } from 'three';
 
 //import { GUI } from 'dat.gui'
@@ -228,8 +228,8 @@ const models=Object.create({
                     ((document.documentElement.scrollHeight ||
                         document.body.scrollHeight) -
                         document.documentElement.clientHeight)) * 100;
-            (document.getElementById('scrollProgress')).innerText =
-                'Scroll Progress : ' + scrollPercent.toFixed(2)
+            // (document.getElementById('scrollProgress')).innerText =
+            //     'Scroll Progress : ' + scrollPercent.toFixed(2)
             /* if(scrollPercent>95){
                 if(canvas1){canvas1.classList.add('canvas1Cl')}
             }else{
@@ -282,7 +282,7 @@ const models=Object.create({
                             .add({targets:document.querySelector('.ANI-main-2'),  opacity:1,  translateY:['4rem',0],  easing,  duration:700})
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:['-100%',0],  easing,  duration:700,
+                                translateY:[0],  easing,  duration:700,
                             })
                         }
                     })

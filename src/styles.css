@@ -227,7 +227,7 @@ html, body, .custom-scrollbar-ff {
 .section__body{
 	font-style: normal;
 	font-weight: 400;
-	font-size: 16px;
+	font-size: 22px;
 	line-height: 165%;
 	color: #FFFFFF;
 }
@@ -642,9 +642,9 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 		font-size: 55px;
 	}
 	
-	.section__body{
-		font-size: 18px;
-	}
+	/*.section__body{*/
+	/*	font-size: 18px;*/
+	/*}*/
 	
 	.post-image{
 		margin-bottom: 15px;
