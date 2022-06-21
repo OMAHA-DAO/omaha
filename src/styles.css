@@ -459,7 +459,6 @@ canvas.webgl {position: fixed;top: 0;left: 0;z-index: -1}
 	
 	.section-first .section__body{
 		display: block;
-		max-width: 280px;
 	}
 
 	.section-second .section__title{
