@@ -337,6 +337,9 @@ spotLightFolder.add(spotLightMAIN.position, 'z', -50, 50, 0.01)
 spotLightFolder.open() */
             const spotLight = new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
             spotLight.position.set(1,2.1,.2);
+            spotLight.shadow.mapSize.width = 2048*3;
+            spotLight.shadow.mapSize.height = 2048*3;
+            spotLight.shadow.camera.near = .1;
             //spotLight.focus=.9
             //spotLight.castShadow = true;
             ////spotLight.receiveShadow = true;
