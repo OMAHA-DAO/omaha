@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * THIS CODE FOR MOBILE DEVICES ONLY
- * 
+ *
  */
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
@@ -200,7 +200,7 @@ const models=Object.create({
             sceneGlb.scale.set(.05,.05,.05)
 
             const obj3d=new THREE.Object3D();
-            
+
             sceneGlb.traverse(mesh => {
                 if (mesh.isMesh) {
                     mesh.position.set(mesh.position.x,mesh.position.y,mesh.position.z)// POSITION
