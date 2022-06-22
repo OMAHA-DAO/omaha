@@ -98,7 +98,9 @@ Promise.all([
     window.Splide = splideModule.default;
     window.Picture = PictureModule;
 
-    window.Picture.lazy_load_ib_launch();
+    window.Picture.lazy_load_ib_launch({
+        rootMargin: window.height/2 + "px 0px " + window.height/2 + "px 0px",
+    });
 
     let sliderContentElement = $(".splide__list");
 

@@ -9,8 +9,17 @@
 * */
 module.exports = {
 
-    lazy_load_ib_launch: function lazy_load_launch(){
+    lazy_load_ib_launch: function lazy_load_launch({
+        root = null,
+        rootMargin = null,  // use window.height/2 + "px 0px " + window.height/2 + "px 0px",
+        threshold = null,
+    } = {}){
         console.log("[LLIB] Launch");
+
+        let observerOptions = {};
+        if(root !== null)       { observerOptions.root = root }
+        if(rootMargin !== null) { observerOptions.rootMargin = rootMargin }
+        if(threshold !== null)  { observerOptions.threshold = threshold }
 
         let imageObserver;
         if(typeof window.imageObserver === "undefined"){
@@ -26,7 +35,7 @@ module.exports = {
                         imgObserver.unobserve(elem);
                     }
                 })
-            });
+            }, observerOptions);
             window.imageObserver = imageObserver;
         }else{
             imageObserver = window.imageObserver;
