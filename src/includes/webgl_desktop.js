@@ -12,6 +12,11 @@ import {ShaderPass} from 'three/examples/jsm/postprocessing/ShaderPass';
 import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader';
 import { FontLoader } from '../FontLoader';
 
+import {VolumetricMatrial} from '../threex.volumetricspotlightmaterial'
+//import { PlaneGeometry } from 'three';
+
+//import { GUI } from 'dat.gui'
+
 let anime
 if(window.anime){anime=window.anime}else{throw new Error('You need animejs in html')}
 
@@ -19,17 +24,10 @@ const models=Object.create({
     hdr:'/model/webgl2/hdr/sepulchral_chapel_rotunda_1k6-softly_gray.hdr',
     font:'/fonts/no-ru-symb.ttf',
     girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
+    //pseudoLight:'/model/2022-05-31/pseudoLight2.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
     voiting:'/media/voiting_04.webp',
-    courses:'/media/courses_top.png',
-    coursesBtm:'/media/courses_btm.png',
-    des:'/media/noise.webp',
 });
-
-/* for (const [key, value] of Object.entries(models)) {
-    fetch(value)
-} */
-
 (()=>{
     const hdrEquirect = new RGBELoader().load(
         models.hdr,
@@ -37,46 +35,30 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=false;
     const easing='linear'
     let mixer;
     let mesh; // Girl
-    //setTimeout(() => {
+    let matForLight; // for pseudo light for girl
         // https://sbcode.net/threejs/animate-on-scroll/
         const scene = new THREE.Scene()
-        /* const gridHelper = new THREE.GridHelper(10, 10, 0xaec6cf, 0xaec6cf)
-        scene.add(gridHelper) */
         const camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, .1, 100)
-        let isMobile=false;
         let percentToScreens=330;
         if(window.innerWidth<1025){//MOBILE
             camera.position.set(0, 0, 3.2);
-            isMobile=true
             percentToScreens=400
         }
-        if(window.innerWidth>1024){
-            camera.position.set(0, 0, 3);
-            isMobile=false
-        }
-
+        if(window.innerWidth>1024){camera.position.set(0, 0, 3)}
         const screenConst=parseInt(window.getComputedStyle(slider).height)/percentToScreens;//100/7 ( 7 = screens.length)
         const canvas = document.querySelector('canvas.webgl')
         const renderer = new THREE.WebGLRenderer({
-            canvas, alpha: true, antialias: true,
+            canvas, /* alpha: true, */ antialias: true,
         });
-        //
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.BasicShadowMap;
+//const controls = new OrbitControls(camera, canvas)
         renderer.localClippingEnabled = true;
-        // \
-        //renderer.setClearColor( 0xffffff, 1);
-
-        //JFT
-/*         const mmm=new THREE.Mesh(
-            new THREE.BoxBufferGeometry(.1,.1,.1),
-            new THREE.MeshBasicMaterial({color:0xff0000}),
-        )
-        scene.add(mmm);
-        mmm.position.set(.1,.3,2.8) */
-        // \ JFT
+        renderer.setClearColor( 0x000000, 1);
         let TIME=0//GLITCH FROM https://codepen.io/sfi0zy/pen/MZdeKB
         const COMPOSER = new EffectComposer(renderer);
         COMPOSER.setSize(window.innerWidth, window.innerHeight);
@@ -127,44 +109,38 @@ const models=Object.create({
                 return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
               }`,
         };
-
         const shaderPass = new ShaderPass(shader);
-        shaderPass.renderToScreen = true;
+        //shaderPass.renderToScreen = true;
         COMPOSER.addPass(shaderPass);
-
         renderer.setSize(window.innerWidth, window.innerHeight)
         document.body.appendChild(canvas)
-
-        //const controls = new OrbitControls(camera, canvas)
-
         const sizes = {
             width: window.innerWidth,
             height: window.innerHeight
         }
         const lightHolder = new THREE.Group();
         // top left
-        const aLight2=new THREE.DirectionalLight(0xffffff,.7);
-        aLight2.position.set(-1.5,1.7,0);
-        lightHolder.add(aLight2);
+        //      const aLight2=new THREE.DirectionalLight(0xffffff,.7);
+        //      aLight2.position.set(-1.5,1.7,0);
+        //      lightHolder.add(aLight2);
         //frontSide (golden)
-        const aLight4=new THREE.DirectionalLight(0xffffff,1);//0xe7ba92/DE9C63
-        aLight4.position.set(-1,.5,2);
-        lightHolder.add(aLight4);
+        //const aLight4=new THREE.DirectionalLight(0xffffff,1);//0xe7ba92/DE9C63
+        //aLight4.position.set(-1,.5,2);
+        //lightHolder.add(aLight4);
         //oncedLight
-        const oncedLight=new THREE.DirectionalLight(0x77edff,0);//0xfbc759/0x00e6e6
-        oncedLight.position.set(1.5,1,1);
-        lightHolder.add(oncedLight);
+        //const oncedLight=new THREE.DirectionalLight(0x77edff,0);//0xfbc759/0x00e6e6
+        //oncedLight.position.set(1.5,1,1);
+        //lightHolder.add(oncedLight);
         //oncedLight2
-        const oncedLight2=new THREE.DirectionalLight(0xffffff,0);//0xfbc759/0x00e6e6
-        oncedLight2.position.set(2,0,1);
-        lightHolder.add(oncedLight2);
-
-        scene.add(lightHolder)
-
+        //const oncedLight2=new THREE.DirectionalLight(0xffffff,0);//0xfbc759/0x00e6e6
+        //oncedLight2.position.set(2,0,1);
+        //lightHolder.add(oncedLight2);
+        
         // imgs
         const loaderImg = new THREE.TextureLoader()
         let objcts=Object.create({});
-
+        objcts.loadImg=false;
+        objcts.loadLight=false;
         function setImage(src,size=null,sizes,pos,name=null,opacity=1){// NOW: Only phone scr added
             loaderImg.load(
                 src,
@@ -203,23 +179,42 @@ const models=Object.create({
         // ANIMATE
         function lerp(x, y, a) {return (1 - a) * x + a * y}
         // Used to fit the lerps to start and end at specific scrolling percentages
+        let scrollPercent =0, oldScrollPercent = 0, old2=0
         function scalePercent(start, end) {
-            oldScrollPercent=parseFloat(oldScrollPercent.toFixed(2))
-            scrollPercent=parseFloat(scrollPercent.toFixed(2))
-            if(parseFloat((oldScrollPercent)-(scrollPercent))>0){
-                oldScrollPercent-=.04
+            //console.log('OLD: '+oldScrollPercent,'CUR: '+scrollPercent,'OLD2: '+old2,`MIN: ${scrollPercent-old2}`)
+            let howTo=.04;
+            if(Math.abs(old2-scrollPercent)>10){
+                howTo=.1
+            }
+            if(Math.abs(old2-scrollPercent)>15){
+                howTo=1
+            }
+            if(scrollPercent>75)howTo=1
+            oldScrollPercent=parseFloat(parseFloat(oldScrollPercent).toFixed(2))
+            scrollPercent=parseFloat(parseFloat(scrollPercent).toFixed(2))
+            //console.log(oldScrollPercent);
+            //console.log('MINUS',oldScrollPercent-scrollPercent,'OLD:' + oldScrollPercent,'CUR:' + scrollPercent, `howTo => ${howTo}` );
+            if(parseFloat(oldScrollPercent-scrollPercent)>0){
+                oldScrollPercent=parseFloat(oldScrollPercent)-howTo;
+                //console.log('HERE',oldScrollPercent-scrollPercent);
             }
             if((oldScrollPercent)<(scrollPercent)){
-                oldScrollPercent+=.04
+                //console.log(Math.abs(scrollPercent-oldScrollPercent))
+                //if(Math.abs(scrollPercent-oldScrollPercent)>.1){
+                    oldScrollPercent=parseFloat(oldScrollPercent)+howTo
+                //}
             }
-            if(scrollPercent>screenConst*5-.1){// we scrolled to end
-                oldScrollPercent-=.04
+            if(parseInt(oldScrollPercent)===parseInt(scrollPercent)){
+                old2=scrollPercent
             }
+            //if(scrollPercent>screenConst*5-.1){// we scrolled to end
+            //    oldScrollPercent-=howTo
+            //}
+            //console.log(parseFloat(oldScrollPercent),howTo);
             return (oldScrollPercent - start) / (end - start)
         };
-        let scrollPercent =0, oldScrollPercent = 0
         pl=()=>{
-            if(oldScrollPercent<scrollPercent){}
+            //if(oldScrollPercent<scrollPercent){oldScrollPercent=scrollPercent}
             animationScripts.forEach(a=>{
                 if (oldScrollPercent >= a.start && oldScrollPercent < a.end) {
                     a.func()
@@ -227,7 +222,6 @@ const models=Object.create({
             })
         }
         const canvas1=document.querySelector('.webgl');
-        //const canvas2=document.querySelector('.webgl2');
         document.body.onscroll = () => {//calculate the current scroll progress as a percentage
             scrollPercent =
                 ((document.documentElement.scrollTop || document.body.scrollTop) /
@@ -236,126 +230,18 @@ const models=Object.create({
                         document.documentElement.clientHeight)) * 100;
             // (document.getElementById('scrollProgress')).innerText =
             //     'Scroll Progress : ' + scrollPercent.toFixed(2)
-            if(scrollPercent>95){
-                if(canvas1){
-                    canvas1.classList.add('canvas1Cl')
-                    //canvas2.classList.remove('canvas1Cl')
-                }
+            /* if(scrollPercent>95){
+                if(canvas1){canvas1.classList.add('canvas1Cl')}
             }else{
-                if(canvas1){
-                    canvas1.classList.remove('canvas1Cl')
-                    //canvas2.classList.add('canvas1Cl')
-                }
-            }
-            //docScrl(scrollPercent)
+                if(canvas1){canvas1.classList.remove('canvas1Cl')}
+            } */
         }
         // \ ANIMATE
-        // Pseudo Lights
-        let planeGroupe;
-        if(!isMobile){
-            planeGroupe=new THREE.Group()
-            const materialTest=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.026})
-            function addPlane(sizes,positionSet){
-                const plane=new THREE.PlaneBufferGeometry(sizes[0],sizes[1])
-                const planeMesh=new THREE.Mesh(plane,materialTest)
-                planeMesh.position.set(positionSet[0],positionSet[1],positionSet[2])
-                planeGroupe.add(planeMesh)
-                return planeMesh
-            }
-            let xxx=1;
-            for(let i=0;i<40;i++){
-                xxx=xxx-parseFloat(THREE.Math.randFloat(.01,.03).toFixed(4))
-                anime({
-                    targets:
-                    addPlane(//sizes,rorationSet,positionSet
-                        [THREE.Math.randFloat(.05,.06),1],
-                        [xxx-.8,-.1,0]
-                    ).position,
-                    x:[xxx-.8,xxx-.82,xxx-.8,xxx-.78,xxx-.8],
-                    duration:2e4,
-                    delay:THREE.Math.randFloat(1000,2500).toFixed(4),
-                    loop:true,
-                    easing,
-                })
-            }
-            scene.add(planeGroupe)
-            planeGroupe.position.set(.4,.2,2.3)
-            planeGroupe.rotation.z=-.52
-            planeGroupe.scale.set(.4,2,.2);
-            const aLight5=new THREE.DirectionalLight(0xffffff,1);
-            aLight5.position.set(2.8,.2,3);
-            planeGroupe.add(aLight5);
-        }
-        // \ Pseudo Lights
-
-        //3D background
-        /* const D3Back=new THREE.Group()
-        const materialTest=new THREE.MeshBasicMaterial({
-            color:0xffffff,
-            side:THREE.DoubleSide,
-            transparent:true,
-            opacity:THREE.Math.randFloat(.01,.1),
-        })
-        const plane=new THREE.PlaneBufferGeometry(.27,.33)
-        const planeMesh=new THREE.Mesh(plane,materialTest)
-        function addPlaneBack(rorationSet,positionSet){
-            const cloned=planeMesh.clone()
-            cloned.material.opacity=THREE.Math.randFloat(.01,.1);
-            cloned.rotation.set(rorationSet[0],rorationSet[1],rorationSet[2])
-            cloned.position.set(positionSet[0],positionSet[1],positionSet[2])
-            D3Back.add(cloned)
-            anime({
-                targets:cloned.position,
-                y:[positionSet[1],THREE.Math.randFloat(positionSet[1],positionSet[1]+.2),positionSet[1]],
-                duration:10000,
-                delay:THREE.Math.randFloat(100,1000),
-                loop:true,
-                easing,
-            })
-        }
-        for(let i=0;i<100;i++){
-            addPlaneBack(//rorationSet,positionSet
-                [0,THREE.Math.randFloat(-1.9,1.9),0],
-                [6*Math.cos(i-.9), THREE.Math.randFloat(-1.9,1.9) ,6*Math.sin(i-.9)]//https://stackoverflow.com/questions/23541879/move-object-along-splinecircle-in-three-js
-            )
-        } */
-        // \ 3D background
-
-
-        //const mainColor=0x5A5651;
-        const mainColor=0x1c1710;//211b13
-        //const emissiveColor=0x333333;
+        const mainColor=0x1c1710;
+        //const planeGroupe = new THREE.Group();
         const dracoLoader = new DRACOLoader();
         dracoLoader.setDecoderPath('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/libs/draco/'); // use a full url path
-        //const gltf = new GLTFLoader();
         loader.setDRACOLoader(dracoLoader);
-        /* function docScrl(perc){
-            const percent=parseInt(perc);
-            const screenConstInt=parseInt(screenConst);
-            console.log(percent,screenConstInt);
-            if(!mesh)return;
-            const duration=2500
-            switch (percent) {
-                case 1://first screen
-                    anime({targets:mesh.position,x:.04,y:-.78,z:2,duration,easing})
-                    anime({targets:mesh.rotation,x:0,y:0,z:0,duration,easing})
-                    break;
-                case screenConstInt://second screen
-                    anime({targets:mesh.position,x:.8,y:-.3,z:.1,duration,easing})
-                    anime({targets:mesh.rotation,x:0,y:-.8,z:0,duration,easing})
-                    break;
-                case screenConstInt*2://third screen ...
-                anime({targets:mesh.position,x:-.45,y:-.75,z:1.9,duration,easing})
-                    anime({targets:mesh.rotation,x:0,y:1.1,z:0,duration,easing})
-                    break;
-                case screenConstInt*3://third screen ...
-                    anime({targets:mesh.position,x:.8,y:-.3,z:.1,duration,easing})
-                    break;
-                default:
-                    break;
-            }
-        } */
-
         loader.load(
             models.girl,// resource URL
             gltf=>{// called when the resource is loaded
@@ -386,7 +272,6 @@ const models=Object.create({
                             preloaderImg1.remove()
                             preloaderImg2.remove()
                             preloader.remove()
-                            //preloader.setAttribute('style','z-index:-1;opacity:1')
                                 window.scrollTo({ top: 0 });
                         }
                     })
@@ -397,7 +282,7 @@ const models=Object.create({
                             .add({targets:document.querySelector('.ANI-main-2'),  opacity:1,  translateY:['4rem',0],  easing,  duration:700})
                             .add({
                                 targets:document.querySelector('.ANI-main-3'),
-                                translateY:['-100%',0],  easing,  duration:700,
+                                translateY:[0],  easing,  duration:700,
                             })
                         }
                     })
@@ -409,9 +294,7 @@ const models=Object.create({
             scene.add(sceneGlb)
             sceneGlb.position.set(.1,-.52,.23)
             sceneGlb.scale.set(.05,.05,.05)
-
             const obj3d=new THREE.Object3D();
-            
             sceneGlb.traverse(mesh => {
                 if (mesh.isMesh) {
                     mesh.position.set(mesh.position.x,mesh.position.y,mesh.position.z)// POSITION
@@ -420,29 +303,90 @@ const models=Object.create({
                     mesh.material.metalness=.5
                     mesh.material.envMapIntensity=.8
                     mesh.material.envMap = hdrEquirect
+                    mesh.receiveShadow=true
+                    mesh.castShadow=true
                 }
             });
             obj3d.add(sceneGlb)
             scene.add(obj3d)
             mesh=obj3d
+            mesh.add(lightHolder)
+            // Volumetric
+            //const spotLightMAIN = new THREE.SpotLight(0xffffff,1,30,1.8,1,9);// TO GIRL
+            //spotLightMAIN.position.set(1,2.1,.2);
+            //spotLightMAIN.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            //spotLightMAIN.shadow.mapSize.width = 2048*5;
+            //spotLightMAIN.shadow.mapSize.height = 2048*5;
+            //spotLightMAIN.shadow.camera.near = .1;
+            //spotLightMAIN.castShadow = true;
+            //mesh.add(spotLightMAIN)
+            //mesh.add( spotLightMAIN.target );
+/* const gui = new GUI()
+const spotLightFolder = gui.addFolder('THREE.SpotLight')
+spotLightFolder.add(spotLightMAIN, 'distance', 0, 100, 0.01)
+spotLightFolder.add(spotLightMAIN, 'decay', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN, 'angle', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN, 'penumbra', 0, 10, 0.1)
+spotLightFolder.add(spotLightMAIN.shadow.camera, "near", 0.1, 100).onChange(() => spotLightMAIN.shadow.camera.updateProjectionMatrix())
+spotLightFolder.add(spotLightMAIN.shadow.camera, "far", 0.1, 100).onChange(() => spotLightMAIN.shadow.camera.updateProjectionMatrix())
+//spotLightFolder.add(data, "shadowMapSizeWidth", [256, 512, 1024, 2048, 4096]).onChange(() => updateShadowMapSize())
+//spotLightFolder.add(data, "shadowMapSizeHeight", [256, 512, 1024, 2048, 4096]).onChange(() => updateShadowMapSize())
+spotLightFolder.add(spotLightMAIN.position, 'x', -50, 50, 0.01)
+spotLightFolder.add(spotLightMAIN.position, 'y', -50, 50, 0.01)
+spotLightFolder.add(spotLightMAIN.position, 'z', -50, 50, 0.01)
+spotLightFolder.open() */
+            const spotLight = new THREE.SpotLight(0xffffff,3,15,.25,.1,7);// TO GIRL
+            spotLight.position.set(1,2.1,.2);
+            spotLight.shadow.mapSize.width = 2048*3;
+            spotLight.shadow.mapSize.height = 2048*3;
+            spotLight.shadow.camera.near = .1;
+            //spotLight.focus=.9
+            //spotLight.castShadow = true;
+            ////spotLight.receiveShadow = true;
+            //spotLight.shadow.mapSize.width = 2048;
+            //spotLight.shadow.mapSize.height = 2048;
+            spotLight.target.position.set(mesh.position.x-.25,mesh.position.y,mesh.position.z);
+            scene.add(spotLight.target);
+            //spotLight.shadow.camera.near = .56;
+            mesh.add( spotLight );
+            mesh.add( spotLight.target );
+            // floor
+            //const floor=new THREE.Mesh(new THREE.PlaneGeometry(20,20), new THREE.MeshStandardMaterial({color:0x333333,side: THREE.DoubleSide,}//))
+            //floor.rotateX(-Math.PI/2)
+            //floor.position.set(0,-.45,0)
+            //floor.receiveShadow = true;
+            //mesh.add(floor)
+            // \ floor
+            // add spot light
+            const cylForLight=new THREE.CylinderBufferGeometry( 0.01, 1.72, 7, 32, 80, true)
+            cylForLight.translate( 0, -cylForLight.parameters.height/2, 0 );
+            cylForLight.rotateX( -Math.PI / 2 );
+            matForLight	= VolumetricMatrial()
+            const meshForLight	= new THREE.Mesh( cylForLight, matForLight);
+            meshForLight.position.set(1,2.1,.2)
+            //meshForLight.lookAt(mesh.position.x+.1,mesh.position.y+.7,mesh.position.z)
+            meshForLight.lookAt(mesh.position.x-.25,mesh.position.y,mesh.position.z)
+            matForLight.uniforms.lightColor.value.set(0xffffff)
+            matForLight.uniforms.spotPosition.value	= meshForLight.position
+            matForLight.uniforms.anglePower.value=3.
+            matForLight.uniforms.yy.value=.5
+            //matForLight.uniforms.rotationY.value=mesh.rotation.y
+            matForLight.uniforms.need.value=.1
+            //matForLight.uniforms.attenuation.value=3.
+            mesh.add( meshForLight );
+            // \ Volumetric
             if(courses)mesh.add(courses)
-            //if(D3Back)mesh.add(D3Back)
-
             const preloader=document.querySelector('.preloader');
-            const tmp={}
+            //const tmp={}
             const duration=1000;
-            tmp.animeoncedLight2Start=anime({targets:oncedLight2,intensity:[0,2,1,.5,0,1,1.5,2.5,0,.1,.5,2,,1.7,.7,0],duration:8000,easing,loop:true,delay:1000});
-            tmp.animeoncedLight2Start.pause()
-
+            //tmp.animeoncedLight2Start=anime({targets:oncedLight2,intensity:[0,2,1,.5,0,1,1.5,2.5,0,.1,.5,2,,1.7,.7,0],duration:8000,easing,loop:true,delay:1000});
+            //tmp.animeoncedLight2Start.pause()
             //https://stackoverflow.com/questions/56071764/how-to-use-dracoloader-with-gltfloader-in-reactjs   DRACO FIX LOADER
-            let deburTrue=3600
-            if(DEBUG)deburTrue=100
+            let debugTrue=3600
+            if(DEBUG)debugTrue=100
             anime.timeline()
-                .add({targets:mesh.position,x:[0,.04],y:[0,-.78],z:[-3,2],delay:deburTrue,duration:duration*2,easing,complete:()=>{
-                    let temp=0,
-                        temp2=0
+                .add({targets:mesh.position,x:[0,.04],y:[0,-.78],z:[-3,2],delay:debugTrue,duration:duration*2,easing,complete:()=>{
                     const tmp2scr=screenConst// 2 screen
-
                     animationScripts.push({
                         start: 0,
                         end: tmp2scr,
@@ -453,16 +397,20 @@ const models=Object.create({
                                 lerp(2, 1.3, scalePercent(0, tmp2scr))
                             )
                             mesh.rotation.set(0,lerp(0, .7, scalePercent(0, tmp2scr)),0)
-                            oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
-                            if(!tmp.oncedL){
-                                tmp.oncedL=1
-                                anime({targets:oncedLight.position,y:[1.7,-1,1],duration:10000,loop:true,easing,})
-                            };
-                            if(planeGroupe){
-                                planeGroupe.position.z=(lerp(2.3, 1.7, scalePercent(0, tmp2scr)));
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
                             }
-                            tmp.animeoncedLight2Start.pause()
-                            oncedLight2.intensity=(lerp(0, 0, scalePercent(0, tmp2scr)));
+                            //oncedLight.intensity=lerp(0, .7, scalePercent(0, tmp2scr))
+                            //if(!tmp.oncedL){
+                            //    tmp.oncedL=1
+                            //    anime({targets:oncedLight.position,y:[1.7,-1,1],duration:10000,loop:true,easing,})
+                            //};
+                            //if(planeGroupe){
+                            //    planeGroupe.position.z=(lerp(2.3, 1.7, scalePercent(0, tmp2scr)));
+                            //}
+                            //tmp.animeoncedLight2Start.pause()
+                            //oncedLight2.intensity=(lerp(0, 0, scalePercent(0, tmp2scr)));
                         },
                     })
                     const tmp3scr=screenConst*2// 3 screen
@@ -476,35 +424,41 @@ const models=Object.create({
                                 lerp(1.3, .85, scalePercent(tmp2scr, tmp3scr)),//z
                             )
                             mesh.rotation.set(0,lerp(.7, 1.85, scalePercent(tmp2scr, tmp3scr)),0)
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(.4, -.2, scalePercent(tmp2scr, tmp3scr)),
-                                    lerp(.2, -.3, scalePercent(tmp2scr, tmp3scr)),
-                                    lerp(1.7, 2.3, scalePercent(tmp2scr, tmp3scr))
-                                );
-                                planeGroupe.rotation.z=lerp(-.5, -.05, scalePercent(tmp2scr, tmp3scr))
-                                planeGroupe.scale.x=lerp(.4, .18, scalePercent(tmp2scr, tmp3scr))
-                            }
-                            tmp.animeoncedLight2Start.play();
-                            oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp2scr, tmp3scr))
-                            if(!objcts.obj1ImgPhone){
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(.4, -.2, scalePercent(tmp2scr, tmp3scr)),
+                            //        lerp(.2, -.3, scalePercent(tmp2scr, tmp3scr)),
+                            //        lerp(1.7, 2.3, scalePercent(tmp2scr, tmp3scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(-.5, -.05, scalePercent(tmp2scr, tmp3scr))
+                            //    planeGroupe.scale.x=lerp(.4, .18, scalePercent(tmp2scr, tmp3scr))
+                            //}
+                            //tmp.animeoncedLight2Start.play();
+                            //oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp2scr, tmp3scr))
+                            if(!objcts.loadImg){
+                                objcts.loadImg=true
                                 setImage(
                                     models.voiting, // src
                                     [.7,.7,.7], // size! of object scale
                                     [.819,1.641], // sizes of plane
                                     [0,-4,0], // position
                                     'obj1ImgPhone',
-                                )
+                                );
+                            }
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
                             }
                         },
                     })
                     let BullLoaded=false// 4 screen
                     const tmp4scr=screenConst*3
+                    let meshForLight2
                     animationScripts.push({
                         start: tmp3scr,
                         end: tmp4scr,
                         func: () => {
-                            tmp.animeoncedLight2Start.pause();
+                            //tmp.animeoncedLight2Start.pause();
                             mesh.position.set(
                                 lerp(-.7, .4, scalePercent(tmp3scr, tmp4scr)),
                                 lerp(-.6, -.85, scalePercent(tmp3scr, tmp4scr)),
@@ -518,11 +472,13 @@ const models=Object.create({
                                     bull=>{
                                         Bull=bull.scene.children[0].children[0]
                                         Bull.material.envMap = hdrEquirect
-                                        Bull.position.set(.4,0,6)
-                                        Bull.rotation.set(-1.7,0,3.3)
+                                        Bull.position.set(.4,-.48,5.5)
+                                        Bull.rotation.set(-1.54,0,3.3)
                                         Bull.material.color=new THREE.Color(mainColor)
                                         Bull.material.roughness=.4
                                         Bull.material.metalness=.5
+                                        Bull.receiveShadow=true
+                                        Bull.castShadow=true
                                         mesh.add(Bull)
                                     }
                                 )
@@ -531,19 +487,55 @@ const models=Object.create({
                                 objcts.obj1ImgPhone.position.set(-.5,-4,-1)
                                 objcts.obj1ImgPhone.rotation.set(0,-1.6,0)
                                 objcts.obj1ImgPhone.scale.set(.8,.8,1)
+                                //if(!objcts.loadLight){
+                                //    objcts.loadLight=true
+                                //    const cylForLight	= new THREE.CylinderBufferGeometry(0,1,4,64,20,true)
+                                //    cylForLight.translate(0,-cylForLight.parameters.height/2,0);
+                                //    cylForLight.rotateX(-Math.PI/2);
+                                //    const matForLight=VolumetricMatrial()
+                                //    meshForLight2=new THREE.Mesh(cylForLight,matForLight)
+                                //    meshForLight2.position.set(-2,.2,2)
+                                //    meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,0))
+                                //    matForLight.uniforms.lightColor.value.set(0xf0cefb)
+                                //    matForLight.uniforms.spotPosition.value=meshForLight2.position
+                                //    matForLight.uniforms.anglePower.value=10.
+                                //    matForLight.uniforms.yy.value=.0
+                                //    matForLight.uniforms.need.value=0.0
+                                //    matForLight.uniforms.attenuation.value=7.
+                                //    objcts.obj1ImgPhone.add(meshForLight2);
+                                //}
+                                if(!objcts.loadLight){
+                                    objcts.loadLight=true
+                                    const cylForLight	= new THREE.CylinderBufferGeometry( 0.01, 1, 2, 32, 20, true)
+                                    cylForLight.applyMatrix4( new THREE.Matrix4().makeTranslation( 0, -cylForLight.parameters.height/2, 0 ) );
+                                    cylForLight.rotateX( -Math.PI / 2 );
+                                    const matForLight=VolumetricMatrial()
+                                    meshForLight2=new THREE.Mesh( cylForLight, matForLight );
+                                    meshForLight2.position.set(1,.2,1.5)
+                                    meshForLight2.lookAt(new THREE.Vector3(-.5,-.2,-1.5))
+                                    matForLight.uniforms.lightColor.value.set(0xf0cefb)
+                                    matForLight.uniforms.spotPosition.value=meshForLight2.position
+                                    matForLight.uniforms.anglePower.value=10.
+                                    matForLight.uniforms.attenuation.value	= 1.2
+                                    objcts.obj1ImgPhone.add( meshForLight2 );
+                                }
                             }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(-.2, 0, scalePercent(tmp3scr,tmp4scr)),
-                                    lerp(-.3,.2, scalePercent(tmp3scr,tmp4scr)),
-                                    lerp(2.3, 2.4, scalePercent(tmp3scr,tmp4scr))
-                                )
-                                planeGroupe.rotation.z=lerp(-.05, .5, scalePercent(tmp3scr,tmp4scr))
-                                planeGroupe.scale.x=lerp(.2, .3, scalePercent(tmp3scr,tmp4scr))
+                            if(objcts.obj1ImgPhone){// Phone Object3d
+                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
                             }
-                            oncedLight.intensity=lerp(0, 1.2, scalePercent(tmp3scr,tmp4scr))
-                            oncedLight2.intensity=(lerp(0, 0, scalePercent(tmp3scr,tmp4scr)));
-
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(-.2, 0, scalePercent(tmp3scr,tmp4scr)),
+                            //        lerp(-.3,.2, scalePercent(tmp3scr,tmp4scr)),
+                            //        lerp(2.3, 2.4, scalePercent(tmp3scr,tmp4scr))
+                            //    )
+                            //    planeGroupe.rotation.z=lerp(-.05, .5, scalePercent(tmp3scr,tmp4scr))
+                            //    planeGroupe.scale.x=lerp(.2, .3, scalePercent(tmp3scr,tmp4scr))
+                            //}
+                            //oncedLight.intensity=lerp(0, 1.2, scalePercent(tmp3scr,tmp4scr))
+                            //oncedLight2.intensity=(lerp(0, 0, scalePercent(tmp3scr,tmp4scr)));
+                            
                         },
                     })
                     const tmp5scr=screenConst*4// 5 screen
@@ -557,60 +549,118 @@ const models=Object.create({
                                 anime({targets:objcts.obj1ImgPhone.position,x:-.5,y:.35,z:-1.5,duration:500,easing:'linear'})
                                 anime({targets:objcts.obj1ImgPhone.rotation,y:.2,duration:500,easing:'linear'})
                             }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    lerp(0, -.2, scalePercent(tmp4scr,tmp5scr)),
-                                    .2,
-                                    lerp(2.4, 2, scalePercent(tmp4scr,tmp5scr))
-                                );
-                                planeGroupe.rotation.z=lerp(.5, -.1, scalePercent(tmp4scr,tmp5scr))
-                                planeGroupe.scale.x=lerp(.3, .2, scalePercent(tmp4scr,tmp5scr))
-                            }
-                            oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp4scr, tmp5scr))
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        lerp(0, -.2, scalePercent(tmp4scr,tmp5scr)),
+                            //        .2,
+                            //        lerp(2.4, 2, scalePercent(tmp4scr,tmp5scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(.5, -.1, scalePercent(tmp4scr,tmp5scr))
+                            //    planeGroupe.scale.x=lerp(.3, .2, scalePercent(tmp4scr,tmp5scr))
+                            //}
+                            //oncedLight.intensity=lerp(1.2, 0, scalePercent(tmp4scr, tmp5scr))
                         }
                     })
+                    
                     const tmp6scr=screenConst*5// 6 screen Join the
+                    //5.5 screen
+                    //const tmp55scr=screenConst*4.5// 5.5 screen Join the
+                    //animationScripts.push({
+                    //    start: tmp55scr,
+                    //    end: tmp6scr,
+                    //    func: () => {
+                    //        if(objcts.obj1ImgPhone){// Phone Object3d
+                    //            anime({targets:objcts.obj1ImgPhone.position,x:-.5,y:.35,z:-1.5,duration:500,easing:'linear'})
+                    //            anime({targets:objcts.obj1ImgPhone.rotation,y:.2,duration:500,easing:'linear'})
+                    //        }
+                    //    }
+                    //})
+                    // 6 scr
                     animationScripts.push({
                         start: tmp5scr,
                         end: tmp6scr,
                         func: () => {
                             mesh.position.set(  lerp(-.7, 0, scalePercent(tmp5scr, tmp6scr)),  lerp(-.4, -.3, scalePercent(tmp5scr, tmp6scr)),  lerp(.1, -1, scalePercent(tmp5scr, tmp6scr))  )
                             mesh.rotation.set( 0,  lerp(5.7, 6.1, scalePercent(tmp5scr, tmp6scr)),  0 )
-                            if(objcts.obj1ImgPhone){// Phone Object3d
-                                anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
-                                anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
-                            }
-                            if(planeGroupe){
-                                planeGroupe.position.set(
-                                    -.2,//lerp(-.2, 0, scalePercent(tmp5scr,tmp6scr)),
-                                    .2,
-                                    lerp(2, 2.08, scalePercent(tmp5scr,tmp6scr))
-                                );
-                                planeGroupe.rotation.z=lerp(-.1, 0, scalePercent(tmp5scr,tmp6scr))
-                                planeGroupe.scale.x=lerp(.2, .1, scalePercent(tmp5scr,tmp6scr))
-                            }
-
+                            //if(objcts.obj1ImgPhone){// Phone Object3d
+                            //    anime({targets:objcts.obj1ImgPhone.position,x:.5,y:-4,z:0,duration,easing})
+                            //    anime({targets:objcts.obj1ImgPhone.rotation,y:-1.6,duration,easing})
+                            //}
+                            //if(planeGroupe){
+                            //    planeGroupe.position.set(
+                            //        -.2,//lerp(-.2, 0, scalePercent(tmp5scr,tmp6scr)),
+                            //        .2,
+                            //        lerp(2, 2.08, scalePercent(tmp5scr,tmp6scr))
+                            //    );
+                            //    planeGroupe.rotation.z=lerp(-.1, 0, scalePercent(tmp5scr,tmp6scr))
+                            //    planeGroupe.scale.x=lerp(.2, .1, scalePercent(tmp5scr,tmp6scr))
+                            //}
                         }
                     })
-                    /* const tmp7scr=screenConst*6// 7 screen
                     animationScripts.push({
                         start: tmp6scr,
-                        end: tmp7scr,
+                        end: 101,
                         func: () => {
-                            mesh.position.set(
-                                lerp(-.8, .3, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(-.3, -.8, scalePercent(tmp5scr, tmp6scr)),
-                                lerp(.1, 2, scalePercent(tmp5scr, tmp6scr))
-                            )
-                            mesh.rotation.set( 0,  lerp(.7, 4.6, scalePercent(tmp5scr, tmp6scr)),  0 )
+                            scalePercent(tmp6scr, 101)
                         }
-                    }) */
-                }})
+                    })
+                }});
+
+
+                    ///loader.load(
+                    ///    models.pseudoLight,
+                    ///    pseudoLight=>{
+                    ///        const l=pseudoLight.scene.children[0]
+                    ///        
+                    ///        l.material=new THREE.MeshBasicMaterial({
+                    ///            color:0xffffff,
+                    ///            opacity:.1,
+                    ///            transparent:true,depthWrite:false,
+                    ///        })
+                    ///        /* new THREE.ShaderMaterial({
+                    ///            uniforms: {
+                    ///            color1: { value: new THREE.Color(0xffffff)},
+                    ///            color2: { value: new THREE.Color(0x000000)},
+                    ///            ratio: {value: 1.}
+                    ///            },
+                    ///            vertexShader: `// vec4( position, 1.) — localPosition
+                    ///            varying vec3 vNormal;
+                    ///            varying vec2 vUv;
+                    ///            varying vec3 vPosition;
+                    ///            void main () {
+                    ///                vPosition = position;
+                    ///                vUv = uv;
+                    ///                vNormal = normal;
+                    ///                gl_Position = projectionMatrix * modelViewMatrix * vec4(position.xyz, 1.);
+                    ///            }`,
+                    ///            fragmentShader: `varying vec2 vUv;
+                    ///                uniform vec3 color1;
+                    ///                uniform vec3 color2;
+                    ///                uniform float ratio;
+                ///
+                    ///                float cubicPulse( float c, float w, float x ){
+                    ///                    x = abs(x - c);
+                    ///                    if( x>w ) return 0.0;
+                    ///                    x /= w;
+                    ///                    return 1.0 - x*x*(3.0-2.0*x);
+                    ///                }
+                ///
+                    ///                void main(){
+                    ///                    vec2 uv = (vUv - 0.5) * vec2(ratio, .0);
+                    ///                    float alpha = cubicPulse(.0,1.,vUv.y);
+                    ///                    gl_FragColor = vec4( mix( color1, color2, length(uv)), alpha );
+                    ///                }`,
+                    ///                transparent:true,opacity: 1,depthWrite:false,
+                    ///            }); */
+                    ///        l.position.set(1,1,0)
+                    ///        l.scale.set(1,1,1)
+                    ///        if(mesh)mesh.add(l)
+                    ///    }
+                    ///)
+
             }
         )
         // \ girl and bull loaders
-
-
         // courses | https://threejs.org/examples/#webgl_clipping_intersection
         const clipPlanes = [
             new THREE.Plane( new THREE.Vector3( .8, 0, 0 ), 5.5 ),
@@ -631,16 +681,10 @@ const models=Object.create({
         helpers.add( new THREE.PlaneHelper( clipPlanes[5], 5, 0x00ff00 ) );
         helpers.add( new THREE.PlaneHelper( clipPlanes[6], 5, 0xffff00 ) );
         helpers.add( new THREE.PlaneHelper( clipPlanes[7], 5, 0x00ffff ) );
-        //console.log(helpers);
         helpers.visible = false;
         scene.add( helpers );
-        //const tobj3d=new THREE.Mesh(
-        //    new THREE.PlaneBufferGeometry(20,.2),
-        //    new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: .1 ,clippingPlanes: clipPlanes, clipIntersection: true })
-        //)
         const courses=new THREE.Group();
         const tobj3d=new THREE.Group();
-        //tobj3d.position.set(0,0,-2)
         function textSet(fnt,text,name,color=0xffffff){
             const textGeo = new THREE.TextGeometry(new String(text),{
                 font:fnt,
@@ -659,7 +703,6 @@ const models=Object.create({
                 textMesh.position.set(tobj3d.position.x,tobj3d.position.y,tobj3d.position.z)
                 objcts[name]=tobj3d;
                 tobj3d.add(textMesh)
-                //scene.add(tobj3d)
                 // 2 text (cloned)
                 const cloned=textMesh.clone()
                 cloned.position.set(tobj3d.position.x+10.2,tobj3d.position.y,tobj3d.position.z)
@@ -670,7 +713,6 @@ const models=Object.create({
                 textMesh.position.set(tobj3d.position.x,tobj3d.position.y-.13,tobj3d.position.z)
                 objcts[name]=tobj3d;
                 tobj3d.add(textMesh)
-                //scene.add(tobj3d)
                 // 2 text (cloned)
                 const cloned=textMesh.clone()
                 cloned.position.set(tobj3d.position.x+10.2,tobj3d.position.y,tobj3d.position.z)
@@ -701,47 +743,7 @@ const models=Object.create({
             }
         );
         // \ courses
-// Add a video
-//        function setMap( texture='',pos,rot=[0,0,0],size=[4.35,3.25],ret=false ) {
-//            let material;
-//            if(size[0]===200){
-//                material = new THREE.MeshStandardMaterial({
-//                    side: THREE.DoubleSide,
-//                    roughness:.8,
-//                    metalness:.2,
-//                    color:0x000000
-//                });
-//            }else{
-//                material = new THREE.MeshBasicMaterial({
-//                    map: texture,
-//                    side: THREE.DoubleSide,
-//                    alphaTest:.5,
-//                });
-//            }
-//
-//            const meshTexture = new THREE.Mesh(
-//                new THREE.PlaneGeometry(size[0],size[1]),
-//                material
-//            );
-//            scene.add(meshTexture)
-//            meshTexture.position.set(pos[0],pos[1],pos[2])
-//            meshTexture.rotation.set(rot[0],rot[1],rot[2])
-//            if (ret)return meshTexture
-//        }
-//        const video_scr_1_group=new THREE.Group();
-//        function addVideo(container,pos,sizes){
-//            const videoScr=document.querySelector(container);
-//            if(videoScr){
-//                const vs=setMap(new THREE.VideoTexture( videoScr ),pos,[0,0,0],sizes,true)
-//                video_scr_1_group.add(vs)
-//                videoScr.play()
-//            }
-//        }
-//        addVideo('.video-scr-2-1',[0,.3,-2],[.4*3,.225*3])
-//        addVideo('.video-scr-2-2',[.5,-.5,-2.2],[.4*5.5,.225*5.5])
-//        addVideo('.video-scr-2-3',[1.5,.4,-1.8],[1,1])
-//        scene.add(video_scr_1_group)
-// \ Add a video
+
         window.addEventListener('resize', () =>{
             sizes.width = window.innerWidth
             sizes.height = window.innerHeight
@@ -760,12 +762,15 @@ const models=Object.create({
             if (mixer) mixer.update(clock.getDelta());
         }
         const clock = new THREE.Clock()
-        //let yyy=0
         function render() {
             TIME += .001;
-            //yyy+= .5
+
+            //if(matForLight&&mesh&&mesh.rotation){
+            //    matForLight.uniforms.rotationY.value=mesh.rotation.y
+            ////    console.log(mesh.rotation.y)
+            //}
+
             if(TIME>10)TIME=0
-            //renderer.render(scene, camera)
             if(TIME%4>.5){
                 TIME=0
                 COMPOSER.passes.forEach((pass) => {
@@ -782,22 +787,7 @@ const models=Object.create({
                     }
                 });
             }
-            //COMPOSER.passes.forEach(pass => {if (pass) {
-            //if(pass.uniforms)pass.uniforms.uTime.value = yyy//TIME;
-            //}});
             COMPOSER.render(scene, camera);
         }
         animate();
-    //}, 200);//5200
 })();
-
-//(()=>{//load 2 webgl
-//    if(window.innerWidth>1024){
-//        setTimeout(()=>{
-//            const d=document;
-//            const sc=d.createElement('script');
-//            sc.src=models.webgl2;
-//            d.body.appendChild(sc)
-//        },100)
-//    }
-//})()

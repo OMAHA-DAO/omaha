@@ -22,7 +22,7 @@ if(window.screen.width <= 1024){
     ]);
 }
 webglPromise.then(function (modules) {
-    console.log("[IMPORT]", modules);
+    //console.log("[IMPORT]", modules);
 });
 
 
@@ -39,7 +39,7 @@ Promise.all([
         `@splidejs/splide`
         ),
 ]).then(function (modules) {
-    console.log("[IMPORT]", modules);
+    //console.log("[IMPORT]", modules);
 
     // Expand modules into variables for more convenient use
     const [
@@ -57,7 +57,7 @@ Promise.all([
         return await response.json();
     })();
     p.then(function (data) {
-        console.log(data);
+        //console.log(data);
 
         let sliderContent = "";
         let i=0;
@@ -120,7 +120,7 @@ Promise.all([
 		)
 
 ]).then(function (modules) {
-	console.log("[IMPORT]", modules);
+	//console.log("[IMPORT]", modules);
 
 	// Expand modules into variables for more convenient use
 	const [gsapModule] = modules;

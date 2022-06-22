@@ -2,13 +2,13 @@
 var $ = require( "jquery" );
 
 $(document).ready(function () {
-    console.log("jQuery Ready");
+    //console.log("jQuery Ready");
 
     window.width = $(window).width();
     window.height = $(window).height();
 
-    console.log("window_width", window.width);
-    console.log("window_height", window.height);
+    //console.log("window_width", window.width);
+    //console.log("window_height", window.height);
 
     milestones_animation();
 });
