@@ -29,6 +29,49 @@ webglPromise.then(function (modules) {
 
 import "./includes/milestones_animation";
 
+var preloads =
+    Promise.all([
+        import(
+            /* webpackChunkName: "gsap" */
+            `gsap`
+            ),
+        import(
+            /* webpackChunkName: "gsap_CSSPlugin" */
+            `gsap/CSSPlugin`
+            ),
+        import(
+            /* webpackChunkName: "gsap_ScrollTrigger" */
+            `gsap/ScrollTrigger`
+            ),
+        import(
+            /* webpackChunkName: "gsap_CSSRulePlugin" */
+            `gsap/CSSRulePlugin`
+            ),
+        import(
+            /* webpackChunkName: "picture_functions" */
+            `./includes/picture_functions`
+            ),
+    ]).then(function (modules) {
+        console.log("[IMPORT]", modules);
+
+        // Expand modules into variables for more convenient use
+        const [gsapModule, gsapCSSPluginModule, gsapScrollTriggerModule, gsapCSSRulePluginModule, PictureModule] = modules;
+
+        window.gsap = gsapModule.default;
+
+        const gsapCSSPlugin = gsapCSSPluginModule.default;
+        const gsapScrollTrigger = gsapScrollTriggerModule.default;
+        const gsapCSSRulePlugin = gsapCSSRulePluginModule.default;
+
+        window.Picture = PictureModule;
+
+        window.gsap.registerPlugin(gsapCSSPlugin);
+        window.gsap.registerPlugin(gsapScrollTrigger);
+        window.gsap.registerPlugin(gsapCSSRulePlugin);
+
+        window.CSSRulePlugin = gsapCSSRulePlugin;
+    })
+
 Promise.all([
     import(
         /* webpackChunkName: "rss-to-json" */
@@ -38,16 +81,24 @@ Promise.all([
         /* webpackChunkName: "splide" */
         `@splidejs/splide`
         ),
+    import(
+        /* webpackChunkName: "picture_functions" */
+        `./includes/picture_functions`
+        ),
 ]).then(function (modules) {
     //console.log("[IMPORT]", modules);
 
     // Expand modules into variables for more convenient use
     const [
         rssToJson,
-        splideModule
+        splideModule,
+        PictureModule,
     ] = modules;
     window.rssToJson = rssToJson.parse;
     window.Splide = splideModule.default;
+    window.Picture = PictureModule;
+
+    window.Picture.lazy_load_ib_launch();
 
     let sliderContentElement = $(".splide__list");
 

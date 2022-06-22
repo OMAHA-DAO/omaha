@@ -7,6 +7,7 @@
 
         <link rel="stylesheet" href="./css/styles.css">
 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="bundle.js.js"></script>
 
         <script>
@@ -16,7 +17,6 @@
             window.height = window.innerHeight;
             window.dpr = window.devicePixelRatio;
         </script>
-
     </head>
 
     <body>
@@ -206,31 +206,31 @@
                                     </div>
 
                                     <div class="d-none d-md-block cube__desktop">
-                                        <picture>
+                                        <picture class="LazyLoad">
                                             <source
                                                     media="(min-width: 320px)"
                                                     type="image/avif"
-                                                    srcset="/media/static_cube.avif"
+                                                    data-srcset="/media/static_cube.avif"
                                             >
-                                            <img class="cube-top" src="/media/static_cube.png">
+                                            <img class="cube-top" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
                                         </picture>
 
-                                        <picture>
+                                        <picture class="LazyLoad">
                                             <source
                                                     media="(min-width: 320px)"
                                                     type="image/avif"
-                                                    srcset="/media/static_cube.avif"
+                                                    data-srcset="/media/static_cube.avif"
                                             >
-                                            <img class="cube-center" src="/media/static_cube.png">
+                                            <img class="cube-center" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
                                         </picture>
 
-                                        <picture>
+                                        <picture class="LazyLoad">
                                             <source
                                                     media="(min-width: 320px)"
                                                     type="image/avif"
-                                                    srcset="/media/static_cube.avif"
+                                                    data-srcset="/media/static_cube.avif"
                                             >
-                                            <img class="cube-bottom" src="/media/static_cube.png">
+                                            <img class="cube-bottom" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
                                         </picture>
                                     </div>
 
@@ -245,13 +245,13 @@
                                     </div>
 
                                     <div class="cube__mobile d-md-none">
-                                        <picture>
+                                        <picture class="LazyLoad">
                                             <source
                                                     media="(min-width: 320px)"
                                                     type="image/avif"
-                                                    srcset="/media/stone_mobile.avif"
+                                                    data-srcset="/media/stone_mobile.avif"
                                             >
-                                            <img class="cube__mobile__img" src="/media/stone_mobile.png" width="105" height="189" alt="mobile_cub">
+                                            <img class="cube__mobile__img" src="/media/transparent_placeholder.png" data-src="/media/stone_mobile.png" width="105" height="189" alt="mobile_cub">
                                         </picture>
                                     </div>
 
@@ -281,67 +281,67 @@
 
                             <div class="fundamentals__list">
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_arrow.avif"
+                                            data-srcset="/media/fundamentals__desktop_arrow.avif"
                                     >
-                                    <img class="fundamentals__desktop_arrow" src="/media/fundamentals__desktop_arrow.png">
+                                    <img class="fundamentals__desktop_arrow" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_arrow.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_1.avif"
+                                            data-srcset="/media/fundamentals__desktop_1.avif"
                                     >
-                                    <img class="fundamentals__desktop_1" src="/media/fundamentals__desktop_1.png">
+                                    <img class="fundamentals__desktop_1" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_1.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_2.avif"
+                                            data-srcset="/media/fundamentals__desktop_2.avif"
                                     >
-                                    <img class="fundamentals__desktop_2" src="/media/fundamentals__desktop_2.png">
+                                    <img class="fundamentals__desktop_2" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_2.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_3.avif"
+                                            data-srcset="/media/fundamentals__desktop_3.avif"
                                     >
-                                    <img class="fundamentals__desktop_3" src="/media/fundamentals__desktop_3.png">
+                                    <img class="fundamentals__desktop_3" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_3.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_4.avif"
+                                            data-srcset="/media/fundamentals__desktop_4.avif"
                                     >
-                                    <img class="fundamentals__desktop_4" src="/media/fundamentals__desktop_4.png">
+                                    <img class="fundamentals__desktop_4" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_4.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_5.avif"
+                                            data-srcset="/media/fundamentals__desktop_5.avif"
                                     >
-                                    <img class="fundamentals__desktop_5" src="/media/fundamentals__desktop_5.png">
+                                    <img class="fundamentals__desktop_5" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_5.png">
                                 </picture>
 
-                                <picture>
+                                <picture class="LazyLoad">
                                     <source
                                             media="(min-width: 320px)"
                                             type="image/avif"
-                                            srcset="/media/fundamentals__desktop_6.avif"
+                                            data-data-srcset="/media/fundamentals__desktop_6.avif"
                                     >
-                                    <img class="fundamentals__desktop_6" src="/media/fundamentals__desktop_6.png">
+                                    <img class="fundamentals__desktop_6" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_6.png">
                                 </picture>
 
                             </div>
@@ -349,13 +349,13 @@
                         </div>
 
                         <div class="fundamentals__mobile">
-                            <picture>
+                            <picture class="LazyLoad">
                                 <source
                                         media="(min-width: 320px)"
                                         type="image/avif"
-                                        srcset="/media/fundamentals_mobile.avif"
+                                        data-srcset="/media/fundamentals_mobile.avif"
                                 >
-                                <img src="/media/fundamentals_mobile.png">
+                                <img src="/media/transparent_placeholder.png" data-src="/media/fundamentals_mobile.png">
                             </picture>
                         </div>
 
@@ -464,9 +464,9 @@
                                                     <source
                                                             media="(min-width: 320px)"
                                                             type="image/avif"
-                                                            srcset="/media/posts/post_1.avif"
+                                                            data-srcset="/media/posts/post_1.avif"
                                                     >
-                                                    <img src="/media/posts/post_1.png">
+                                                    <img data-src="/media/posts/post_1.png">
                                                 </picture>
 
                                             </div>
@@ -488,9 +488,9 @@
                                                     <source
                                                             media="(min-width: 320px)"
                                                             type="image/avif"
-                                                            srcset="/media/posts/post_2.avif"
+                                                            data-srcset="/media/posts/post_2.avif"
                                                     >
-                                                    <img src="/media/posts/post_2.png">
+                                                    <img data-src="/media/posts/post_2.png">
                                                 </picture>
                                             </div>
 
@@ -511,9 +511,9 @@
                                                     <source
                                                             media="(min-width: 320px)"
                                                             type="image/avif"
-                                                            srcset="/media/posts/post_3.avif"
+                                                            data-srcset="/media/posts/post_3.avif"
                                                     >
-                                                    <img src="/media/posts/post_3.png">
+                                                    <img data-src="/media/posts/post_3.png">
                                                 </picture>
                                             </div>
 
@@ -589,11 +589,6 @@
 
         <canvas class="webgl"></canvas>
 
-
-
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 
     window.responsiveVideo = function({
@@ -612,7 +607,7 @@
         // Get real, physical width (considering dpr)
         const realWidth = window.screen.width * window.dpr;
 
-        //isSafari = true;
+        isSafari = true;
 
         // Vids
         if(!isSafari){
@@ -682,10 +677,26 @@
             }
             url = imageMap[orientation][selected];
 
+            // link preload
+            console.log("preloading");
+            let linkPreload = document.createElement('link');
+            linkPreload.rel = "preload";
+            linkPreload.href = url;
+            linkPreload.as="image";
+            // linkPreload.setAttribute("rel", "preload");
+            // linkPreload.setAttribute("href", url);
+            let head = document.querySelector("head");
+            head.appendChild(linkPreload);
+            //
+
             let image = document.createElement('img');
             image.src = url;
             image.className = element.className + " replaced-responsive-image";
+            image.fetchpriority = "high";
+            image.setAttribute("fetchpriority", "high");
             element.replaceWith(image);
+
+
         }
     };
 
@@ -857,7 +868,7 @@ const aacc=new Accordion('.accordion-container',{
 
         },100) */
 
-        if(loadRes&&loadRes.length&&loadRes.length>0){loadRes.forEach(e => e.src=e.dataset.src)}
+        //if(loadRes&&loadRes.length&&loadRes.length>0){loadRes.forEach(e => e.src=e.dataset.src)}
 
         /* const obs=new Object();//объект для слайдера
         obs.sldMain=s(".slider-main");//div со слайдами
