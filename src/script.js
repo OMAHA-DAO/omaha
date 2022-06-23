@@ -59,18 +59,115 @@ var preloads =
 
         window.gsap = gsapModule.default;
 
-        const gsapCSSPlugin = gsapCSSPluginModule.default;
-        const gsapScrollTrigger = gsapScrollTriggerModule.default;
-        const gsapCSSRulePlugin = gsapCSSRulePluginModule.default;
+        window.CSSPlugin = gsapCSSPluginModule.default;
+        window.ScrollTrigger = gsapScrollTriggerModule.default;
+        window.CSSRulePlugin = gsapCSSRulePluginModule.default;
 
         window.Picture = PictureModule;
 
-        window.gsap.registerPlugin(gsapCSSPlugin);
-        window.gsap.registerPlugin(gsapScrollTrigger);
-        window.gsap.registerPlugin(gsapCSSRulePlugin);
+        window.gsap.registerPlugin(window.CSSPlugin);
+        window.gsap.registerPlugin(window.ScrollTrigger);
+        window.gsap.registerPlugin(window.CSSRulePlugin);
+        // ---
 
-        window.CSSRulePlugin = gsapCSSRulePlugin;
-    })
+
+        window.Picture.lazy_load_gsap_launch();
+
+        let fundamentals_img_1 = $('.fundamentals__desktop_1'),
+            fundamentals_img_2 = $('.fundamentals__desktop_2'),
+            fundamentals_img_3 = $('.fundamentals__desktop_3'),
+            fundamentals_img_4 = $('.fundamentals__desktop_4'),
+            fundamentals_img_5 = $('.fundamentals__desktop_5'),
+            fundamentals_img_6 = $('.fundamentals__desktop_6');
+
+        $('.accordeon-trigger').click(function(){
+
+            let _this = $(this),
+                id = _this.attr('id')
+
+            switch (id){
+
+                case 'accordeon-trigger-0':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-32%,245%)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(0%,98%)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
+
+                    break;
+
+                case 'accordeon-trigger-1':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-95%,245%) rotate(45deg)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(20%, 120%) rotate(321deg)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(0%,95%) rotate(275deg)` })
+
+                    break;
+
+                case 'accordeon-trigger-2':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(20%,115%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-95%,245%) rotate(45deg)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(20%, 120%) rotate(321deg)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(0%,95%) rotate(275deg)` })
+
+                    break;
+
+                case 'accordeon-trigger-3':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-57%,36%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(0%,136%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-85%,272%) rotate(53deg)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(15%, 160%) rotate(340deg)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(66%,95%) rotate(264deg)` })
+
+                    break;
+
+                case 'accordeon-trigger-4':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-38%,21%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(45%,118%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(0%,136%)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(22%, 122%) rotate(310deg)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(37%,114%) rotate(323deg)` })
+
+                    break;
+
+                case 'accordeon-trigger-5':
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-71%,42%) rotate(270deg)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `transform: translate(-70%,25%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-38%,126%) rotate(270deg)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-72%,249%) rotate(26deg)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(23%, 97%) rotate(297deg)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
+
+                    break;
+
+                default:
+
+                    window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
+                    window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
+                    window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
+                    window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-32%,245%)` })
+                    window.gsap.to(fundamentals_img_5, 1, { transform: `translate(0%,98%)` })
+                    window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
+
+                    break;
+
+            }
+
+        })
+    });
 
 Promise.all([
     import(
@@ -98,9 +195,9 @@ Promise.all([
     window.Splide = splideModule.default;
     window.Picture = PictureModule;
 
-    window.Picture.lazy_load_ib_launch({
-        rootMargin: window.height/2 + "px 0px " + window.height/2 + "px 0px",
-    });
+    // window.Picture.lazy_load_ib_launch({
+    //     rootMargin: window.height/2 + "px 0px " + window.height/2 + "px 0px",
+    // });
 
     let sliderContentElement = $(".splide__list");
 
@@ -165,117 +262,6 @@ if(window.innerWidth < 768){
     });
 
 }
-
-Promise.all([
-	import(
-		/* webpackChunkName: "gsap" */
-		`gsap`
-		)
-
-]).then(function (modules) {
-	//console.log("[IMPORT]", modules);
-
-	// Expand modules into variables for more convenient use
-	const [gsapModule] = modules;
-
-	window.gsap = gsapModule.default;
-
-	let fundamentals_img_1 = $('.fundamentals__desktop_1'),
-		fundamentals_img_2 = $('.fundamentals__desktop_2'),
-		fundamentals_img_3 = $('.fundamentals__desktop_3'),
-		fundamentals_img_4 = $('.fundamentals__desktop_4'),
-		fundamentals_img_5 = $('.fundamentals__desktop_5'),
-		fundamentals_img_6 = $('.fundamentals__desktop_6');
-
-	$('.accordeon-trigger').click(function(){
-
-		let _this = $(this),
-			id = _this.attr('id')
-
-		switch (id){
-
-			case 'accordeon-trigger-0':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-32%,245%)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(0%,98%)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
-
-				break;
-
-			case 'accordeon-trigger-1':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-95%,245%) rotate(45deg)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(20%, 120%) rotate(321deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(0%,95%) rotate(275deg)` })
-
-				break;
-
-			case 'accordeon-trigger-2':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(20%,115%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-95%,245%) rotate(45deg)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(20%, 120%) rotate(321deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(0%,95%) rotate(275deg)` })
-
-				break;
-
-			case 'accordeon-trigger-3':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-57%,36%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(0%,136%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-85%,272%) rotate(53deg)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(15%, 160%) rotate(340deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(66%,95%) rotate(264deg)` })
-
-				break;
-
-			case 'accordeon-trigger-4':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-128%,85%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-38%,21%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(45%,118%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(0%,136%)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(22%, 122%) rotate(310deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(37%,114%) rotate(323deg)` })
-
-				break;
-
-			case 'accordeon-trigger-5':
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-71%,42%) rotate(270deg)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `transform: translate(-70%,25%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-38%,126%) rotate(270deg)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-72%,249%) rotate(26deg)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(23%, 97%) rotate(297deg)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
-
-				break;
-
-			default:
-
-				window.gsap.to(fundamentals_img_1, 1, { transform: `translate(-33%,22%)` })
-				window.gsap.to(fundamentals_img_2, 1, { transform: `translate(-27%,20%)` })
-				window.gsap.to(fundamentals_img_3, 1, { transform: `translate(-67%,122%)` })
-				window.gsap.to(fundamentals_img_4, 1, { transform: `translate(-32%,245%)` })
-				window.gsap.to(fundamentals_img_5, 1, { transform: `translate(0%,98%)` })
-				window.gsap.to(fundamentals_img_6, 1, { transform: `translate(46%,119%)` })
-
-				break;
-
-		}
-
-	})
-
-});
 
 // fill post, return html
 function mediumPost({
