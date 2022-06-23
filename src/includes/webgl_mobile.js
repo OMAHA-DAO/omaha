@@ -155,7 +155,16 @@ const models=Object.create({
                 delay:1200,
                 complete:()=>{
                     preloaderImg2.classList.add('preloaderImg2Cl')
-                    window.anime.timeline()
+	                window.anime.timeline()
+	                .add({
+		                targets:document.querySelector('.webgl__overlay'),
+		                opacity:0,
+		                duration:100,
+		                easing,
+		                complete:()=>{
+			                document.querySelector('.webgl__overlay').remove();
+		                }
+	                })
                     .add({
                         targets:preloaderImg2,
                         opacity:0,
@@ -163,7 +172,6 @@ const models=Object.create({
                         delay:800,
                         easing,
                         complete:()=>{
-	                        canvas.classList.remove('d-none');
                             document.body.classList.remove('ovh');
                             preloaderImg1.remove()
                             preloaderImg2.remove()
