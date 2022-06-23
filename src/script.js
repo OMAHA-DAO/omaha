@@ -35,43 +35,45 @@ var preloads =
             /* webpackChunkName: "gsap" */
             `gsap`
             ),
-        import(
-            /* webpackChunkName: "gsap_CSSPlugin" */
-            `gsap/CSSPlugin`
-            ),
-        import(
-            /* webpackChunkName: "gsap_ScrollTrigger" */
-            `gsap/ScrollTrigger`
-            ),
-        import(
-            /* webpackChunkName: "gsap_CSSRulePlugin" */
-            `gsap/CSSRulePlugin`
-            ),
-        import(
-            /* webpackChunkName: "picture_functions" */
-            `./includes/picture_functions`
-            ),
+        // import(
+        //     /* webpackChunkName: "gsap_CSSPlugin" */
+        //     `gsap/CSSPlugin`
+        //     ),
+        // import(
+        //     /* webpackChunkName: "gsap_ScrollTrigger" */
+        //     `gsap/ScrollTrigger`
+        //     ),
+        // import(
+        //     /* webpackChunkName: "gsap_CSSRulePlugin" */
+        //     `gsap/CSSRulePlugin`
+        //     ),
+        // import(
+        //     /* webpackChunkName: "picture_functions" */
+        //     `./includes/picture_functions`
+        //     ),
     ]).then(function (modules) {
         console.log("[IMPORT]", modules);
 
         // Expand modules into variables for more convenient use
-        const [gsapModule, gsapCSSPluginModule, gsapScrollTriggerModule, gsapCSSRulePluginModule, PictureModule] = modules;
+        const [gsapModule
+            //gsapCSSPluginModule, gsapScrollTriggerModule, gsapCSSRulePluginModule, PictureModule
+        ] = modules;
 
         window.gsap = gsapModule.default;
 
-        window.CSSPlugin = gsapCSSPluginModule.default;
-        window.ScrollTrigger = gsapScrollTriggerModule.default;
-        window.CSSRulePlugin = gsapCSSRulePluginModule.default;
-
-        window.Picture = PictureModule;
-
-        window.gsap.registerPlugin(window.CSSPlugin);
-        window.gsap.registerPlugin(window.ScrollTrigger);
-        window.gsap.registerPlugin(window.CSSRulePlugin);
+        // window.CSSPlugin = gsapCSSPluginModule.default;
+        // window.ScrollTrigger = gsapScrollTriggerModule.default;
+        // window.CSSRulePlugin = gsapCSSRulePluginModule.default;
+        //
+        // window.Picture = PictureModule;
+        //
+        // window.gsap.registerPlugin(window.CSSPlugin);
+        // window.gsap.registerPlugin(window.ScrollTrigger);
+        // window.gsap.registerPlugin(window.CSSRulePlugin);
         // ---
 
 
-        window.Picture.lazy_load_gsap_launch();
+        //window.Picture.lazy_load_gsap_launch();
 
         let fundamentals_img_1 = $('.fundamentals__desktop_1'),
             fundamentals_img_2 = $('.fundamentals__desktop_2'),
