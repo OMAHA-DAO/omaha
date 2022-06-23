@@ -355,6 +355,12 @@ section{
 	z-index: 0;
 }
 
+@media(min-width: 1024px){
+	.webgl__overlay{
+		display: none;
+	}
+}
+
 .accordeon .accordeon-trigger{
 	font-size: 20px;
 	line-height: 130%;
