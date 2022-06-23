@@ -26,7 +26,7 @@ const models=Object.create({
     girl:'/model/2022-05-31/2022-05-31-ok-2-CL-1.glb',
     //pseudoLight:'/model/2022-05-31/pseudoLight2.glb',
     bull:'/model/2022-05-08/bull_statue_2.glb',
-    voiting:'/media/voiting_04.webp',
+    voiting:'/media/voiting_04.png',
 });
 (()=>{
     const hdrEquirect = new RGBELoader().load(

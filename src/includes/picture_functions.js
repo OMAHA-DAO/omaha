@@ -165,7 +165,7 @@ module.exports = {
                 once: true,
                 //markers: {startColor: "green", endColor: "red", fontSize: "12px"},
                 onEnter: function (_this) {
-                    console.log("[LLGSAP] Enter", _this, elem);
+                    //console.log("[LLGSAP] Enter", _this, elem);
                     module.exports.gsap_single_process(elem);
                     window.ScrollTrigger.refresh();
                 },
