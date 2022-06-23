@@ -262,6 +262,15 @@ const models=Object.create({
                     preloaderImg2.classList.add('preloaderImg2Cl')
                     anime.timeline()
                     .add({
+	                    targets:document.querySelector('.webgl__overlay'),
+	                    opacity:0,
+	                    duration:100,
+	                    easing,
+	                    complete:()=>{
+		                    document.querySelector('.webgl__overlay').remove();
+	                    }
+                    })
+                    .add({
                         targets:preloaderImg2,
                         opacity:0,
                         duration:1000,
