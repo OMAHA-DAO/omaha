@@ -1,7 +1,7 @@
 /**
- * 
+ *
  * THIS CODE FOR MOBILE DEVICES ONLY
- * 
+ *
  */
 import * as THREE from 'three'
 import Stats from 'three/examples/jsm/libs/stats.module'
@@ -31,7 +31,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
     const easing='linear'
     let mixer
 
@@ -155,7 +155,16 @@ const models=Object.create({
                 delay:1200,
                 complete:()=>{
                     preloaderImg2.classList.add('preloaderImg2Cl')
-                    window.anime.timeline()
+	                window.anime.timeline()
+	                .add({
+		                targets:document.querySelector('.webgl__overlay'),
+		                opacity:0,
+		                duration:100,
+		                easing,
+		                complete:()=>{
+			                document.querySelector('.webgl__overlay').remove();
+		                }
+	                })
                     .add({
                         targets:preloaderImg2,
                         opacity:0,
@@ -200,7 +209,7 @@ const models=Object.create({
             sceneGlb.scale.set(.05,.05,.05)
 
             const obj3d=new THREE.Object3D();
-            
+
             sceneGlb.traverse(mesh => {
                 if (mesh.isMesh) {
                     mesh.position.set(mesh.position.x,mesh.position.y,mesh.position.z)// POSITION
@@ -273,7 +282,7 @@ const models=Object.create({
             const duration=1000;
             window.anime.timeline()
                 .add({targets:preloader,opacity:[0,1],easing,duration:1})
-                .add({targets:mesh.position,x:[0,.06],y:[0,-.65],z:[-7,2.2],delay:0/* 2800 */,duration:duration*2,easing:'easeOutQuad',complete:()=>{
+                .add({targets:mesh.position,x:[0,.06],y:[0,-.65],z:[-7,2.2],delay:2800/* 2800 */,duration:duration*2,easing:'easeOutQuad',complete:()=>{
                     const tmp2scr=screenConst// 2 screen
                     animationScripts.push({
                         start: 0,

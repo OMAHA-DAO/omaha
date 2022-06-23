@@ -142,8 +142,8 @@ html, body, .custom-scrollbar-ff {
 .preloader{
 	/*position: absolute;*/
 	background-color: #000000;
-	position: fixed;
-	z-index: 5;
+	position: absolute;
+	z-index: 10;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -162,7 +162,7 @@ html, body, .custom-scrollbar-ff {
 
 .preload-img-2{
 	position: absolute;
-	z-index: 2;
+	z-index: 10;
 	width: calc(100%/1.6);
 	max-width: calc(100%/1.6);
 	transform: translate(-1%,-77%);
@@ -178,7 +178,7 @@ html, body, .custom-scrollbar-ff {
 
 .preload-img-1{
 	position: absolute;
-	z-index: 2;
+	z-index: 10;
 	width: 100%;
 	max-width: 960px;
 }
@@ -342,6 +342,19 @@ section{
 	width: 100%;
 	height: 100%;
 }
+
+.webgl__overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	z-index: 0;
+}
+
 
 .accordeon .accordeon-trigger{
 	font-size: 20px;

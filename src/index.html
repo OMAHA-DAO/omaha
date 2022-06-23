@@ -24,8 +24,6 @@
         <div class="preloader">
             <div class="preloader__video"></div>
 
-
-<!--            <video data-src="/video/particles_preloader_AV1.mp4" preload="metadata" autoplay muted playsinline loop class="preloader__video"></video>-->
             <svg viewBox="0 0 2007.759 293.104" width="576"  class="preload-img-2">
                 <use xlink:href="/media/sprite.svg#logo"></use>
             </svg>
@@ -587,6 +585,8 @@
             </footer>
         </div>
 
+        <div class="webgl__overlay"></div>
+
         <canvas class="webgl"></canvas>
 
 <script>
@@ -607,7 +607,7 @@
         // Get real, physical width (considering dpr)
         const realWidth = window.screen.width * window.dpr;
 
-        isSafari = true;
+        //isSafari = true;
 
         // Vids
         if(!isSafari){
@@ -718,15 +718,11 @@
         },
         imageMap: {
             horizontal: {
-                1 : "/preloader/h-1.gif",
-                1024 : "/preloader/h-1024.gif",
-                1280 : "/preloader/h-1366.gif",
-                1920 : "/preloader/h-1920.gif",
-                2560 : "/preloader/h-2560.gif"
+                1 : "/preloader/h-1.gif"
             },
             vertical: {
                 1 : "/preloader/v-1.gif",
-                768 : "/preloader/v-768.gif",
+                768 : "/preloader/v-1.gif",
             }
         }
     });
