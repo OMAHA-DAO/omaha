@@ -183,6 +183,8 @@ const models=Object.create({
         function scalePercent(start, end) {
             //console.log('OLD: '+oldScrollPercent,'CUR: '+scrollPercent,'OLD2: '+old2,`MIN: ${scrollPercent-old2}`)
             let howTo=.04;
+            if(scrollPercent<0)scrollPercent=0
+            if(scrollPercent>99)scrollPercent=99
             if(Math.abs(old2-scrollPercent)>10){
                 howTo=.1
             }
