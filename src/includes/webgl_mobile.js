@@ -31,7 +31,7 @@ const models=Object.create({
     );
     const d=document
     const slider=d.querySelector('.slider');
-    const DEBUG=false;//////////!!!!!!!!!!!!!!!!!!!!
+    const DEBUG=true;//////////!!!!!!!!!!!!!!!!!!!!
     const easing='linear'
     let mixer
 
@@ -163,6 +163,7 @@ const models=Object.create({
                         delay:800,
                         easing,
                         complete:()=>{
+	                        canvas.classList.remove('d-none');
                             document.body.classList.remove('ovh');
                             preloaderImg1.remove()
                             preloaderImg2.remove()
@@ -273,7 +274,7 @@ const models=Object.create({
             const duration=1000;
             window.anime.timeline()
                 .add({targets:preloader,opacity:[0,1],easing,duration:1})
-                .add({targets:mesh.position,x:[0,.06],y:[0,-.65],z:[-7,2.2],delay:0/* 2800 */,duration:duration*2,easing:'easeOutQuad',complete:()=>{
+                .add({targets:mesh.position,x:[0,.06],y:[0,-.65],z:[-7,2.2],delay:2800/* 2800 */,duration:duration*2,easing:'easeOutQuad',complete:()=>{
                     const tmp2scr=screenConst// 2 screen
                     animationScripts.push({
                         start: 0,
