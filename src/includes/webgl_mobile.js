@@ -4,7 +4,7 @@
  *
  */
 import * as THREE from 'three'
-import Stats from 'three/examples/jsm/libs/stats.module'
+//import Stats from 'three/examples/jsm/libs/stats.module'
 //import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
@@ -489,13 +489,13 @@ const models=Object.create({
             renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
             screenConst=parseInt(window.getComputedStyle(slider).height)/percentToScreens;
         });
-        const stats = Stats()
-        document.body.appendChild(stats.dom)
+        //const stats = Stats()
+        //document.body.appendChild(stats.dom)
         function animate() {
             requestAnimationFrame(animate)
             if(typeof pl==='function')pl()
             render()
-            stats.update()
+            //stats.update()
             if (mixer) mixer.update(clock.getDelta());
         }
         const clock = new THREE.Clock()
