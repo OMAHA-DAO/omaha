@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1.0, user-scalable=no">
+        <title>Three.js TypeScript Tutorials by Sean Bradley : https://sbcode.net/threejs</title>
+
+        <link rel="stylesheet" href="./css/styles.css">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha512-z4OUqw38qNLpn1libAN9BsoDx6nbNFio5lA6CuTp9NlK83b89hgyCVq+N5FdBJptINztxn1Z3SaKSKUS5UP60Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="bundle.js.js"></script>
+
+        <script>
+            history.scrollRestoration = "manual";
+
+            window.width = window.innerWidth;
+            window.height = window.innerHeight;
+            window.dpr = window.devicePixelRatio;
+        </script>
+    </head>
+
+    <body>
+
+        <div class="preloader">
+            <div class="preloader__video"></div>
+
+            <svg viewBox="0 0 2007.759 293.104" width="576"  class="preload-img-2">
+                <use xlink:href="/media/sprite.svg#logo"></use>
+            </svg>
+            <img src="/media/preloader-particles.gif" alt="preloader" class="preload-img-1">
+        </div>
+
+        <div class="ANI-main-3">
+
+            <div class="container-fluid">
+
+                <div class="row justify-content-md-end justify-content-center">
+
+                    <a href="#" target="_blank" rel="nofollow" class="navCircle jc ac cp">
+
+                        <svg width="75" height="85" viewBox="0 0 48 54" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path class="svg-discord-one" fill-rule="evenodd" clip-rule="evenodd" d="M1.02997 1.0271H46.7551V46.5929L46.8344 52.9737L35.006 42.1026L35.8795 46.5929H1.02997V1.0271Z" stroke="white" stroke-width="2.05994" stroke-miterlimit="22.9256" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path class="svg-discord-two" d="M33.8852 14.6984C32.0285 13.8423 30.0443 13.2193 27.9692 12.8652C27.7148 13.3194 27.4171 13.9302 27.2117 14.4166C25.0054 14.0897 22.8201 14.0897 20.6549 14.4166C20.4502 13.9302 20.1453 13.3194 19.8887 12.8652C17.8108 13.2193 15.8236 13.8444 13.9677 14.7027C10.224 20.2824 9.20919 25.7226 9.71661 31.0856C12.1996 32.9144 14.6063 34.0252 16.9718 34.7519C17.5563 33.9594 18.0774 33.1161 18.5258 32.2285C17.6709 31.9081 16.8529 31.5126 16.0788 31.0541C16.2842 30.9039 16.4846 30.7472 16.6784 30.5856C21.3973 32.7621 26.5233 32.7621 31.1852 30.5856C31.3813 30.7472 31.5824 30.9039 31.7856 31.0541C31.0094 31.5147 30.1884 31.9102 29.3336 32.2307C29.7826 33.1161 30.3016 33.9616 30.8875 34.7541C33.256 34.0274 35.6648 32.9166 38.1478 31.0856C38.7431 24.8686 37.1308 19.4777 33.8852 14.6984ZM19.1687 27.7875C17.7524 27.7875 16.5905 26.4836 16.5905 24.8958C16.5905 23.3079 17.7272 22.0019 19.1687 22.0019C20.6102 22.0019 21.7713 23.3058 21.7468 24.8958C21.749 26.4836 20.6102 27.7875 19.1687 27.7875ZM28.695 27.7875C27.2787 27.7875 26.1175 26.4836 26.1175 24.8958C26.1175 23.3079 27.2542 22.0019 28.695 22.0019C30.1365 22.0019 31.2984 23.3058 31.2732 24.8958C31.2732 26.4836 30.1365 27.7875 28.695 27.7875Z" stroke="#DAB457" stroke-width="1.91434" stroke-miterlimit="22.9256" stroke-linecap="round"/>
+                        </svg>
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="slider-main">
+            <div class="slider">
+
+                <section>
+
+                    <div class="container">
+
+                        <div class="row">
+
+                            <div class="col-12">
+
+                                <!--                                <div class="first-s-main-logo">-->
+                                <!--&lt;!&ndash;                                        <img data-src="/media/logo.svg" alt class="ANI-main-1" style="opacity:0">&ndash;&gt;-->
+                                <!--                                </div>-->
+
+                                <div class="tc first-s-main-logo">
+
+                                    <svg viewBox="0 0 2007.759 293.104" width="1000"  class="ANI-main-1" style="opacity: 0">
+                                        <use xlink:href="/media/sprite.svg#logo"></use>
+                                    </svg>
+
+                                </div>
+
+                                <h1 class="ANI-main-2 tc">World's first community-driven fund</h1>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="section-first">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-12 col-md-7">
+
+                                <h2 class="section__title">Introducing
+                                    OMAHA DAO</h2>
+
+                                <span class="section__body">Omaha is the world’s first community-driven fund.
+                                    Thousands of investors bundle their power to create
+                                    real impact on the market and gains for the community.
+                                    Autonomous, decentralized and transparent
+                                    </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="section-second">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-12 offset-md-4 col-md-8 offset-xl-6 col-xl-6">
+
+                                <h2 class="section__title">The power of the warm</h2>
+
+                                <span class="section__body">
+                                        Catching up with whales is only possible together.
+                                        Therefore Omaha DAO is 100% community-governed
+                                        and features a user friendly, app-based voting system.
+                                        Incentivized participation and a cap on voting power
+                                        keep interaction high and whales out
+                                    </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="section-third">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-12 col-lg-10">
+
+                                <h2 class="section__title">A bridge between classic finance and crypto</h2>
+
+                                <span class="section__body">
+                                        Investors bundle their capital in a treasury to buy real world assets. Competing Fund Strategists suggest trading options which are measured against an AI- based performance ranking. Holding real life assets backs and grows the intrinsic value of the Omaha Token.
+                                    </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="section-fourth">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-12 offset-md-4 col-md-8 offset-xl-6 col-xl-6">
+
+                                <h2 class="section__title">JOIN <br> THE TRIBE</h2>
+
+                                <span class="section__body">
+                                        In Omaha-world the community is king. Steady participation, knowledge and support of other Discord members higher your chances of landing one of the rare whitelist spots. Whitelist sale follows the onboarding of lead investors and offers discounts prior to public sale.
+                                    </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+                <section class="cube-section">
+
+                    <div class="container-fluid">
+
+                        <div class="row">
+
+                            <div class="col-12">
+                                <h2 class="section__title">Milestones</h2>
+
+                                <div class="cube">
+
+                                    <div class="cube__item cube__item-1">
+
+                                        <h3 class="cube__title">01</h3>
+                                        <span class="cube__body">Launch of Omaha DAO</span>
+
+                                    </div>
+
+                                    <div class="cube__item cube__item-2">
+
+                                        <h3 class="cube__title">03</h3>
+                                        <span class="cube__body">Community takeover</span>
+
+                                    </div>
+
+                                    <div class="d-none d-md-block cube__desktop">
+                                        <picture class="LazyLoad">
+                                            <source
+                                                    media="(min-width: 320px)"
+                                                    type="image/avif"
+                                                    data-srcset="/media/static_cube.avif"
+                                            >
+                                            <img class="cube-top" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
+                                        </picture>
+
+                                        <picture class="LazyLoad">
+                                            <source
+                                                    media="(min-width: 320px)"
+                                                    type="image/avif"
+                                                    data-srcset="/media/static_cube.avif"
+                                            >
+                                            <img class="cube-center" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
+                                        </picture>
+
+                                        <picture class="LazyLoad">
+                                            <source
+                                                    media="(min-width: 320px)"
+                                                    type="image/avif"
+                                                    data-srcset="/media/static_cube.avif"
+                                            >
+                                            <img class="cube-bottom" src="/media/transparent_placeholder.png" data-src="/media/static_cube.png">
+                                        </picture>
+                                    </div>
+
+                                    <div class="cube__item cube__item-3">
+                                        <h3 class="cube__title">02</h3>
+                                        <span class="cube__body">Expanding to real world assets</span>
+                                    </div>
+
+                                    <div class="cube__item cube__item-4">
+                                        <h3 class="cube__title">04</h3>
+                                        <span class="cube__body">Largest community driven fund</span>
+                                    </div>
+
+                                    <div class="cube__mobile d-md-none">
+                                        <picture class="LazyLoad">
+                                            <source
+                                                    media="(min-width: 320px)"
+                                                    type="image/avif"
+                                                    data-srcset="/media/stone_mobile.avif"
+                                            >
+                                            <img class="cube__mobile__img" src="/media/transparent_placeholder.png" data-src="/media/stone_mobile.png" width="105" height="189" alt="mobile_cub">
+                                        </picture>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+            <section class="fundamentals-section">
+
+                <div class="container-fluid">
+
+                    <div class="row position-relative">
+
+                        <div class="col-12 offset-md-4 col-md-8 offset-lg-6 col-lg-6">
+                            <h2 class="section__title">Fundamentals</h2>
+                        </div>
+
+                        <div class="col-md-4 col-lg-6 fundamentals__desktop">
+
+                            <div class="fundamentals__list">
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_arrow.avif"
+                                    >
+                                    <img class="fundamentals__desktop_arrow" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_arrow.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_1.avif"
+                                    >
+                                    <img class="fundamentals__desktop_1" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_1.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_2.avif"
+                                    >
+                                    <img class="fundamentals__desktop_2" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_2.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_3.avif"
+                                    >
+                                    <img class="fundamentals__desktop_3" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_3.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_4.avif"
+                                    >
+                                    <img class="fundamentals__desktop_4" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_4.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-srcset="/media/fundamentals__desktop_5.avif"
+                                    >
+                                    <img class="fundamentals__desktop_5" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_5.png">
+                                </picture>
+
+                                <picture class="LazyLoad">
+                                    <source
+                                            media="(min-width: 320px)"
+                                            type="image/avif"
+                                            data-data-srcset="/media/fundamentals__desktop_6.avif"
+                                    >
+                                    <img class="fundamentals__desktop_6" src="/media/transparent_placeholder.png" data-src="/media/fundamentals__desktop_6.png">
+                                </picture>
+
+                            </div>
+
+                        </div>
+
+                        <div class="fundamentals__mobile">
+                            <picture class="LazyLoad">
+                                <source
+                                        media="(min-width: 320px)"
+                                        type="image/avif"
+                                        data-srcset="/media/fundamentals_mobile.avif"
+                                >
+                                <img src="/media/transparent_placeholder.png" data-src="/media/fundamentals_mobile.png">
+                            </picture>
+                        </div>
+
+                        <div class="col-12 offset-md-4 col-md-8 offset-lg-6 col-lg-6 offset-xl-0">
+
+                            <div class="accordion-container">
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">User Friendly Voting System</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            Omaha DAOs voting system is based on Vitalik Butarin’s quadratic voting mechanism. It aims to become the fairest and most transparent voting system in web3. Its intuitive user experience paves the way to mass-adoption and creates a long-term, engaging way of managing a multi-million investment fund.
+
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">Community Governance</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            Community Governance is the core value of the community-outlined Omaha Codex. Every single investor participates in the fund management with their vote, not with their wealth. Capped voting power means collective responsibility for the investment of every individual.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">Fund Strategists</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            Fund Strategists are an integral driving force of Omaha DAO. They analyze and suggest trading options to the community who finally executes the trades. All suggestions are evaluated in an AI-based performance ranking. Competition among Fund Strategists steadily increases the swarm intelligence of Omaha DAO.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">Stock Investment</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            Omaha DAO invests in stocks and crypto assets to build its Treasury. The Proof of Concept will be conducted by buying Synthetic Stocks via Mirror Protocol. Following this, the portfolio will be extended to real-world financial assets, consequently becoming the world’s first community-driven investment fund.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">Intrinsic Token Value</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            $OMAHA token is a multifunctional financial instrument backed by real life assets. Tokenomics have built-in Anti-Inflation Reflux and a Token Burn Mechanism. A protected Floor Price and limited Maximum Supply provide the prerequisites for a steady and sustainable increase of the intrinsic token value.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="accordeon">
+                                    <h3 class="accordeon-header">
+                                        <button type="button" class="accordeon-trigger">Redeemable Fund Treasury</button>
+                                    </h3>
+                                    <div class="accordeon-panel">
+                                        <p class="accordeon-text">
+                                            The community of Omaha DAO may redeem the fund treasury at any chosen moment by vote. Cash out will take the form of treasury assets proportional to the token holdings of every single investor. A collateralized floor price of $OMAHA saves investors from emotional downtrends and supports market stability.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section class="post-section">
+
+                <div class="container-fluid">
+
+                    <div class="row">
+
+                        <div class="col-12">
+
+                            <h2 class="section__title">
+                                Posts on Medium
+                            </h2>
+
+                            <div class="posts-list splide">
+
+                                <div class="splide__track">
+
+                                    <div class="splide__list">
+
+                                        <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
+
+                                            <div class="post-image">
+
+                                                <picture>
+                                                    <source
+                                                            media="(min-width: 320px)"
+                                                            type="image/avif"
+                                                            data-srcset="/media/posts/post_1.avif"
+                                                    >
+                                                    <img data-src="/media/posts/post_1.png">
+                                                </picture>
+
+                                            </div>
+
+                                            <div class="post-title">
+                                                The Marketplace of Ideas Requires Regulation Like Any Other Market
+                                            </div>
+
+                                            <div class="post-description">
+                                                And anyone who denies this hasn’t thought it through
+                                            </div>
+
+                                        </div>
+
+                                        <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
+
+                                            <div class="post-image">
+                                                <picture>
+                                                    <source
+                                                            media="(min-width: 320px)"
+                                                            type="image/avif"
+                                                            data-srcset="/media/posts/post_2.avif"
+                                                    >
+                                                    <img data-src="/media/posts/post_2.png">
+                                                </picture>
+                                            </div>
+
+                                            <div class="post-title">
+                                                How to Take a Break from Yourself
+                                            </div>
+
+                                            <div class="post-description">
+                                                Escaping from your routines can help you escape from repetitive, unhelpful thoughts
+                                            </div>
+
+                                        </div>
+
+                                        <div class="post splide__slide carousel-cell col-12 col-md-6 col-lg-4 ">
+
+                                            <div class="post-image">
+                                                <picture>
+                                                    <source
+                                                            media="(min-width: 320px)"
+                                                            type="image/avif"
+                                                            data-srcset="/media/posts/post_3.avif"
+                                                    >
+                                                    <img data-src="/media/posts/post_3.png">
+                                                </picture>
+                                            </div>
+
+                                            <div class="post-title">
+                                                We Won’t Fix the Baby Formula Shortage Until We Fix Capitalism
+                                            </div>
+
+                                            <div class="post-description">
+                                                The baby-formula shortage is just the latest in a string of economic troubles that are showing us...
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <footer>
+
+                <div class="container-fluid">
+
+                    <div class="row">
+
+                        <div class="social-list">
+
+                            <a href="#" target="_blank" rel="nofollow" class="social__item">
+
+                                <svg viewBox="0 -28.5 256 256" width="45">
+                                    <use xlink:href="media/sprite.svg#discord"></use>
+                                </svg>
+                                <q>discord</q>
+                            </a>
+
+                            <a href="#" target="_blank" rel="nofollow" class="social__item">
+                                <svg viewBox="0 -55 256 256" width="45">
+                                    <use xlink:href="media/sprite.svg#medium"></use>
+                                </svg>
+                                <q>medium</q>
+                            </a>
+
+                            <a href="" target="_blank" rel="nofollow" class="social__item">
+                                <svg viewBox="0 0 24 24" width="45">
+                                    <use xlink:href="media/sprite.svg#page"></use>
+                                </svg>
+                                <q>documentation</q>
+                            </a>
+
+                            <a href="#" target="_blank" rel="nofollow" class="social__item">
+                                <svg viewBox="0 0 310 310" width="45">
+                                    <use xlink:href="media/sprite.svg#twitter"></use>
+                                </svg>
+                                <q>twitter</q>
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </footer>
+        </div>
+
+        <div class="webgl__overlay"></div>
+
+        <canvas class="webgl"></canvas>
+
+<script>
+
+    window.responsiveVideo = function({
+        elementQuery = "",
+        imageOnSafari = false,
+        videoMap = {},
+        imageMap = {},
+    } = {}) {
+        let element = document.querySelector(elementQuery);
+        //console.log("element", element);
+        let isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+
+        // Get orientation
+        const orientation = window.width > window.height ? "horizontal" : "vertical";
+
+        // Get real, physical width (considering dpr)
+        const realWidth = window.screen.width * window.dpr;
+
+        //isSafari = true;
+
+        // Vids
+        if(!isSafari){
+            // Decide which video to load
+            let url;
+            let selected = 0;
+            let keys = Object.keys(videoMap[orientation]);
+            for(let i = 0; i < keys.length; i++){
+                let key = parseInt(keys[i]);
+                if(key <= realWidth && key > selected){
+                    selected = key;
+                }
+            }
+            url = videoMap[orientation][selected];
+
+            let video = document.createElement('video');
+
+
+            video.className = element.className + " replaced-responsive-video";
+            video.src =  url;
+            video.poster = 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
+
+            video.autoplay = true;
+            video.playsinline = true;
+            video.setAttribute("playsinline", true);
+            video.muted = true;
+            video.setAttribute("muted", true);
+            video.loop = true;
+            video.webkitPlaysinline = true;
+            video.preload="metadata";
+
+            if(window.innerWidth < 768){
+                video.preload = 'none';
+            }
+
+            element.replaceWith(video);
+
+            let body = document.getElementsByTagName("body")[0];
+            let interactionEvent = function(){
+                console.log("click touchstart");
+                body.removeEventListener('click touchstart', interactionEvent, false);
+                video.play();
+            };
+            body.addEventListener('click touchstart', interactionEvent, false);
+
+            // $('body').on('click.video_play touchstart.video_play', function () {
+            //
+            //     video.setAttribute('playsinline', '');
+            //     video.setAttribute('webkit-playsinline', '');
+            //     enableInlineVideo(video);
+            //     video.play();
+            //
+            //     $('body').off('click.video_play touchstart.video_play');
+            // });
+        }
+        // Image
+        else{
+
+            let url;
+            let selected = 0;
+            let keys = Object.keys(imageMap[orientation]);
+            for(let i = 0; i < keys.length; i++){
+                let key = parseInt(keys[i]);
+                if(key <= realWidth && key > selected){
+                    selected = key;
+                }
+            }
+            url = imageMap[orientation][selected];
+
+            // link preload
+            console.log("preloading");
+            let linkPreload = document.createElement('link');
+            linkPreload.rel = "preload";
+            linkPreload.href = url;
+            linkPreload.as="image";
+            // linkPreload.setAttribute("rel", "preload");
+            // linkPreload.setAttribute("href", url);
+            let head = document.querySelector("head");
+            head.appendChild(linkPreload);
+            //
+
+            let image = document.createElement('img');
+            image.src = url;
+            image.className = element.className + " replaced-responsive-image";
+            image.fetchpriority = "high";
+            image.setAttribute("fetchpriority", "high");
+            element.replaceWith(image);
+
+
+        }
+    };
+
+    window.responsiveVideo({
+        elementQuery: ".preloader__video",
+        imageOnSafari: true,
+        videoMap: {
+            horizontal: {
+                1 : "/landing_video_bg/bg_particles_480x320.av1.mp4",
+                768 : "/landing_video_bg/bg_particles_1024x768.av1.mp4",
+                1280 : "/landing_video_bg/bg_particles_1366x768.av1.mp4",
+                1920 : "/landing_video_bg/bg_particles_1920x1080.av1.mp4",
+                2560 : "/landing_video_bg/bg_particles_2560x1440.av1.mp4"
+            },
+            vertical: {
+                1 : "/landing_video_bg/bg_particles_360x640.av1.mp4",
+                768 : "/landing_video_bg/bg_particles_768x1280.av1.mp4",
+            },
+        },
+        imageMap: {
+            horizontal: {
+                1 : "/preloader/h-1.gif"
+            },
+            vertical: {
+                1 : "/preloader/v-1.gif",
+                768 : "/preloader/v-1.gif",
+            }
+        }
+    });
+
+    // data-360="/landing_video_bg/bg_particles_360x640.av1.mp4"
+    // data-480="/landing_video_bg/bg_particles_480x320.av1.mp4"
+    // data-768="/landing_video_bg/bg_particles_768x1280.av1.mp4"
+    // data-1024="/landing_video_bg/bg_particles_1024x768.av1.mp4"
+    // data-1280="/landing_video_bg/bg_particles_1280x1024.av1.mp4"
+    // data-1366="/landing_video_bg/bg_particles_1366x768.av1.mp4"
+    // data-1920="/landing_video_bg/bg_particles_1920x1080.av1.mp4"
+    // data-2560="/landing_video_bg/bg_particles_2560x1440.av1.mp4"
+
+
+</script>
+
+<script>
+    // let videoSRC = undefined;
+    // let vid_container = document.getElementsByClassName('preloader')[0];
+    //
+    // if(window.innerWidth >= 320 && window.innerWidth < 480){
+    //     videoSRC = 360
+    // }else if(window.innerWidth >= 480 && window.innerWidth < 768){
+    //     videoSRC = 480
+    // }else if(window.innerWidth >= 768 && window.innerWidth < 1024){
+    //     videoSRC = 768
+    // }else if(window.innerWidth >= 1024 && window.innerWidth < 1280){
+    //     videoSRC = 1024
+    // }else if(window.innerWidth >= 1280 && window.innerWidth < 1366){
+    //     videoSRC = 1280
+    // }else if(window.innerWidth >= 1366 && window.innerWidth < 1920){
+    //     videoSRC = 1366
+    // }else if(window.innerWidth >= 1920 && window.innerWidth < 2560){
+    //     videoSRC = 1920
+    // }else{
+    //     videoSRC = 2560
+    // }
+    //
+    // let url = vid_container.getAttribute(`data-${videoSRC}`);
+    //
+    // let video = document.createElement('video');
+    //
+    // video.classList.add("preloader__video");
+    // video.src =  url;
+    // video.poster = 'data:base64';
+    //
+    // video.autoplay = true;
+    // video.playsinline = true;
+    // video.muted = true;
+    // video.loop = true;
+    // video.webkitPlaysinline = true;
+    // video.preload="metadata";
+    //
+    // if(window.innerWidth < 768){
+	 //    video.preload = 'none';
+    // }
+    //
+    // vid_container.appendChild(video);
+</script>
+
+<script>
+/**
+ * Accordion v3.3.0
+ * Lightweight and accessible accordion module created in pure Javascript
+ * https://github.com/michu2k/Accordion
+ *
+ * Copyright (c) Michał Strumpf
+ * Published under MIT License
+ */
+
+"use strict";!function(e){var t=0,n=function e(n,i){var s=this,o=this,r=!1;if(Array.isArray(n))return!!n.length&&n.map((function(t){return new e(t,i)}));var a={init:function(){this.options=Object.assign({duration:600,ariaEnabled:!0,collapse:!0,showMultiple:!1,onlyChildNodes:!0,openOnInit:[],elementClass:"accordeon",triggerClass:"accordeon-trigger",panelClass:"accordeon-panel",activeClass:"is-active",beforeOpen:function(){},onOpen:function(){},beforeClose:function(){},onClose:function(){}},i);var e="string"==typeof n;this.container=e?document.querySelector(n):n,this.createDefinitions(),o.attachEvents()},createDefinitions:function(){var e=this,n=this.options,i=n.elementClass,s=n.openOnInit,o=n.onlyChildNodes?this.container.childNodes:this.container.querySelectorAll(".".concat(i));this.elements=Array.from(o).filter((function(e){return e.classList&&e.classList.contains(i)})),this.firstElement=this.elements[0],this.lastElement=this.elements[this.elements.length-1],this.elements.filter((function(e){return!e.classList.contains("js-enabled")})).forEach((function(n){n.classList.add("js-enabled"),e.generateIDs(n),e.setARIA(n),e.setTransition(n);var i=e.elements.indexOf(n);t++,s.includes(i)?e.showElement(n,!1):e.closeElement(n,!1)}))},setTransition:function(e){var t=arguments.length>1&&void 0!==arguments[1]&&arguments[1],n=this.options,i=n.duration,s=n.panelClass,o=e.querySelector(".".concat(s)),r=c("transitionDuration");o.style[r]=t?null:"".concat(i,"ms")},generateIDs:function(e){var n=this.options,i=n.triggerClass,s=n.panelClass,o=e.querySelector(".".concat(i)),r=e.querySelector(".".concat(s));e.setAttribute("id","accordeon-".concat(t)),o.setAttribute("id","accordeon-trigger-".concat(t)),r.setAttribute("id","accordeon-panel-".concat(t))},removeIDs:function(e){var t=this.options,n=t.triggerClass,i=t.panelClass,s=e.querySelector(".".concat(n)),o=e.querySelector(".".concat(i));e.removeAttribute("id"),s.removeAttribute("id"),o.removeAttribute("id")},setARIA:function(e){var n=this.options,i=n.ariaEnabled,s=n.triggerClass,o=n.panelClass;if(i){var r=e.querySelector(".".concat(s)),a=e.querySelector(".".concat(o));r.setAttribute("role","button"),r.setAttribute("aria-controls","accordeon-panel-".concat(t)),r.setAttribute("aria-disabled",!1),r.setAttribute("aria-expanded",!1),a.setAttribute("role","region"),a.setAttribute("aria-labelledby","accordeon-trigger-".concat(t))}},updateARIA:function(e,t){var n=t.ariaExpanded,i=t.ariaDisabled,s=this.options,o=s.ariaEnabled,r=s.triggerClass;if(o){var a=e.querySelector(".".concat(r));a.setAttribute("aria-expanded",n),a.setAttribute("aria-disabled",i)}},removeARIA:function(e){var t=this.options,n=t.ariaEnabled,i=t.triggerClass,s=t.panelClass;if(n){var o=e.querySelector(".".concat(i)),r=e.querySelector(".".concat(s));o.removeAttribute("role"),o.removeAttribute("aria-controls"),o.removeAttribute("aria-disabled"),o.removeAttribute("aria-expanded"),r.removeAttribute("role"),r.removeAttribute("aria-labelledby")}},focus:function(e,t){e.preventDefault();var n=this.options.triggerClass;t.querySelector(".".concat(n)).focus()},focusFirstElement:function(e){this.focus(e,this.firstElement),this.currFocusedIdx=0},focusLastElement:function(e){this.focus(e,this.lastElement),this.currFocusedIdx=this.elements.length-1},focusNextElement:function(e){var t=this.currFocusedIdx+1;if(t>this.elements.length-1)return this.focusFirstElement(e);this.focus(e,this.elements[t]),this.currFocusedIdx=t},focusPrevElement:function(e){var t=this.currFocusedIdx-1;if(t<0)return this.focusLastElement(e);this.focus(e,this.elements[t]),this.currFocusedIdx=t},showElement:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this.options,i=n.panelClass,s=n.activeClass,o=n.collapse,r=n.beforeOpen,a=e.querySelector(".".concat(i)),c=a.scrollHeight;e.classList.add(s),t&&r(e),requestAnimationFrame((function(){requestAnimationFrame((function(){a.style.height=t?"".concat(c,"px"):"auto"}))})),this.updateARIA(e,{ariaExpanded:!0,ariaDisabled:!o})},closeElement:function(e){var t=!(arguments.length>1&&void 0!==arguments[1])||arguments[1],n=this.options,i=n.panelClass,s=n.activeClass,o=n.beforeClose,r=e.querySelector(".".concat(i)),a=r.scrollHeight;e.classList.remove(s),t?(o(e),requestAnimationFrame((function(){r.style.height="".concat(a,"px"),requestAnimationFrame((function(){r.style.height=0}))})),this.updateARIA(e,{ariaExpanded:!1,ariaDisabled:!1})):r.style.height=0},toggleElement:function(e){var t=this.options,n=t.activeClass,i=t.collapse,s=e.classList.contains(n);if(!s||i)return s?this.closeElement(e):this.showElement(e)},closeElements:function(){var e=this,t=this.options,n=t.activeClass;t.showMultiple||this.elements.forEach((function(t,i){t.classList.contains(n)&&i!==e.currFocusedIdx&&e.closeElement(t)}))},handleClick:function(e){var t=this,n=e.currentTarget;this.elements.forEach((function(i,s){i.contains(n)&&"A"!==e.target.nodeName&&(t.currFocusedIdx=s,t.closeElements(),t.focus(e,i),t.toggleElement(i))}))},handleKeydown:function(e){var t=38,n=40,i=36,s=35;switch(e.keyCode){case t:return this.focusPrevElement(e);case n:return this.focusNextElement(e);case i:return this.focusFirstElement(e);case s:return this.focusLastElement(e);default:return null}},handleTransitionEnd:function(e){if("height"===e.propertyName){var t=this.options,n=t.onOpen,i=t.onClose,s=e.currentTarget,o=parseInt(s.style.height),r=this.elements.find((function(e){return e.contains(s)}));o>0?(s.style.height="auto",n(r)):i(r)}}};this.attachEvents=function(){if(!r){var e=a.options,t=e.triggerClass,n=e.panelClass;a.handleClick=a.handleClick.bind(a),a.handleKeydown=a.handleKeydown.bind(a),a.handleTransitionEnd=a.handleTransitionEnd.bind(a),a.elements.forEach((function(e){var i=e.querySelector(".".concat(t)),s=e.querySelector(".".concat(n));i.addEventListener("click",a.handleClick),i.addEventListener("keydown",a.handleKeydown),s.addEventListener("webkitTransitionEnd",a.handleTransitionEnd),s.addEventListener("transitionend",a.handleTransitionEnd)})),r=!0}},this.detachEvents=function(){if(r){var e=a.options,t=e.triggerClass,n=e.panelClass;a.elements.forEach((function(e){var i=e.querySelector(".".concat(t)),s=e.querySelector(".".concat(n));i.removeEventListener("click",a.handleClick),i.removeEventListener("keydown",a.handleKeydown),s.removeEventListener("webkitTransitionEnd",a.handleTransitionEnd),s.removeEventListener("transitionend",a.handleTransitionEnd)})),r=!1}},this.toggle=function(e){var t=a.elements[e];t&&a.toggleElement(t)},this.open=function(e){var t=a.elements[e];t&&a.showElement(t)},this.openAll=function(){a.elements.forEach((function(e){return a.showElement(e,!1)}))},this.close=function(e){var t=a.elements[e];t&&a.closeElement(t)},this.closeAll=function(){a.elements.forEach((function(e){return a.closeElement(e,!1)}))},this.destroy=function(){s.detachEvents(),s.openAll(),a.elements.forEach((function(e){a.removeIDs(e),a.removeARIA(e),a.setTransition(e,!0)})),r=!0},this.update=function(){a.createDefinitions(),s.detachEvents(),s.attachEvents()};var c=function(e){return"string"==typeof document.documentElement.style[e]?e:(e=l(e),e="webkit".concat(e))},l=function(e){return e.charAt(0).toUpperCase()+e.slice(1)};a.init()};"undefined"!=typeof module&&void 0!==module.exports?module.exports=n:e.Accordion=n}(window);
+</script>
+<!-- <script type="x-shader/x-vertex" id="vertexShaderZoom">
+    varying vec2 vUv;
+        void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+    }
+</script>
+
+<script type="x-shader/x-fragment" id="fragmentShaderZoom">
+uniform sampler2D tDiffuse;
+uniform vec2 center;
+uniform float strength;
+uniform vec2 resolution;
+varying vec2 vUv;
+
+float random(vec3 scale,float seed){return fract(sin(dot(gl_FragCoord.xyz+seed,scale))*43758.5453+seed);}
+
+void main(){
+    vec4 color=vec4(0.0);
+    float total=0.0;
+    vec2 toCenter=center-vUv*resolution;
+    float offset=random(vec3(12.9898,78.233,151.7182),0.0);
+    for(float t=0.0;t<=40.0;t++){
+        float percent=(t+offset)/40.0;
+        float weight=4.0*(percent-percent*percent);
+        vec4 sample_=texture2D(tDiffuse,vUv+toCenter*percent*strength/resolution);
+        sample_.rgb*=sample_.a;
+        color+=sample_*weight;
+        total+=weight;
+    }
+    gl_FragColor=color/total;
+    gl_FragColor.rgb/=gl_FragColor.a+0.00001;
+}
+</script> -->
+<script>
+//"use strict";
+//window.accordeonActive=0;
+const aacc=new Accordion('.accordion-container',{
+    openOnInit: [0],
+    onOpen: currentElement=>{
+        //window.accordeonActive=new Number(currentElement.getAttribute('id').replace('accordeon-',''));
+        if(window.customFunc){
+            let i=currentElement.getAttribute('id').replace('accordeon-','');
+            i++
+            window.customFunc(i)
+        }
+    }
+});
+
+/* fetch("/css/s.css").then(r=>r.text()).then(s=>{
+    const st=document.createElement('style');
+    st.innerText=s;
+    document.body.appendChild(st)
+}); */
+
+    /* window.toThree=null;
+    window.toThreeUp=null;
+    window.toStartThree=0; */
+    (()=>{
+        const d=document;
+        const a=e=>d.querySelectorAll(e)
+        const s=e=>{if(d.querySelector(e))return d.querySelector(e)}
+        const loadRes=a("[data-src]");
+        d.body.classList.add('ovh')
+        /* setTimeout(()=>{
+            
+
+        },100) */
+
+        //if(loadRes&&loadRes.length&&loadRes.length>0){loadRes.forEach(e => e.src=e.dataset.src)}
+
+        /* const obs=new Object();//объект для слайдера
+        obs.sldMain=s(".slider-main");//div со слайдами
+        obs.sld=s(".slider");//div со слайдами
+        obs.sldAll=a("section");//все слайды
+        obs.active=null;//создадим переменную для того, чтобы определять активный слайд
+        obs.f=()=>{            
+                const observer=new IntersectionObserver(e=>{         
+                    e.forEach(_=>{
+                        _.target.dataset.active=(_.isIntersecting)?1:0;
+                        obs.sldAll.forEach((_,l)=>{
+                            if(_.dataset.active==1){
+                                obs.active
+                                        =window.toThree
+                                        =l
+                            }
+                        })
+                    })
+                },{threshold:.7})
+                obs.sldAll.forEach(_=>{
+                    observer.observe(_)
+                })
+        }
+        obs.f();
+        window.addEventListener('wheel',e=>{
+            obs.f()                
+            obs.h=obs.sldAll[obs.active].offsetHeight//узнаем ширину каждого слайда
+            obs.plmin=obs.active-1
+            if(e.deltaY>0){//progress|down
+                window.toThreeUp=0
+                if(obs.active+1===obs.sldAll.length)return false;//если мы сейчас на последнем слайде
+                obs.plmin=obs.active+1
+            }else{//regress|up
+                window.toThreeUp=1
+                if(obs.active-1<0)return false;//если мы сейчас на первом слайде
+            }
+            obs.sld.setAttribute("style",`transform:translateY(-${obs.h*(obs.plmin)}px)`);//перемещаем слайды  
+            
+        }) */
+    })()
+    </script>
+
+    </body>
+</html>
